@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting What You Want &mdash; Business Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--c1:#181b24;--c2:#1e222e;--inp:#252a38;--bd:#2a2f3e;--bd2:#3d4458;--y:#f5c518;--yd:#c49e0f;--yg:rgba(245,197,24,.15);--g:#34d399;--r:#f87171;--b:#60a5fa;--o:#fb923c;--p:#a78bfa;--t:#2dd4bf;--t1:#e8eaf0;--t2:#8b92a5;--t3:#5a6178;--tl:#9ca3b8}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;min-height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+.hdr{background:linear-gradient(135deg,#0f1117,#1a1d2b,#0f1117);border-bottom:2px solid var(--y);padding:24px 32px;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hi{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:3px;color:var(--y);line-height:1}
+.hdr .sub{font-size:.82rem;color:var(--t2);letter-spacing:1px;font-weight:300}
+.hdr .br{text-align:right;font-size:.72rem;color:var(--t3)}.hdr .br strong{color:var(--t2)}
+.nav{background:var(--c1);border-bottom:1px solid var(--bd);position:sticky;top:82px;z-index:99;overflow-x:auto}
+.ni{max-width:1400px;margin:0 auto;display:flex}
+.nb{font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:12px 18px;border:none;background:0 0;color:var(--t2);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}
+.nb:hover{color:var(--t1);background:rgba(245,197,24,.04)}.nb.ac{color:var(--y);border-bottom-color:var(--y);background:rgba(245,197,24,.06)}
+.nb .step{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:50%;background:var(--bd);color:var(--t3);font-size:.6rem;font-weight:700;margin-right:6px}
+.nb.ac .step{background:var(--y);color:#000}
+.mc{max-width:1400px;margin:0 auto;padding:28px 24px 80px}
+.sec{display:none;animation:fi .3s ease}.sec.ac{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sh{margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--bd)}.sh h2{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;margin-bottom:2px}
+.sh p{font-size:.85rem;color:var(--t2);max-width:700px}
+.sh .step-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--t);font-weight:600;margin-bottom:4px}
+.cd{background:var(--c1);border:1px solid var(--bd);border-radius:10px;padding:22px;margin-bottom:18px}
+.ct{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1.5px;color:var(--y);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ct .ic{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.iy{background:rgba(245,197,24,.15);color:var(--y)}.ig{background:rgba(52,211,153,.15);color:var(--g)}.ib{background:rgba(96,165,250,.15);color:var(--b)}.ir{background:rgba(248,113,113,.15);color:var(--r)}.io{background:rgba(251,146,60,.15);color:var(--o)}.ip{background:rgba(167,139,250,.15);color:var(--p)}.it{background:rgba(45,212,191,.15);color:var(--t)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(min-width:901px) and (max-width:1100px){.g3,.g4{grid-template-columns:1fr 1fr}}
+.ig2{margin-bottom:12px}.ig2 label{display:block;font-size:.68rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--tl);margin-bottom:4px}
+.ig2 input,.ig2 select{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;padding:9px 12px;transition:.2s}
+.ig2 input:focus,.ig2 select:focus{outline:none;border-color:var(--y);box-shadow:0 0 0 3px var(--yg)}
+.ig2 input.ed{background:rgba(245,197,24,.08);border-color:var(--yd)}.ig2 .hn{font-size:.65rem;color:var(--t3);margin-top:2px}
+.rr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(42,47,62,.5);font-size:.85rem}.rr:last-child{border-bottom:none}.rr .lb{color:var(--t2)}
+.rr .vl{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.88rem}
+.rr.tot{border-top:2px solid var(--bd2);border-bottom:2px solid var(--bd2);padding:12px 0;margin-top:4px}.rr.tot .lb{color:var(--t1);font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:.78rem}.rr.tot .vl{font-size:1.1rem}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.sx{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:16px;text-align:center}
+.sx .sl2{font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.sx .sv{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700}.sx .ss{font-size:.68rem;color:var(--t3);margin-top:3px}
+.dt{width:100%;border-collapse:collapse;font-size:.82rem}
+.dt th{text-align:left;font-size:.65rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--t3);padding:8px 12px;border-bottom:1px solid var(--bd);background:var(--c2)}
+.dt td{padding:8px 12px;border-bottom:1px solid rgba(42,47,62,.4);color:var(--t2)}.dt td:first-child{color:var(--t1);font-weight:500}
+.dt .mn{font-family:'JetBrains Mono',monospace;font-weight:600}.dt tr:hover td{background:rgba(245,197,24,.03)}
+.fn{display:flex;flex-direction:column;gap:4px;max-width:650px;margin:0 auto 20px}
+.fs{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-radius:8px;position:relative;overflow:hidden}
+.fs .fb{position:absolute;left:0;top:0;bottom:0;opacity:.12;border-radius:8px;transition:width .5s}.fs .fl{position:relative;font-weight:600;font-size:.82rem;z-index:1}
+.fs .fv{position:relative;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:1rem;z-index:1}.fs .fa{position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);color:var(--t3);font-size:.7rem;z-index:2}
+.lsb{display:flex;height:28px;border-radius:6px;overflow:hidden;margin:14px 0}.lsb .seg{display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#fff}
+.qb{background:rgba(245,197,24,.05);border-left:3px solid var(--y);padding:14px 18px;margin:16px 0;border-radius:0 6px 6px 0}
+.qb .qt{font-style:italic;color:var(--t2);font-size:.85rem;line-height:1.6}.qb .qa{color:var(--yd);font-size:.72rem;margin-top:4px;font-weight:600}
+.pr{color:var(--g)!important}.pc{color:var(--r)!important}.pp{color:var(--y)!important}
+.pm{background:linear-gradient(135deg,rgba(45,212,191,.05),rgba(245,197,24,.05));border:1px solid var(--t);border-radius:10px;padding:18px 22px;margin-bottom:18px}
+.pm .pt{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1.5px;color:var(--t);margin-bottom:10px}
+.pr2{display:grid;grid-template-columns:1fr 100px 120px;gap:6px;padding:7px 0;border-bottom:1px solid rgba(42,47,62,.4);align-items:center;font-size:.85rem}
+.pr2:last-child{border-bottom:none}.pr2 .pl{color:var(--t2)}.pr2 .pp2{font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right}
+.pr2 .pt2{font-family:'JetBrains Mono',monospace;font-weight:700;text-align:right}
+.pr2.ph .pl{color:var(--t3);font-size:.65rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.pr2.pgp{border-top:2px solid var(--bd2);padding-top:10px;margin-top:4px}.pr2.pgp .pl{color:var(--t1);font-weight:700}
+.vis{background:linear-gradient(135deg,rgba(245,197,24,.1),rgba(52,211,153,.06));border:2px solid var(--y);border-radius:12px;padding:24px;margin-bottom:20px}
+.vis h3{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px;color:var(--y);margin-bottom:14px}
+.vis .vr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(42,47,62,.4);font-size:.88rem}
+.vis .vr:last-child{border-bottom:none}.vis .vr .vl2{color:var(--t2)}.vis .vr .vv{font-family:'JetBrains Mono',monospace;font-weight:700}
+.vis .hero-total{display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--y);padding-top:14px;margin-top:10px}
+.vis .hero-total .vl2{color:var(--t1);font-weight:700;font-size:1rem;font-family:'Bebas Neue',sans-serif;letter-spacing:1.5px}
+.vis .hero-total .vv{color:var(--y);font-size:1.5rem}
+.eq-ctx{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:12px 18px;display:flex;gap:24px;flex-wrap:wrap;margin-bottom:14px;font-size:.82rem}
+.eq-ctx .ec-item{display:flex;align-items:center;gap:6px}.eq-ctx .ec-label{color:var(--t3);font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.eq-ctx .ec-val{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--t)}
+.divider{border:none;border-top:1px solid var(--bd);margin:8px 0}
+@media(max-width:700px){.hdr h1{font-size:1.6rem}.hdr{padding:16px}.nav{top:70px}.mc{padding:18px 12px 60px}.cd{padding:16px}.sx .sv{font-size:1.2rem}.nb{padding:10px 12px;font-size:.66rem}}
+</style>
+</head>
+<body>
+<div class="hdr"><div class="hi"><div><h1>GETTING WHAT YOU WANT</h1><div class="sub">Business Growth Calculator &mdash; Rules &amp; Tools</div></div><div class="br"><strong>The Concrete Protector</strong> &middot; I-BOS System</div></div></div>
+
+<div class="nav"><div class="ni">
+<button class="nb ac" onclick="go('vis')"><span class="step">1</span>Vision &amp; Inputs</button>
+<button class="nb" onclick="go('plan')"><span class="step">2</span>The Plan</button>
+<button class="nb" onclick="go('proj')"><span class="step">3</span>Project Model</button>
+<button class="nb" onclick="go('labor')"><span class="step">4</span>Labor &amp; Equipment</button>
+<button class="nb" onclick="go('tgt')"><span class="step">5</span>Target Areas</button>
+</div></div>
+
+<div class="mc">
+
+<!-- ======================== TAB 1: VISION & INPUTS ======================== -->
+<div class="sec ac" id="s-vis">
+<div class="sh"><div class="step-label">Step 1 &mdash; Set Everything</div><h2>Your Vision &amp; Business Inputs</h2></div>
+
+<div class="qb"><div class="qt">"There's only a few levers in your business. And when you learn how to pull the levers right, we can then make a predictive model on the profit that we will make."</div><div class="qa">&mdash; Joe Quick</div></div>
+
+<div class="g2">
+<div class="cd"><div class="ct"><span class="ic it">&#x2699;</span> Product &amp; Project</div>
+<div class="ig2"><label>Product System</label><select id="ps" class="ed" onchange="onSys()"><option value="graniflex">Graniflex Floor System &mdash; $2.65/sqft</option><option value="rcw_ext">Rustic Concrete Wood (Ext) &mdash; $1.15/sqft</option></select></div>
+<div class="g2"><div class="ig2"><label>Target Area</label><select id="tat" class="ed" onchange="preset()"><option value="custom">Custom</option><option value="garage" selected>Garage (576)</option><option value="basement">Basement (1,200)</option><option value="pool">Pool Deck (1,500)</option><option value="driveway">Driveway (1,800)</option><option value="firestation">Fire Station (5,000)</option><option value="walmart">Walmart (200,000)</option><option value="factory">Factory (100,000)</option></select></div><div class="ig2"><label>Sq Ft</label><input type="number" id="sqft" value="576" class="ed" oninput="calc()"></div></div>
+<div class="g2"><div class="ig2"><label>Charge $/sqft</label><input type="number" id="psf" value="8.00" step=".25" class="ed" oninput="calc()"></div><div class="ig2"><label>COGS $/sqft</label><input type="number" id="cog" value="2.65" step=".05" class="ed" oninput="calc()"></div></div>
+<div class="ig2"><label>Repair Charges $</label><input type="number" id="rep" value="0" class="ed" oninput="calc()"></div>
+</div>
+<div class="cd"><div class="ct"><span class="ic iy">&#x1F3AF;</span> The Master Number</div>
+<div class="ig2"><label>Gross Profit Target ($)</label><input type="number" id="tgp" value="100000" step="5000" class="ed" oninput="calc()"><div class="hn">This is what pays for everything in your business</div></div>
+<div class="ig2"><label>Working Weeks / Year</label><input type="number" id="wwy" value="42" class="ed" oninput="calc()"></div>
+<div style="background:rgba(245,197,24,.1);border:1px solid var(--y);border-radius:8px;padding:12px;text-align:center;margin-top:8px"><div style="font-size:.65rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Projects Needed</div><div id="projNeeded" style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--y)">44</div><div id="projPerWk" style="font-size:.7rem;color:var(--t3);margin-top:2px"></div></div>
+<hr class="divider">
+<div class="g2"><div class="ig2"><label>Lead &rarr; Quote %</label><input type="number" id="lcr" value="30" class="ed" oninput="calc()"></div><div class="ig2"><label>Quote &rarr; Close %</label><input type="number" id="ccr" value="60" class="ed" oninput="calc()"></div></div>
+</div>
+</div>
+
+<div class="g2">
+<div class="cd"><div class="ct"><span class="ic io">&#x2699;</span> Equipment</div>
+<div class="ig2"><label>Warrior Equipment</label><select id="eqs" class="ed" onchange="calc()"><option value="0" data-sqfthr="500" data-name="2047.4H">2047.4H &mdash; 500 sq ft/hr</option><option value="1" data-sqfthr="800" data-name="Samson 2756">Samson 2756 &mdash; 800 sq ft/hr</option><option value="2" data-sqfthr="1200" data-name="Leonidas 2795">Leonidas 2795 &mdash; 1,200 sq ft/hr</option><option value="3" data-sqfthr="2000" data-name="Leonidas 2795P">Leonidas 2795P &mdash; 2,000 sq ft/hr</option></select></div>
+<div class="ig2"><label>Has Removal?</label><select id="rmv" class="ed" onchange="calc()"><option value="no">No Removal</option><option value="yes">Yes &mdash; Double Time</option></select></div>
+</div>
+<div class="cd"><div class="ct"><span class="ic iy">&#x26A1;</span> Crew <span id="crewCount" style="color:var(--t);margin-left:auto;font-size:.75rem"></span></div>
+<div id="crewInputs"></div>
+<div style="display:flex;gap:8px;margin-top:8px"><button onclick="addTech()" style="flex:1;padding:8px;background:rgba(52,211,153,.15);border:1px solid var(--g);border-radius:6px;color:var(--g);font-family:'Outfit',sans-serif;font-weight:600;font-size:.75rem;cursor:pointer;letter-spacing:.5px">+ ADD TECH</button><button onclick="removeTech()" id="rmBtn" style="flex:1;padding:8px;background:rgba(248,113,113,.1);border:1px solid var(--r);border-radius:6px;color:var(--r);font-family:'Outfit',sans-serif;font-weight:600;font-size:.75rem;cursor:pointer;letter-spacing:.5px">&minus; REMOVE</button></div>
+</div>
+</div>
+
+<div class="g2">
+<div class="cd"><div class="ct"><span class="ic ir">&#x2699;</span> Below-the-Line Levers</div>
+<div class="g2"><div class="ig2"><label>Operating Cost %</label><input type="number" id="opc" value="8" step="1" class="ed" oninput="calc()"></div><div class="ig2"><label>Marketing + Ad %</label><input type="number" id="mkp" value="10" step="1" class="ed" oninput="calc()"></div></div>
+<div class="g2"><div class="ig2"><label>Business Exp %</label><input type="number" id="bep" value="10" step="1" class="ed" oninput="calc()"></div><div class="ig2"><label>Drive Time (hrs/tech)</label><input type="number" id="dth" value="2" step=".5" class="ed" oninput="calc()"><div class="hn">Round trip per job per tech</div></div></div>
+<div class="ig2"><label>Sales Comm %</label><input type="number" id="scp2" value="5" step="1" class="ed" oninput="calc()"></div>
+</div>
+<div class="cd"><div class="ct"><span class="ic ip">&#x1F4E1;</span> Lead Source Mix (%)</div>
+<div class="g2"><div class="ig2"><label>Inbound Calls %</label><input type="number" id="sp1" value="25" step="1" class="ed" oninput="calc()"></div><div class="ig2"><label>Website Forms %</label><input type="number" id="sp2" value="15" step="1" class="ed" oninput="calc()"></div></div>
+<div class="g2"><div class="ig2"><label>Mailers %</label><input type="number" id="sp3" value="25" step="1" class="ed" oninput="calc()"></div><div class="ig2"><label>Referrals %</label><input type="number" id="sp4" value="25" step="1" class="ed" oninput="calc()"></div></div>
+<div class="g2"><div class="ig2"><label>Repeat %</label><input type="number" id="sp5" value="10" step="1" class="ed" oninput="calc()"></div><div class="ig2"><label>Mix Total</label><input type="text" id="spTot" readonly style="font-weight:700"></div></div>
+</div>
+</div>
+
+</div>
+
+<!-- ======================== TAB 2: THE PLAN ======================== -->
+<div class="sec" id="s-plan">
+<div class="sh"><div class="step-label">Step 2 &mdash; The Story</div><h2>Getting What You Want</h2></div>
+
+<div id="revChain" style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:20px;padding:16px;background:var(--c1);border:1px solid var(--bd);border-radius:10px"></div>
+
+<div class="qb"><div class="qt">"Keep Score Weekly to Stay on Target. What gets measured gets done!"</div><div class="qa">&mdash; Joe Quick, learned from EOS</div></div>
+
+<div class="vis" id="ownerV"></div>
+
+<div class="cd"><div class="ct"><span class="ic ig">&#x1F4CA;</span> P&amp;L Scorecard &mdash; Lagging Indicators</div>
+<p style="font-size:.72rem;color:var(--t3);margin-bottom:14px">"Top line is vanity. Bottom line is sanity. Cash flow is reality."</p>
+<div class="sg" id="pnlS"></div>
+<div id="pnlR"></div></div>
+
+<div class="cd"><div class="ct"><span class="ic iy">&#x1F4C8;</span> Profit Rules</div>
+<div class="g4">
+<div class="sx" style="border-color:var(--r)"><div class="sl2">Stop Growing</div><div class="sv" style="color:var(--r)">10%</div><div class="ss">10% = zero. Stabilize.</div></div>
+<div class="sx" style="border-color:var(--y)"><div class="sl2">Time to Grow</div><div class="sv" style="color:var(--y)">15%</div><div class="ss">Room to scale.</div></div>
+<div class="sx" style="border-color:var(--g)"><div class="sl2">Enjoy &amp; Grow</div><div class="sv" style="color:var(--g)">20%+</div><div class="ss">Before someone takes it.</div></div>
+<div class="sx" style="border-color:var(--p)"><div class="sl2">Best Seen</div><div class="sv" style="color:var(--p)">42%</div><div class="ss">$2.2M &rarr; $840K</div></div></div></div>
+
+<div class="cd"><div class="ct"><span class="ic ib">&#x2B07;</span> Sales Funnel</div><div class="fn" id="sfun"></div></div>
+
+<div class="g2">
+<div class="cd"><div class="ct"><span class="ic ig">&#x2713;</span> Calculated Results</div>
+<div class="ig2"><label>Total Leads Needed / Year</label><input type="text" id="ltot" readonly style="color:var(--o);background:rgba(251,146,60,.08);border-color:var(--o)"></div>
+<div class="ig2"><label>Labor ($/sqft)</label><input type="text" id="lpsf" value="$0.83" readonly style="color:var(--o);background:rgba(251,146,60,.08);border-color:var(--o)"></div>
+<div class="ig2"><label>Drive Time ($/sqft)</label><input type="text" id="dpsf" readonly style="color:var(--o);background:rgba(251,146,60,.08);border-color:var(--o)"></div>
+</div>
+<div class="cd"><div class="ct"><span class="ic iy">&#x1F4CB;</span> Weekly Targets</div>
+<div id="acctChart"></div></div>
+</div>
+
+<div class="cd"><div class="ct"><span class="ic io">&#x1F4E1;</span> Leading Indicators &mdash; Track These Daily &amp; Weekly</div>
+<div class="sg" id="leadingHero"></div>
+<div class="qb"><div class="qt">"If I don't get eight clients today, and I only got seven, I could probably get nine tomorrow. But if I go a whole month and I miss them, I can't make up 160 clients in a day."</div><div class="qa">&mdash; Joe Quick</div></div>
+</div>
+
+<div class="g2">
+<div class="cd"><div class="ct"><span class="ic ip">&#x1F4B0;</span> Marketing Metrics</div><div id="mktM"></div></div>
+<div class="cd"><div class="ct"><span class="ic io">&#x1F4E1;</span> Lead Source Mix</div><div class="lsb" id="lsBar"></div><div id="lsDet" style="overflow-x:auto"></div></div>
+</div>
+</div>
+
+<!-- ======================== TAB 3: PROJECT MODEL (Proof) ======================== -->
+<div class="sec" id="s-proj">
+<div class="sh"><div class="step-label">Proof of Work</div><h2>Project Model: <span id="psn">Graniflex Floor System</span></h2><p>The unit economics of a single job. This is the math behind every dollar.</p></div>
+<div class="pm" id="psfM"></div>
+<div class="sg" id="pSt"></div>
+</div>
+
+<!-- ======================== TAB 4: LABOR & EQUIPMENT (Proof) ======================== -->
+<div class="sec" id="s-labor">
+<div class="sh"><div class="step-label">Proof of Work</div><h2>Labor &amp; Equipment Detail: <span id="lsn">G-301: Graniflex Flake</span></h2><p>Step-by-step labor breakdown on <span id="labSqft">576</span> sq ft base. Equipment comparison shows ROI of upgrading machines.</p></div>
+
+<div class="cd"><div class="ct"><span class="ic ig">&#x2713;</span> Labor Summary</div><div id="lSum"></div></div>
+
+<div class="cd"><div class="ct"><span class="ic ib">&#x1F4CB;</span> Step-by-Step Breakdown (<span id="labSqft2">576</span> sq ft base)</div>
+<div style="overflow-x:auto"><table class="dt" id="lTable"><thead id="lTH"></thead><tbody id="lSB"></tbody></table></div></div>
+
+<div class="cd"><div class="ct"><span class="ic io">&#x23F1;</span> Equipment Run Time</div><div id="eqR"></div></div>
+
+<div class="cd"><div class="ct"><span class="ic ip">&#x1F4CA;</span> Annual Machine Comparison</div>
+<div class="eq-ctx" id="eqCtx"></div>
+<p style="font-size:.75rem;color:var(--t3);margin-bottom:12px" id="eqNote">Machine run time multiplied by all workers on jobsite.</p>
+<div style="overflow-x:auto"><table class="dt"><thead><tr><th>Equipment</th><th>Sq Ft/Hr</th><th>Hrs to Grind</th><th>Hrs w/ Removal</th><th>Yearly Grind Time</th><th>Yearly Removal Time</th><th>Yearly Labor Cost</th></tr></thead><tbody id="eqCB"></tbody></table></div></div>
+</div>
+
+<!-- ======================== TAB 5: TARGET AREAS (Proof) ======================== -->
+<div class="sec" id="s-tgt">
+<div class="sh"><div class="step-label">Proof of Work</div><h2>Target Area Scenarios</h2><p>Compare project types. How many project jobs does it take?</p></div>
+<div class="qb"><div class="qt">"Doing more doesn't get you more. Doing better gets you more."</div><div class="qa">&mdash; Joe Quick</div></div>
+<div class="cd"><div style="overflow-x:auto"><table class="dt"><thead><tr><th>Target Area</th><th>Sq Ft</th><th>@ $6.50/ft</th><th class="jth">Jobs</th><th>@ $8.00/ft</th><th class="jth">Jobs</th><th>@ $9.60/ft</th><th class="jth">Jobs</th></tr></thead><tbody id="tCB"></tbody></table></div></div>
+</div>
+
+</div>
+
+<script>
+const SYS={
+  graniflex:{name:'Graniflex Floor System',lname:'G-301: Graniflex Flake: Perfect Poly 90: 1 Coat',mat:2.65,price:8.00,baseGrindRate:500,
+    steps:[{desc:'Setup',hrs:0.5},{desc:'Grind / Blast',hrs:1.5,grind:true},{desc:'Repairs',hrs:0.5},{desc:'Prime with Permaflex',hrs:1},{desc:'Coat with Permaflex, Broadcast Media',hrs:1},{desc:'Clean and Seal with PP90 (1 and Done)',hrs:1.5}]},
+  rcw_ext:{name:'Rustic Concrete Wood (Exterior)',lname:'Rustic Concrete Wood: Exterior Application',mat:1.15,price:8.00,baseGrindRate:500,
+    steps:[{desc:'Setup',hrs:0.5},{desc:'Grind / Blast',hrs:1.5,grind:true},{desc:'Repairs',hrs:0.5},{desc:'Grout Coat w/ High Density Resin + Texture Mix',hrs:1},{desc:'Tape and Texture Coat',hrs:2},{desc:'Stain',hrs:1.5},{desc:'Acrylic Seal Coat 1',hrs:1},{desc:'Acrylic Seal Coat 2',hrs:1}]}
+};
+const PRE={garage:576,basement:1200,pool:1500,driveway:1800,firestation:5000,walmart:200000,factory:100000};
+const MACH=[{name:'2047.4H',sqfthr:500},{name:'Samson 2756',sqfthr:800},{name:'Leonidas 2795',sqfthr:1200},{name:'Leonidas 2795P',sqfthr:2000}];
+const TGT=[{name:'Garage',sqft:576},{name:'Basement',sqft:1200},{name:'Pool Deck',sqft:1500},{name:'Driveway',sqft:1800},{name:'Fire Station',sqft:5000},{name:'Walmart',sqft:200000},{name:'Factory',sqft:100000}];
+let cs='graniflex';
+let crew=[30,25,18];
+
+function renderCrew(){
+  let h='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px">';
+  crew.forEach((r,i)=>{h+='<div class="ig2" style="margin:0"><label style="font-size:.65rem">Tech '+(i+1)+' $/hr</label><input type="number" id="cr'+i+'" value="'+r+'" class="ed" style="padding:6px 8px" oninput="crewChange('+i+',this.value)"></div>';});
+  h+='</div>';$('crewInputs').innerHTML=h;$('crewCount').textContent=crew.length+' techs';$('rmBtn').style.display=crew.length>1?'':'none';
+}
+function addTech(){crew.push(15);renderCrew();calc();}
+function removeTech(){if(crew.length>1){crew.pop();renderCrew();calc();}}
+function crewChange(i,v){crew[i]=parseFloat(v)||0;calc();}
+
+function go(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ac'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('ac'));document.getElementById('s-'+id).classList.add('ac');event.target.closest('.nb').classList.add('ac');}
+const $=id=>document.getElementById(id);const n=id=>parseFloat($(id).value)||0;
+const f=(v,d=0)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fm=v=>'$'+f(v);const fm2=v=>'$'+f(v,2);const fp=(v,d=1)=>f(v,d)+'%';
+
+function onSys(){cs=$('ps').value;const s=SYS[cs];$('cog').value=s.mat;$('psf').value=s.price;$('psn').textContent=s.name;$('lsn').textContent=s.lname;calc();}
+function preset(){const v=$('tat').value;if(PRE[v])$('sqft').value=PRE[v];calc();}
+
+function calc(){
+  const sys=SYS[cs],sqft=n('sqft'),price=n('psf'),mat=n('cog'),rep=n('rep'),opPct=n('opc')/100;
+  const N=crew.length;
+  const rates=crew.map((_,i)=>parseFloat(($('cr'+i)||{}).value)||crew[i]);
+  const avgHr=rates.reduce((a,b)=>a+b,0)/N;
+  const tgp=n('tgp'),wwy=n('wwy')||42,lcr=n('lcr')/100,ccr=n('ccr')/100;
+  const mkp=n('mkp')/100,bep=n('bep')/100,scp=n('scp2')/100;
+
+  // === MATH ===
+  const eqS=$('eqs'),eqSqftHr=parseInt(eqS.options[eqS.selectedIndex].getAttribute('data-sqfthr'));
+  const eqName=eqS.options[eqS.selectedIndex].getAttribute('data-name');
+  const BASE_SQFT=576,grindRatio=sys.baseGrindRate/eqSqftHr,driveHrs=n('dth');
+
+  let techProdHrs=new Array(N).fill(0);let stepData=[];
+  sys.steps.forEach(s=>{
+    const mult=s.grind?grindRatio:1,hpt=s.hrs*mult,th=new Array(N).fill(hpt);
+    th.forEach((h,i)=>{techProdHrs[i]+=h;});
+    stepData.push({desc:s.grind?s.desc+' ('+eqName+')':s.desc,techHrs:th,totalHrs:hpt*N,psfCost:hpt*N*avgHr/BASE_SQFT});
+  });
+  const techDriveHrs=new Array(N).fill(driveHrs),techTotalHrs=techProdHrs.map((h,i)=>h+driveHrs);
+  const dTot=driveHrs*N,prodTot=techProdHrs.reduce((a,b)=>a+b,0),gTot=prodTot+dTot;
+  const subLC=techProdHrs.reduce((a,h,i)=>a+h*rates[i],0),drvC=techDriveHrs.reduce((a,h,i)=>a+h*rates[i],0),totLC=subLC+drvC;
+  const labPsf=subLC/BASE_SQFT;
+
+  const gs=sqft*price,cogT=sqft*mat,labT=sqft*labPsf,opPsf=price*opPct,opT=sqft*opPsf;
+  const gpPsf=price-mat-labPsf-opPsf,gpT=gs+rep-cogT-labT-opT,gpM=gs>0?(gpT/(gs+rep))*100:0;
+
+  const jobsX=gpT>0?tgp/gpT:0,jobsN=Math.round(jobsX),ySqft=Math.round(jobsX*sqft);
+  const tGS=jobsX*(gs+rep),tCOG=jobsX*cogT,tLab=jobsX*labT,tOp=tGS*opPct;
+  const aGP=tGS-tCOG-tLab-tOp,gpPc=tGS>0?(aGP/tGS)*100:0;
+  const mC=tGS*mkp,bC=tGS*bep,dC=drvC*jobsX,sC=tGS*scp;
+  const nP=aGP-mC-bC-dC-sC,nPc=tGS>0?(nP/tGS)*100:0;
+  const pCol=nPc>=20?'var(--g)':nPc>=15?'var(--y)':nPc>=10?'var(--o)':'var(--r)';
+  const pRule=nPc>=20?'ENJOY & GROW FAST':nPc>=15?'TIME TO GROW':nPc>=10?'STOP GROWING':'DANGER';
+
+  const quotes=ccr>0?Math.ceil(jobsX/ccr):0;
+  const totalLeads=lcr>0?Math.ceil(quotes/lcr):0;
+  const contracts=jobsN;
+  const jpw=wwy>0?jobsX/wwy:0;
+  const leadsWk=wwy>0?totalLeads/wwy:0,quotesWk=wwy>0?quotes/wwy:0,leadsDay=leadsWk/5;
+  const mktTotal=tGS*mkp,cpl=totalLeads>0?mktTotal/totalLeads:0,cpq=quotes>0?mktTotal/quotes:0,cac=contracts>0?mktTotal/contracts:0;
+
+  // Source mix (percentages)
+  const sp1=n('sp1'),sp2=n('sp2'),sp3=n('sp3'),sp4=n('sp4'),sp5=n('sp5');
+  const spSum=sp1+sp2+sp3+sp4+sp5;
+  const srcPcts=[sp1,sp2,sp3,sp4,sp5];
+  const srcCounts=srcPcts.map(p=>spSum>0?Math.round(totalLeads*p/spSum):0);
+
+  const tech1TotalHrs=techTotalHrs[0]||0,tech1Lab=jobsX*(tech1TotalHrs*rates[0]);
+  const inBiz=tech1Lab+sC,onBiz=nP,owT=inBiz+onBiz;
+
+  const baseGrindManHrs=1.5*N,curGrindManHrs=1.5*grindRatio*N;
+  const costSaved=(baseGrindManHrs-curGrindManHrs)*avgHr,costSavedYr=costSaved*jobsX;
+
+  // === RENDER ===
+
+  // -- TAB 1 VISION: calculated fields --
+  $('lpsf').value=fm2(labPsf)+'/ft';
+  $('dpsf').value=fm2(drvC/BASE_SQFT)+'/ft';
+  $('ltot').value=f(totalLeads)+' leads needed';
+  $('projNeeded').textContent=f(jobsN);
+  $('projPerWk').textContent=f(jpw,2)+' / week';
+  $('labSqft').textContent=f(sqft);
+  $('labSqft2').textContent=f(sqft);
+
+  // Reverse engineering chain
+  const arrow='<span style="color:var(--t3);font-size:1.2rem;padding:0 6px">\u2192</span>';
+  const chainBox=(label,value,color)=>'<div style="text-align:center;padding:6px 14px"><div style="font-size:.6rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--t3)">'+label+'</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:1.1rem;font-weight:700;color:'+color+'">'+value+'</div></div>';
+  $('revChain').innerHTML=chainBox('GP Target',fm(tgp),'var(--y)')+arrow+chainBox('\u00f7 '+fm(gpT)+'/job','','var(--t3)')+arrow+chainBox('Projects',f(jobsN),'var(--g)')+arrow+chainBox('\u00f7 '+fp(ccr*100,0)+' close','','var(--t3)')+arrow+chainBox('Quotes',f(quotes),'var(--b)')+arrow+chainBox('\u00f7 '+fp(lcr*100,0)+' conv','','var(--t3)')+arrow+chainBox('Leads',f(totalLeads),'var(--o)');
+  const spTotEl=$('spTot');spTotEl.value=f(spSum)+'%';
+  spTotEl.style.color=spSum===100?'var(--g)':spSum>100?'var(--r)':'var(--o)';
+  spTotEl.style.background=spSum===100?'rgba(52,211,153,.08)':'rgba(248,113,113,.08)';
+  spTotEl.style.borderColor=spSum===100?'var(--g)':'var(--r)';
+
+  // -- TAB 2 THE PLAN --
+  $('ownerV').innerHTML='<h3>SHAREHOLDERS VISION = ROI OF TIME, TALENT &amp; TREASURE</h3><div class="hero-total" style="border-top:none;padding-top:0;margin-top:0;justify-content:center"><span class="vv" style="color:var(--y);font-size:2rem">'+fm2(owT)+'</span></div><div style="text-align:center;font-size:.75rem;color:var(--t3);margin:4px 0 14px">'+fm(owT/12)+' / month</div><div class="vr"><span class="vl2">In The Business Labor (Tech 1: '+f(jobsN)+' jobs \u00d7 '+f(tech1TotalHrs,1)+' hrs \u00d7 $'+f(rates[0])+')</span><span class="vv" style="color:var(--o)">'+fm2(tech1Lab)+'</span></div><div class="vr"><span class="vl2">Sales Commission ('+fp(scp*100,0)+' of '+fm(tGS)+')</span><span class="vv" style="color:var(--o)">'+fm2(sC)+'</span></div><div class="vr" style="border-top:2px solid var(--bd2);margin-top:6px;padding-top:8px"><span class="vl2" style="font-weight:700">Total Working In The Business</span><span class="vv" style="color:var(--o)">'+fm2(inBiz)+'</span></div><div class="vr" style="margin-top:10px"><span class="vl2" style="font-weight:700">Total Working On The Business (Net Profit)</span><span class="vv" style="color:var(--g)">+ '+fm2(onBiz)+'</span></div><div class="vr" style="border-top:3px solid var(--y);margin-top:8px;padding-top:10px"><span class="vl2" style="font-weight:700;color:var(--y);font-size:.95rem">'+fm2(inBiz)+' + '+fm2(onBiz)+'</span><span class="vv" style="color:var(--y);font-size:1.2rem">= '+fm2(owT)+'</span></div>';
+
+  $('acctChart').innerHTML='<div class="sg" style="margin-bottom:0"><div class="sx" style="border-color:var(--o)"><div class="sl2">Marketing</div><div class="sv" style="color:var(--o)">'+f(leadsWk,1)+'</div><div class="ss">Leads / Week ('+f(totalLeads)+' / yr)</div></div><div class="sx" style="border-color:var(--b)"><div class="sl2">Sales</div><div class="sv" style="color:var(--b)">'+f(quotesWk,1)+'</div><div class="ss">Quotes / Week ('+f(quotes)+' / yr)</div></div><div class="sx" style="border-color:var(--g)"><div class="sl2">Operations</div><div class="sv" style="color:var(--g)">'+f(jpw,2)+'</div><div class="ss">Jobs / Week ('+f(jobsN)+' / yr)</div></div><div class="sx" style="border-color:var(--y)"><div class="sl2">Finance</div><div class="sv" style="color:var(--y)">'+fp(nPc)+'</div><div class="ss">'+pRule+'</div></div></div>';
+
+  $('leadingHero').innerHTML='<div class="sx" style="border-color:var(--o);border-width:2px"><div class="sl2">Leads / Week</div><div class="sv" style="color:var(--o)">'+f(leadsWk,1)+'</div><div class="ss">'+f(totalLeads)+' / year</div></div><div class="sx" style="border-color:var(--o);border-width:2px"><div class="sl2">Leads / Day</div><div class="sv" style="color:var(--o);font-size:2rem">'+f(leadsDay,1)+'</div><div class="ss">TRACK THIS DAILY</div></div><div class="sx" style="border-color:var(--b);border-width:2px"><div class="sl2">Quotes / Week</div><div class="sv" style="color:var(--b)">'+f(quotesWk,1)+'</div><div class="ss">'+f(quotes)+' / year</div></div><div class="sx" style="border-color:var(--y);border-width:2px"><div class="sl2">Contracts / Week</div><div class="sv" style="color:var(--y)">'+f(jpw,2)+'</div><div class="ss">'+f(jobsN)+' / year</div></div>';
+
+  const fD=[{l:'Target Gross Profit',v:tgp,c:'var(--g)',p:15,m:true},{l:'Projects Needed ('+f(jobsN)+'/yr)',v:jobsN,c:'var(--y)',p:totalLeads>0?(contracts/totalLeads)*100:20},{l:'Design Consultations Needed (\u00f7 '+fp(ccr*100,0)+' close)',v:quotes,c:'var(--b)',p:totalLeads>0?(quotes/totalLeads)*100:40},{l:'Lead Opportunities Needed (\u00f7 '+fp(lcr*100,0)+' conv)',v:totalLeads,c:'var(--p)',p:100}];
+  let fH='';fD.forEach((x,i)=>{const w=Math.max(x.p,20);fH+='<div class="fs"><div class="fb" style="width:'+w+'%;background:'+x.c+'"></div><span class="fl">'+x.l+'</span><span class="fv" style="color:'+x.c+'">'+(x.m?fm(x.v):f(x.v))+'</span>'+(i<fD.length-1?'<span class="fa">\u25BC</span>':'')+'</div>';});$('sfun').innerHTML=fH;
+
+  $('mktM').innerHTML='<div class="rr"><span class="lb">Marketing Budget ('+fp(mkp*100,0)+' of Gross)</span><span class="vl" style="color:var(--r)">'+fm2(mktTotal)+'</span></div><div class="rr"><span class="lb">Cost Per Lead</span><span class="vl" style="color:var(--o)">'+fm2(cpl)+'</span></div><div class="rr"><span class="lb">Cost Per Quote</span><span class="vl" style="color:var(--o)">'+fm2(cpq)+'</span></div><div class="rr tot"><span class="lb">Customer Acquisition Cost</span><span class="vl" style="color:var(--r)">'+fm2(cac)+'</span></div>';
+
+  const srcNames=['Inbound Calls','Website Forms','Mailers','Referrals','Repeat'];
+  const sCol=['#f87171','#60a5fa','#f5c518','#34d399','#a78bfa'];let bH='',dH='<table class="dt"><thead><tr><th>Source</th><th>%</th><th>Leads/Yr</th><th>Leads/Wk</th></tr></thead><tbody>';
+  srcNames.forEach((nm,i)=>{const pct=srcPcts[i],ct=srcCounts[i],wk=wwy>0?ct/wwy:0;
+    bH+='<div class="seg" style="flex:'+pct+';background:'+sCol[i]+'">'+(pct>8?f(pct,0)+'%':'')+'</div>';
+    dH+='<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:'+sCol[i]+';margin-right:6px;vertical-align:middle"></span>'+nm+'</td><td class="mn">'+f(pct)+'%</td><td class="mn">'+f(ct)+'</td><td class="mn">'+f(wk,1)+'</td></tr>';});
+  dH+='</tbody></table>';$('lsBar').innerHTML=bH;$('lsDet').innerHTML=dH;
+
+  $('pnlS').innerHTML='<div class="sx"><div class="sl2">Gross Sales: Vanity</div><div class="sv" style="color:var(--g)">'+fm(tGS)+'</div></div><div class="sx"><div class="sl2">Net Profit: Sanity</div><div class="sv" style="color:'+pCol+'">'+fm(nP)+'</div></div><div class="sx"><div class="sl2">Net Margin</div><div class="sv" style="color:'+pCol+'">'+fp(nPc)+'</div><div class="ss">'+pRule+'</div></div><div class="sx"><div class="sl2">Projects</div><div class="sv" style="color:var(--b)">'+f(jobsN)+'</div><div class="ss">'+f(sqft)+' sq ft each</div></div><div class="sx"><div class="sl2">Sq Ft / Year</div><div class="sv" style="color:var(--p)">'+f(ySqft)+'</div></div>';
+  $('pnlR').innerHTML='<div class="rr"><span class="lb">Gross Sales ('+jobsN+' projects)</span><span class="vl pr">'+fm(tGS)+'</span></div><div class="rr"><span class="lb">Cost of Goods ('+fp(tGS>0?(tCOG/tGS)*100:0)+')</span><span class="vl pc">\u2212'+fm(tCOG)+'</span></div><div class="rr"><span class="lb">Labor \u2014 '+N+' techs ('+fp(tGS>0?(tLab/tGS)*100:0)+')</span><span class="vl pc">\u2212'+fm(tLab)+'</span></div><div class="rr"><span class="lb">Operations ('+fp(opPct*100,0)+')</span><span class="vl pc">\u2212'+fm(tOp)+'</span></div><div class="rr tot"><span class="lb">Gross Profit ('+fp(gpPc)+')</span><span class="vl pp">'+fm(aGP)+'</span></div><div class="rr"><span class="lb">Marketing ('+fp(mkp*100,0)+')</span><span class="vl pc">\u2212'+fm(mC)+'</span></div><div class="rr"><span class="lb">Business Expense ('+fp(bep*100,0)+')</span><span class="vl pc">\u2212'+fm(bC)+'</span></div><div class="rr"><span class="lb">Driving Labor ('+f(driveHrs,1)+' hrs/tech \u00d7 '+N+')</span><span class="vl pc">\u2212'+fm(dC)+'</span></div><div class="rr"><span class="lb">Sales Commission ('+fp(scp*100,0)+')</span><span class="vl pc">\u2212'+fm(sC)+'</span></div><div class="rr tot"><span class="lb">Net Profit = Sanity = ROI ('+fp(nPc)+')</span><span class="vl '+(nP>=0?'pr':'pc')+'">'+fm(nP)+'</span></div>';
+
+  // -- TAB 3 PROJECT MODEL --
+  $('psfM').innerHTML='<div class="pt">'+sys.name.toUpperCase()+' \u2014 '+f(sqft)+' SQ FT \u2014 '+N+' TECHS \u2014 '+eqName+'</div>'+
+    '<div class="pr2 ph"><span class="pl"></span><span class="pp2">PSF</span><span class="pt2">TOTAL</span></div>'+
+    '<div class="pr2"><span class="pl">Gross Sales: Charge to Customer</span><span class="pp2" style="color:var(--g)">'+fm2(price)+'</span><span class="pt2" style="color:var(--g)">'+fm2(gs)+'</span></div>'+
+    (rep>0?'<div class="pr2"><span class="pl">Repair Charges</span><span class="pp2"></span><span class="pt2" style="color:var(--g)">'+fm2(rep)+'</span></div>':'')+
+    '<div class="pr2"><span class="pl">Cost of Goods</span><span class="pp2" style="color:var(--r)">'+fm2(mat)+'</span><span class="pt2" style="color:var(--r)">'+fm2(cogT)+'</span></div>'+
+    '<div class="pr2"><span class="pl">Labor ('+N+' techs)</span><span class="pp2" style="color:var(--o)">'+fm2(labPsf)+'</span><span class="pt2" style="color:var(--o)">'+fm2(labT)+'</span></div>'+
+    '<div class="pr2"><span class="pl">Operating Cost @ '+fp(opPct*100,0)+'</span><span class="pp2" style="color:var(--r)">'+fm2(opPsf)+'</span><span class="pt2" style="color:var(--r)">'+fm2(opT)+'</span></div>'+
+    '<div class="pr2 pgp"><span class="pl">Gross Profit</span><span class="pp2" style="color:var(--y)">'+fm2(gpPsf)+'</span><span class="pt2" style="color:var(--y)">'+fm2(gpT)+'</span></div>'+
+    '<div class="pr2"><span class="pl">Job Gross Profit Margin</span><span class="pp2"></span><span class="pt2" style="color:var(--y);font-size:1.05rem">'+fp(gpM,0)+'</span></div>';
+  $('pSt').innerHTML='<div class="sx"><div class="sl2">Revenue</div><div class="sv" style="color:var(--g)">'+fm(gs+rep)+'</div></div><div class="sx"><div class="sl2">COGS</div><div class="sv" style="color:var(--r)">'+fm(cogT)+'</div><div class="ss">'+fp(gs>0?(cogT/gs)*100:0)+'</div></div><div class="sx"><div class="sl2">Labor</div><div class="sv" style="color:var(--o)">'+fm(labT)+'</div><div class="ss">'+fm2(labPsf)+'/ft \u2022 '+N+' techs</div></div><div class="sx"><div class="sl2">Gross Profit</div><div class="sv" style="color:var(--y)">'+fm(gpT)+'</div></div><div class="sx"><div class="sl2">GP Margin</div><div class="sv" style="color:var(--y)">'+fp(gpM,0)+'</div></div>';
+
+  // -- TAB 4 LABOR & EQUIPMENT --
+  let thR='<tr><th>Step</th>';for(let i=0;i<N;i++) thR+='<th>Tech '+(i+1)+'</th>';thR+='<th>Total Hrs</th><th>Per Sq Ft</th></tr>';$('lTH').innerHTML=thR;
+  let lR='';
+  stepData.forEach(sd=>{lR+='<tr><td>'+sd.desc+'</td>';sd.techHrs.forEach(h=>{lR+='<td class="mn">'+f(h,2)+'</td>';});lR+='<td class="mn">'+f(sd.totalHrs,2)+'</td><td class="mn">'+fm2(sd.psfCost)+'</td></tr>';});
+  lR+='<tr style="font-weight:700;border-top:2px solid var(--bd2)"><td>Total Production Hours</td>';techProdHrs.forEach(h=>{lR+='<td class="mn">'+f(h,2)+'</td>';});lR+='<td class="mn">'+f(prodTot,2)+'</td><td class="mn">'+fm2(subLC/BASE_SQFT)+'</td></tr>';
+  lR+='<tr><td>SubTotal Labor Cost</td>';techProdHrs.forEach((h,i)=>{lR+='<td class="mn">'+fm2(h*rates[i])+'</td>';});lR+='<td class="mn" style="color:var(--o)">'+fm2(subLC)+'</td><td class="mn">'+fm2(subLC/BASE_SQFT)+'</td></tr>';
+  lR+='<tr><td>Drive Time / Visits</td>';techDriveHrs.forEach(h=>{lR+='<td class="mn">'+f(h,1)+'</td>';});lR+='<td class="mn">'+f(dTot,1)+'</td><td class="mn">'+fm2(drvC/BASE_SQFT)+'</td></tr>';
+  lR+='<tr style="font-weight:700;border-top:2px solid var(--bd2)"><td>GRAND TOTAL</td>';techTotalHrs.forEach(h=>{lR+='<td class="mn">'+f(h,2)+'</td>';});lR+='<td class="mn">'+f(gTot,2)+'</td><td class="mn" style="color:var(--y)">'+fm2(totLC/BASE_SQFT)+'</td></tr>';
+  lR+='<tr><td>Total Labor + Driving $</td>';techTotalHrs.forEach((h,i)=>{lR+='<td class="mn">'+fm2(h*rates[i])+'</td>';});lR+='<td class="mn" style="color:var(--y)">'+fm2(totLC)+'</td><td class="mn">'+fm2(totLC/BASE_SQFT)+'</td></tr>';
+  lR+='<tr><td>Each Man Cost / Sq Ft</td>';techTotalHrs.forEach((h,i)=>{lR+='<td class="mn">'+fm2(h*rates[i]/BASE_SQFT)+'</td>';});lR+='<td></td><td></td></tr>';
+  $('lSB').innerHTML=lR;
+
+  const savingsRow=grindRatio<1?'<div class="rr" style="background:rgba(52,211,153,.08);border-radius:6px;padding:9px 12px;margin-top:4px"><span class="lb" style="color:var(--g)">'+eqName+' Saves vs 2047.4H</span><span class="vl" style="color:var(--g)">\u2212'+fm2(costSaved)+'/job \u2022 \u2212'+fm(costSavedYr)+'/yr</span></div>':'';
+  $('lSum').innerHTML='<div class="rr"><span class="lb">Crew Size</span><span class="vl" style="color:var(--t)">'+N+' techs</span></div><div class="rr"><span class="lb">Equipment</span><span class="vl" style="color:var(--t)">'+eqName+' ('+f(eqSqftHr)+' sqft/hr)</span></div><div class="rr"><span class="lb">Average Man Hour Rate</span><span class="vl" style="color:var(--y)">'+fm2(avgHr)+'</span></div><div class="rr"><span class="lb">Labor $/Sq Ft</span><span class="vl" style="color:var(--o)">'+fm2(labPsf)+'</span></div><div class="rr"><span class="lb">This Project ('+f(sqft)+' sq ft)</span><span class="vl" style="color:var(--o)">'+fm(labT)+'</span></div><div class="rr"><span class="lb">Grand Total w/ Driving (576 base)</span><span class="vl" style="color:var(--y)">'+fm(totLC)+'</span></div>'+savingsRow;
+
+  const rm=$('rmv').value==='yes',gh=eqSqftHr>0?sqft/eqSqftHr:0,tgh=rm?gh*2:gh;
+  $('eqR').innerHTML='<div class="rr"><span class="lb">Quantity</span><span class="vl" style="color:var(--t)">'+f(sqft)+' sq ft</span></div><div class="rr"><span class="lb">Sq Ft/Hr</span><span class="vl" style="color:var(--b)">'+f(eqSqftHr)+'</span></div><div class="rr"><span class="lb">Hours to Grind</span><span class="vl" style="color:var(--y)">'+f(gh,2)+'</span></div>'+(rm?'<div class="rr"><span class="lb">Hours w/ Removal (2x)</span><span class="vl" style="color:var(--o)">'+f(tgh,2)+'</span></div>':'');
+  $('eqCtx').innerHTML='<div class="ec-item"><span class="ec-label">Quantity</span><span class="ec-val">'+f(sqft)+' sq ft</span></div><div class="ec-item"><span class="ec-label">Sq Ft / Year</span><span class="ec-val">'+f(ySqft)+'</span></div><div class="ec-item"><span class="ec-label">Projects</span><span class="ec-val">'+f(jobsN)+'</span></div><div class="ec-item"><span class="ec-label">Crew</span><span class="ec-val">'+N+' techs</span></div>';
+  $('eqNote').textContent='Machine run time multiplied by all '+N+' workers on jobsite.';
+  let eqH='';MACH.forEach(m=>{const h=sqft/m.sqfthr,hr=h*2,yg=ySqft/m.sqfthr,yr=yg*2,lc=yg*avgHr*N;
+    eqH+='<tr><td>'+m.name+'</td><td class="mn">'+f(m.sqfthr)+'</td><td class="mn">'+f(h,2)+'</td><td class="mn">'+f(hr,2)+'</td><td class="mn">'+f(yg,2)+'</td><td class="mn">'+f(yr,2)+'</td><td class="mn" style="color:var(--y)">'+fm2(lc)+'</td></tr>';});
+  $('eqCB').innerHTML=eqH;
+
+  // -- TAB 5 TARGET AREAS --
+  const tLbl='Jobs for '+fm(tgp);document.querySelectorAll('.jth').forEach(el=>el.textContent=tLbl);
+  const pT=[6.50,8.00,9.60];let tRw='';TGT.forEach(t=>{tRw+='<tr><td>'+t.name+'</td><td class="mn">'+f(t.sqft)+'</td>';pT.forEach(p=>{const rev=t.sqft*p,mt=t.sqft*mat,lb=t.sqft*labPsf,op=rev*opPct,gp=rev-mt-lb-op;const j=gp>0?Math.ceil(tgp/gp):'\u2014';tRw+='<td class="mn">'+fm(rev)+'</td><td class="mn" style="color:var(--y)">'+j+'</td>';});tRw+='</tr>';});$('tCB').innerHTML=tRw;
+}
+renderCrew();calc();
+</script>
+</body>
+</html>
