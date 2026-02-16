@@ -80,7 +80,7 @@
 </style>
 </head>
 <body>
-<div class="hdr"><div class="hi"><div><h1>GETTING WHAT YOU WANT</h1><div class="sub">Business Growth Calculator &mdash; Rules &amp; Tools</div></div><div class="br"><strong>The Concrete Protector</strong> &middot; I-BOS System</div></div></div>
+<div class="hdr"><div class="hi"><div><h1>GETTING WHAT YOU WANT</h1><div class="sub">Business Growth Calculator &mdash; Rules &amp; Tools</div></div><div style="display:flex;align-items:center;gap:16px"><button onclick="generatePDF()" style="padding:8px 18px;background:rgba(245,197,24,.1);border:1.5px solid var(--y);border-radius:6px;color:var(--y);font-family:'Outfit',sans-serif;font-weight:600;font-size:.75rem;cursor:pointer;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;transition:.2s" onmouseover="this.style.background='rgba(245,197,24,.25)'" onmouseout="this.style.background='rgba(245,197,24,.1)'">&#x1F4C4; Download Report</button><div class="br"><strong>The Concrete Protector</strong> &middot; I-BOS System</div></div></div></div>
 
 <div class="nav"><div class="ni">
 <button class="nb ac" onclick="go('vis')"><span class="step">1</span>Vision &amp; Inputs</button>
@@ -218,7 +218,9 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script>
+let R={};
 const SYS={
   graniflex:{name:'Graniflex Floor System',lname:'G-301: Graniflex Flake: Perfect Poly 90: 1 Coat',mat:2.65,price:8.00,baseGrindRate:500,
     steps:[{desc:'Setup',hrs:0.5},{desc:'Grind / Blast',hrs:1.5,grind:true},{desc:'Repairs',hrs:0.5},{desc:'Prime with Permaflex',hrs:1},{desc:'Coat with Permaflex, Broadcast Media',hrs:1},{desc:'Clean and Seal with PP90 (1 and Done)',hrs:1.5}]},
@@ -382,8 +384,222 @@ function calc(){
   // -- TAB 5 TARGET AREAS --
   const tLbl='Jobs for '+fm(tgp);document.querySelectorAll('.jth').forEach(el=>el.textContent=tLbl);
   const pT=[6.50,8.00,9.60];let tRw='';TGT.forEach(t=>{tRw+='<tr><td>'+t.name+'</td><td class="mn">'+f(t.sqft)+'</td>';pT.forEach(p=>{const rev=t.sqft*p,mt=t.sqft*mat,lb=t.sqft*labPsf,op=rev*opPct,gp=rev-mt-lb-op;const j=gp>0?Math.ceil(tgp/gp):'\u2014';tRw+='<td class="mn">'+fm(rev)+'</td><td class="mn" style="color:var(--y)">'+j+'</td>';});tRw+='</tr>';});$('tCB').innerHTML=tRw;
+
+  R={sysName:sys.name,sqft,price,mat,N,eqName,tgp,wwy,jobsN,jpw,tGS,tCOG,tLab,tOp,aGP,gpPc,mC,bC,dC,sC,nP,nPc,pRule,totalLeads,quotes,contracts,leadsWk,quotesWk,leadsDay,cpl,cpq,cac,labPsf,avgHr,rates,gs,rep,cogT,labT,opT,gpT,gpM,opPct:opPct*100,mkp:mkp*100,bep:bep*100,scp:scp*100,ccr:ccr*100,lcr:lcr*100,owT,inBiz,onBiz,srcNames:['Inbound Calls','Website Forms','Mailers','Referrals','Repeat'],srcPcts,srcCounts,eqSqftHr,stepData,techProdHrs,prodTot,drvC,totLC,driveHrs,BASE_SQFT};
 }
 renderCrew();calc();
+
+function generatePDF(){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'pt',format:'letter'});
+  const W=612,H=792,mx=40,cw=W-mx*2;
+  let y=0,pg=1;
+
+  // Colors
+  const bg=[15,17,23],c1=[24,27,36],bd=[42,47,62],gold=[245,197,24],wh=[232,234,240],
+        dim=[139,146,165],dim2=[90,97,120],grn=[52,211,153],red=[248,113,113],
+        blu=[96,165,250],ora=[251,146,60];
+
+  function newPage(){doc.addPage();pg++;y=40;drawPageBg();}
+  function check(need){if(y+need>H-50)newPage();}
+  function drawPageBg(){doc.setFillColor(...bg);doc.rect(0,0,W,H,'F');}
+
+  function section(title){
+    check(50);
+    doc.setFillColor(...c1);doc.roundedRect(mx-4,y-2,cw+8,28,4,4,'F');
+    doc.setFontSize(13);doc.setTextColor(...gold);doc.text(title.toUpperCase(),mx+8,y+17);
+    doc.setDrawColor(...gold);doc.setLineWidth(1.5);doc.line(mx,y+30,mx+cw,y+30);
+    y+=40;
+  }
+
+  function row(label,value,opts={}){
+    check(20);
+    const lc=opts.labelColor||dim,vc=opts.valueColor||wh;
+    doc.setFontSize(9);doc.setTextColor(...lc);doc.text(label,mx+8,y+12);
+    doc.setFontSize(10);doc.setTextColor(...vc);doc.text(value,mx+cw-8,y+12,{align:'right'});
+    if(!opts.noline){doc.setDrawColor(...bd);doc.setLineWidth(0.5);doc.line(mx+4,y+18,mx+cw-4,y+18);}
+    y+=22;
+  }
+
+  function totRow(label,value,vc=gold){
+    check(28);
+    doc.setDrawColor(...gold);doc.setLineWidth(1);doc.line(mx+4,y,mx+cw-4,y);
+    doc.setFontSize(10);doc.setTextColor(...wh);doc.text(label,mx+8,y+16);
+    doc.setFontSize(12);doc.setTextColor(...vc);doc.text(value,mx+cw-8,y+16,{align:'right'});
+    doc.line(mx+4,y+22,mx+cw-4,y+22);
+    y+=30;
+  }
+
+  function tableHeader(cols,widths){
+    check(24);
+    doc.setFillColor(...c1);doc.rect(mx,y,cw,18,'F');
+    doc.setFontSize(7);doc.setTextColor(...dim2);
+    let cx=mx+6;
+    cols.forEach((c,i)=>{doc.text(c.toUpperCase(),cx,y+12);cx+=widths[i];});
+    y+=22;
+  }
+
+  function tableRow(cols,widths,opts={}){
+    check(18);
+    if(opts.bg){doc.setFillColor(...opts.bg);doc.rect(mx,y-2,cw,16,'F');}
+    let cx=mx+6;
+    cols.forEach((c,i)=>{
+      doc.setFontSize(8.5);
+      doc.setTextColor(...(i===0?(opts.bold?wh:dim):(opts.valueColor||wh)));
+      const align=i===0?'left':'right';
+      const tx=i===0?cx:cx+widths[i]-12;
+      doc.text(String(c),tx,y+10,{align});
+      cx+=widths[i];
+    });
+    if(!opts.noline){doc.setDrawColor(42,47,62);doc.setLineWidth(0.3);doc.line(mx+4,y+14,mx+cw-4,y+14);}
+    y+=18;
+  }
+
+  // ====== PAGE 1: TITLE + VISION + P&L ======
+  drawPageBg();
+  // Title bar
+  doc.setFillColor(...c1);doc.rect(0,0,W,80,'F');
+  doc.setDrawColor(...gold);doc.setLineWidth(2);doc.line(0,80,W,80);
+  doc.setFontSize(26);doc.setTextColor(...gold);doc.text('GETTING WHAT YOU WANT',mx,42);
+  doc.setFontSize(10);doc.setTextColor(...dim);doc.text('Business Growth Calculator \u2014 Full Report',mx,60);
+  doc.setFontSize(8);doc.setTextColor(...dim2);
+  const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  doc.text(today,W-mx,35,{align:'right'});
+  doc.text('The Concrete Protector \u00B7 I-BOS System',W-mx,50,{align:'right'});
+  y=100;
+
+  // Config summary box
+  doc.setFillColor(...c1);doc.roundedRect(mx,y,cw,60,6,6,'F');
+  doc.setDrawColor(...bd);doc.roundedRect(mx,y,cw,60,6,6,'S');
+  const cfgItems=[
+    ['PRODUCT',R.sysName],['SQ FT',f(R.sqft)],['CHARGE','$'+f(R.price,2)+'/ft'],
+    ['CREW',R.N+' techs'],['EQUIPMENT',R.eqName],['GP TARGET','$'+f(R.tgp)]
+  ];
+  let cx2=mx+14;const cy=y+18;
+  cfgItems.forEach(([l,v])=>{
+    doc.setFontSize(6);doc.setTextColor(...dim2);doc.text(l,cx2,cy);
+    doc.setFontSize(9);doc.setTextColor(...wh);doc.text(v,cx2,cy+14);
+    cx2+=cw/6-2;
+  });
+  y+=78;
+
+  // --- SHAREHOLDER'S VISION ---
+  section("Shareholder's Vision \u2014 ROI of Time, Talent & Treasure");
+  doc.setFillColor(24,27,36);doc.roundedRect(mx+cw/4,y-4,cw/2,36,6,6,'F');
+  doc.setDrawColor(...gold);doc.roundedRect(mx+cw/4,y-4,cw/2,36,6,6,'S');
+  doc.setFontSize(18);doc.setTextColor(...gold);doc.text(fm2(R.owT),W/2,y+16,{align:'center'});
+  doc.setFontSize(7);doc.setTextColor(...dim);doc.text(fm(R.owT/12)+' / month',W/2,y+28,{align:'center'});
+  y+=44;
+  row('Working In The Business (Labor + Commission)',fm2(R.inBiz),{valueColor:ora});
+  row('Working On The Business (Net Profit)',fm2(R.onBiz),{valueColor:grn});
+  totRow('Total Owner Compensation',fm2(R.owT));
+
+  // --- P&L SCORECARD ---
+  section('P&L Scorecard \u2014 Annual Projection');
+  row('Gross Sales ('+R.jobsN+' projects)',fm(R.tGS),{valueColor:grn});
+  row('Cost of Goods ('+fp(R.tGS>0?(R.tCOG/R.tGS)*100:0)+')','\u2212'+fm(R.tCOG),{valueColor:red});
+  row('Labor \u2014 '+R.N+' techs ('+fp(R.tGS>0?(R.tLab/R.tGS)*100:0)+')','\u2212'+fm(R.tLab),{valueColor:red});
+  row('Operations ('+fp(R.opPct)+')','\u2212'+fm(R.tOp),{valueColor:red});
+  totRow('Gross Profit ('+fp(R.gpPc)+')',fm(R.aGP));
+  row('Marketing ('+fp(R.mkp)+')','\u2212'+fm(R.mC),{valueColor:red});
+  row('Business Expense ('+fp(R.bep)+')','\u2212'+fm(R.bC),{valueColor:red});
+  row('Driving Labor ('+f(R.driveHrs,1)+' hrs/tech \u00D7 '+R.N+')','\u2212'+fm(R.dC),{valueColor:red});
+  row('Sales Commission ('+fp(R.scp)+')','\u2212'+fm(R.sC),{valueColor:red});
+  const npColor=R.nPc>=20?grn:R.nPc>=15?gold:R.nPc>=10?ora:red;
+  totRow('Net Profit ('+fp(R.nPc)+') \u2014 '+R.pRule,fm(R.nP),npColor);
+
+  // ====== PAGE 2: PROJECT MODEL + FUNNEL + TARGETS ======
+  newPage();
+
+  // --- PROJECT MODEL ---
+  section('Project Model \u2014 '+R.sysName+' \u2014 '+f(R.sqft)+' Sq Ft');
+  const pmW=[cw*0.50,cw*0.25,cw*0.25];
+  tableHeader(['Item','Per Sq Ft','Total'],pmW);
+  tableRow(['Gross Sales: Charge to Customer','$'+f(R.price,2),'$'+f(R.gs,2)],pmW,{valueColor:grn});
+  if(R.rep>0)tableRow(['Repair Charges','','$'+f(R.rep,2)],pmW,{valueColor:grn});
+  tableRow(['Cost of Goods','$'+f(R.mat,2),'$'+f(R.cogT,2)],pmW,{valueColor:red});
+  tableRow(['Labor ('+R.N+' techs)','$'+f(R.labPsf,2),'$'+f(R.labT,2)],pmW,{valueColor:ora});
+  tableRow(['Operating Cost @ '+fp(R.opPct),'$'+f(R.price*R.opPct/100,2),'$'+f(R.opT,2)],pmW,{valueColor:red});
+  y+=4;
+  tableRow(['GROSS PROFIT','$'+f(R.gpT/R.sqft,2),'$'+f(R.gpT,2)],pmW,{bold:true,valueColor:gold,bg:[30,34,46]});
+  tableRow(['Job Gross Margin','',fp(R.gpM,0)],pmW,{bold:true,valueColor:gold});
+  y+=10;
+
+  // --- SALES FUNNEL ---
+  section('Sales Funnel');
+  const funnelData=[
+    ['Gross Profit Target',fm(R.tgp),gold],
+    ['Projects Needed ('+f(R.jobsN)+'/yr)','@ $'+f(R.gpT,2)+'/job GP',grn],
+    ['Quotes Needed (\u00F7 '+fp(R.ccr)+'% close rate)',f(R.quotes),blu],
+    ['Leads Needed (\u00F7 '+fp(R.lcr)+'% conversion)',f(R.totalLeads),ora]
+  ];
+  funnelData.forEach(([label,value,color])=>{
+    check(24);
+    doc.setFillColor(color[0],color[1],color[2],0.1);
+    doc.setFontSize(9);doc.setTextColor(...dim);doc.text(label,mx+12,y+12);
+    doc.setFontSize(11);doc.setTextColor(...color);doc.text(value,mx+cw-12,y+12,{align:'right'});
+    y+=22;
+  });
+  y+=10;
+
+  // --- WEEKLY & DAILY TARGETS ---
+  section('Weekly & Daily Targets');
+  const tgtW=[cw*0.45,cw*0.25,cw*0.30];
+  tableHeader(['Metric','Per Week','Per Year'],tgtW);
+  tableRow(['Leads (Marketing)',f(R.leadsWk,1),f(R.totalLeads)],tgtW,{valueColor:ora});
+  tableRow(['Leads Per Day',f(R.leadsDay,1),'TRACK DAILY'],tgtW,{valueColor:ora,bold:true});
+  tableRow(['Quotes (Sales)',f(R.quotesWk,1),f(R.quotes)],tgtW,{valueColor:blu});
+  tableRow(['Contracts (Operations)',f(R.jpw,2),f(R.jobsN)],tgtW,{valueColor:gold});
+  y+=10;
+
+  // --- MARKETING METRICS ---
+  section('Marketing Metrics');
+  row('Marketing Budget ('+fp(R.mkp)+' of Gross)',fm2(R.mC),{valueColor:red});
+  row('Cost Per Lead',fm2(R.cpl),{valueColor:ora});
+  row('Cost Per Quote',fm2(R.cpq),{valueColor:ora});
+  totRow('Customer Acquisition Cost',fm2(R.cac),red);
+
+  // --- LEAD SOURCE MIX ---
+  check(120);
+  section('Lead Source Mix');
+  const lsW=[cw*0.35,cw*0.15,cw*0.25,cw*0.25];
+  tableHeader(['Source','%','Leads/Year','Leads/Week'],lsW);
+  R.srcNames.forEach((nm,i)=>{
+    const pct=R.srcPcts[i],ct=R.srcCounts[i],wk=R.wwy>0?ct/R.wwy:0;
+    tableRow([nm,f(pct)+'%',f(ct),f(wk,1)],lsW);
+  });
+  y+=10;
+
+  // --- LABOR SUMMARY ---
+  check(100);
+  section('Labor & Equipment Summary');
+  row('Crew Size',R.N+' techs',{valueColor:[45,212,191]});
+  row('Equipment',R.eqName+' ('+f(R.eqSqftHr)+' sqft/hr)',{valueColor:[45,212,191]});
+  row('Average Man Hour Rate',fm2(R.avgHr),{valueColor:gold});
+  row('Labor $/Sq Ft',fm2(R.labPsf),{valueColor:ora});
+  row('Production Hours (576 base)',f(R.prodTot,2)+' hrs',{valueColor:wh});
+  row('Driving Cost / Job',fm2(R.drvC),{valueColor:ora});
+  totRow('Total Labor + Drive (576 base)',fm2(R.totLC));
+
+  // Crew rates
+  check(30+R.N*18);
+  y+=6;
+  doc.setFontSize(8);doc.setTextColor(...dim2);doc.text('CREW PAY RATES',mx+8,y+10);y+=16;
+  R.rates.forEach((r,i)=>{
+    row('Tech '+(i+1),'$'+f(r,2)+'/hr',{valueColor:wh});
+  });
+
+  // Footer on each page
+  for(let p=1;p<=pg;p++){
+    doc.setPage(p);
+    doc.setFontSize(7);doc.setTextColor(...dim2);
+    doc.text('Getting What You Want \u2014 Business Calculator Report',mx,H-20);
+    doc.text('Page '+p+' of '+pg,W-mx,H-20,{align:'right'});
+    doc.text('Generated '+today+' \u2014 joequick.com',W/2,H-20,{align:'center'});
+  }
+
+  doc.save('GWYW-Business-Report-'+new Date().toISOString().slice(0,10)+'.pdf');
+}
 </script>
 </body>
 </html>
