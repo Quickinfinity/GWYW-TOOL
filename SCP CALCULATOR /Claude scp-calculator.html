@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Concrete Polishing Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#111113;--c1:#1a1b1f;--c2:#222328;--inp:#191a1e;
+  --bd:#2e3038;--bd2:#3d4050;
+  --o:#c9a84c;--od:#a8893d;--og:rgba(201,168,76,.15);
+  --g:#2ecc40;--r:#e74c3c;--y:#f0c040;--b:#60a5fa;--t:#2dd4bf;
+  --t1:#f0ece6;--t2:#a09888;--t3:#706860;--tl:#9ca3b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans Pro',sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;min-height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#0f0f11,#1a1a1e,#0f0f11);border-bottom:3px solid var(--o);padding:16px 32px;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hi{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.hdr h1{font-family:'Oswald',sans-serif;font-size:2rem;letter-spacing:3px;text-transform:uppercase;color:var(--o);line-height:1}
+.hdr .sub{font-size:.85rem;color:var(--t2);letter-spacing:1px;font-weight:300}
+.hdr-actions{display:flex;align-items:center;gap:8px}
+.hdr-btn{padding:8px 16px;background:var(--og);border:1.5px solid var(--o);border-radius:6px;color:var(--o);font-family:'Oswald',sans-serif;font-weight:500;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:.2s}
+.hdr-btn:hover{background:rgba(201,168,76,.3)}
+.hdr-btn.sec{background:rgba(255,255,255,.04);border-color:var(--bd2);color:var(--t2)}
+.hdr-btn.sec:hover{background:rgba(255,255,255,.08);color:var(--t1)}
+.hdr .br{text-align:right;font-size:.72rem;color:var(--t3)}.hdr .br strong{color:var(--t2)}
+
+/* NAV BAR */
+.nav{background:var(--c1);border-bottom:1px solid var(--bd);position:sticky;top:75px;z-index:99;overflow-x:auto}
+.ni{max-width:1400px;margin:0 auto;display:flex}
+.nb{font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:14px 22px;border:none;background:0 0;color:var(--t3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}
+.nb:hover{color:var(--t1);background:rgba(201,168,76,.04)}
+.nb.ac{color:var(--o);border-bottom-color:var(--o);background:rgba(201,168,76,.06)}
+.nb .step{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--bd);color:var(--t3);font-size:.65rem;font-weight:700;margin-right:8px}
+.nb.ac .step{background:var(--o);color:#fff}
+
+/* MAIN */
+.mc{max-width:1400px;margin:0 auto;padding:28px 24px 80px}
+.sec{display:none;animation:fi .3s ease}.sec.ac{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION HEADERS */
+.sh{margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.sh h2{font-family:'Oswald',sans-serif;font-size:1.6rem;letter-spacing:2px;margin-bottom:4px}
+.sh p{font-size:.9rem;color:var(--t2);max-width:700px}
+.sh .step-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--o);font-weight:600;margin-bottom:4px}
+
+/* CARDS */
+.cd{background:var(--c1);border:1px solid var(--bd);border-radius:10px;padding:22px;margin-bottom:18px}
+.ct{font-family:'Oswald',sans-serif;font-size:1.05rem;letter-spacing:1.5px;color:var(--o);margin-bottom:16px;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.ct .ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.io{background:rgba(201,168,76,.15);color:var(--o)}
+.ig{background:rgba(46,204,64,.15);color:var(--g)}
+.ib{background:rgba(96,165,250,.15);color:var(--b)}
+.ir{background:rgba(231,76,60,.15);color:var(--r)}
+.iy{background:rgba(240,192,64,.15);color:var(--y)}
+.it{background:rgba(45,212,191,.15);color:var(--t)}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media(max-width:900px){.g2,.g3,.g5{grid-template-columns:1fr}.cd [style*="grid-template-columns: 1fr 1fr 1fr 1fr"]{grid-template-columns:1fr 1fr !important}}
+@media(min-width:901px) and (max-width:1100px){.g3{grid-template-columns:1fr 1fr}.g5{grid-template-columns:repeat(3,1fr)}}
+
+/* INPUT GROUPS */
+.ig2{margin-bottom:14px}
+.ig2 label{display:block;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tl);margin-bottom:5px}
+.ig2 input,.ig2 select{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-family:'Source Sans Pro',sans-serif;font-size:1.1rem;font-weight:600;padding:10px 14px;transition:.2s}
+.ig2 input:focus,.ig2 select:focus{outline:none;border-color:var(--o);box-shadow:0 0 0 3px var(--og)}
+
+/* RESULT ROWS */
+.rr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(46,48,56,.5);font-size:.95rem}
+.rr:last-child{border-bottom:none}
+.rr .lb{color:var(--t2)}
+.rr .vl{font-family:'Oswald',sans-serif;font-weight:600;font-size:1rem}
+.rr.tot{border-top:2px solid var(--bd2);padding:14px 0;margin-top:4px}
+.rr.tot .lb{color:var(--t1);font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:.82rem}
+.rr.tot .vl{font-size:1.3rem}
+
+/* STAT CARDS */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.sx{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:18px;text-align:center}
+.sx.hl{border-color:var(--o);background:rgba(201,168,76,.06)}
+.sx .sl{font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.sx .sv{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:600}
+.sx.hl .sv{color:var(--o)}
+
+/* TABLE */
+.dt{width:100%;border-collapse:collapse;font-size:.9rem}
+.dt th{font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);padding:12px 14px;text-align:right;border-bottom:1px solid var(--bd);background:var(--c2)}
+.dt th:first-child{text-align:left;padding-left:20px}
+.dt td{padding:10px 14px;text-align:right;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.dt td:first-child{text-align:left;padding-left:20px}
+.dt tr:hover{background:rgba(201,168,76,.04)}
+.dt tr.disabled td{opacity:.3}
+.dt .item-name{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.88rem}
+
+/* TOGGLE */
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle .slider{position:absolute;inset:0;background:var(--bg);border:1px solid var(--bd2);border-radius:20px;cursor:pointer;transition:.25s}
+.toggle .slider::before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:var(--t3);border-radius:50%;transition:.25s}
+.toggle input:checked+.slider{background:var(--o);border-color:var(--o)}
+.toggle input:checked+.slider::before{transform:translateX(18px);background:#fff}
+
+/* TABLE INPUTS */
+.tbl-input{width:80px;background:var(--inp);border:1px solid var(--bd);border-radius:5px;padding:6px 10px;font-size:.85rem;color:var(--t1);text-align:right;font-family:'Source Sans Pro',sans-serif}
+.tbl-input:focus{outline:none;border-color:var(--o)}
+.tbl-input.narrow{width:60px}
+
+/* CAT ROWS */
+.cat-row td{font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 14px 6px 20px !important;border-bottom:none !important}
+.cat-row:hover{background:transparent !important}
+
+/* ORDER TABLE */
+.order-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.order-table th{font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);padding:12px 14px;text-align:center;border-bottom:1px solid var(--bd);background:var(--c2)}
+.order-table th:first-child{text-align:left;padding-left:20px}
+.order-table td{padding:8px 14px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04);font-weight:600;font-size:.95rem}
+.order-table td:first-child{text-align:left;padding-left:20px;font-weight:500;font-size:.85rem}
+.order-table tr.disabled td{opacity:.25}
+
+/* OTHER TABLE */
+.other-table{width:100%;border-collapse:collapse}
+.other-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+.other-table .tbl-input{width:100%}.other-table .tbl-input.desc{text-align:left;width:100%}
+
+/* LABOR */
+.labor-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.labor-col{padding:20px 24px}
+.labor-col+.labor-col{border-left:1px solid var(--bd)}
+.labor-col h4{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:14px}
+
+/* NOTE */
+.note{font-size:.82rem;color:var(--t3);padding:14px 0;line-height:1.6;font-style:italic}
+
+/* HIDDEN */
+.hidden{display:none}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:var(--c1);border:1px solid var(--bd);border-radius:12px;padding:28px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal h3{font-family:'Oswald',sans-serif;font-size:1.2rem;letter-spacing:2px;text-transform:uppercase;color:var(--o);margin-bottom:18px}
+.modal-field{margin-bottom:14px}
+.modal-field label{display:block;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--t2);margin-bottom:6px}
+.modal-field input{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;padding:10px 14px;font-family:'Source Sans Pro',sans-serif;font-size:1rem;color:var(--t1)}
+.modal-field input:focus{outline:none;border-color:var(--o)}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+.saved-projects{max-height:200px;overflow-y:auto;margin-bottom:14px}
+.saved-project-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--bd);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:.2s}
+.saved-project-item:hover{background:rgba(201,168,76,.06);border-color:var(--o)}
+.saved-project-item .sp-name{font-weight:600;font-size:.95rem}
+.saved-project-item .sp-meta{font-size:.75rem;color:var(--t3)}
+.saved-project-item .sp-delete{color:var(--r);background:none;border:none;cursor:pointer;font-size:16px;padding:4px 8px;border-radius:4px}
+.saved-project-item .sp-delete:hover{background:rgba(231,76,60,.15)}
+
+/* TOOL SYSTEM SELECTOR */
+.ts-sel{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.ts-btn{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:1px;padding:10px 18px;border:1.5px solid var(--bd2);border-radius:8px;background:var(--c2);color:var(--t3);cursor:pointer;transition:.2s;text-transform:uppercase}
+.ts-btn:hover{border-color:var(--o);color:var(--t1);background:rgba(201,168,76,.06)}
+.ts-btn.ac{border-color:var(--o);background:var(--og);color:var(--o);box-shadow:0 0 12px rgba(201,168,76,.15)}
+
+/* JOINT FILL */
+.jf-result{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:600;color:var(--o);text-align:center;padding:14px 0}
+.jf-sub{font-size:.85rem;color:var(--t2);text-align:center;font-family:'Source Sans Pro',sans-serif;font-weight:400}
+
+/* PRINT */
+@media print{
+  .hdr,.nav{position:relative}
+  .hdr-actions,.modal-overlay{display:none !important}
+  body{background:#fff;color:#111}
+  .cd,.sx{background:#fff;border-color:#ddd;color:#111}
+  .dt th,.order-table th{background:#f5f5f5;color:#333}
+  .dt td,.order-table td{color:#111}
+}
+@media(max-width:700px){
+  .hdr h1{font-size:1.5rem}
+  .hdr{padding:14px 16px}
+  .nav{top:66px}
+  .mc{padding:18px 12px 60px}
+  .labor-grid{grid-template-columns:1fr}
+  .labor-col+.labor-col{border-left:none;border-top:1px solid var(--bd)}
+  .hi{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr"><div class="hi">
+  <div style="display:flex;align-items:center;gap:16px">
+    <img src="https://scientificpolishing.com/wp-content/uploads/2018/07/SCP_Seal_FullColor_USE.png" alt="SCP Logo" style="width:56px;height:56px;border-radius:50%;border:2px solid var(--o);flex-shrink:0">
+    <div>
+      <h1>SCIENTIFIC CONCRETE POLISHING</h1>
+      <div class="sub">Material &amp; Cost Calculator &mdash; <em>No Gimmicks. Just Science.</em></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <div class="hdr-actions">
+      <button class="hdr-btn" onclick="generatePDF()">Export PDF</button>
+      <button class="hdr-btn sec" onclick="openSaveModal()">Save</button>
+      <button class="hdr-btn sec" onclick="openLoadModal()">Load</button>
+    </div>
+    <div class="br"><strong>The Concrete Protector</strong><br>A Division of Incredible Products, LLC</div>
+  </div>
+</div></div>
+
+<!-- NAV -->
+<div class="nav"><div class="ni">
+  <button class="nb ac" onclick="go('setup')"><span class="step">1</span>Project Setup</button>
+  <button class="nb" onclick="go('chem')"><span class="step">2</span>Chemicals</button>
+  <button class="nb" onclick="go('tools')"><span class="step">3</span>Tools &amp; Abrasives</button>
+  <button class="nb" onclick="go('order')"><span class="step">4</span>Order Quantities</button>
+  <button class="nb" onclick="go('labor')"><span class="step">5</span>Project Estimate</button>
+</div></div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="saveModal" onclick="if(event.target===this)this.classList.remove('active')">
+  <div class="modal">
+    <h3>Save Project</h3>
+    <div class="modal-field"><label>Project Name</label><input type="text" id="saveProjectName" placeholder="e.g. TCP Training - 20k sqft"></div>
+    <div class="modal-field"><label>Customer / Notes (optional)</label><input type="text" id="saveProjectNotes" placeholder="e.g. Lima, OH warehouse"></div>
+    <div class="modal-actions">
+      <button class="hdr-btn" onclick="saveProject()">Save to Browser</button>
+      <button class="hdr-btn sec" onclick="exportProjectFile()">Download .json</button>
+      <button class="hdr-btn sec" onclick="closeSaveModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="loadModal" onclick="if(event.target===this)this.classList.remove('active')">
+  <div class="modal">
+    <h3>Load Project</h3>
+    <div class="saved-projects" id="savedProjectsList"></div>
+    <div class="modal-field"><label>Or load from file</label><input type="file" id="loadFileInput" accept=".json" style="font-size:.85rem" onchange="importProjectFile(this)"></div>
+    <div class="modal-actions"><button class="hdr-btn sec" onclick="closeLoadModal()">Cancel</button></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="mc">
+
+<!-- ======================== TAB 1: PROJECT SETUP ======================== -->
+<div class="sec ac" id="s-setup">
+<div class="sh"><div class="step-label">Step 1 &mdash; Configure</div><h2>Project Setup</h2><p>Define the job scope, crew, and equipment. Everything flows from here.</p></div>
+
+<div class="g2">
+  <div class="cd">
+    <div class="ct"><span class="ic io">&#x2699;</span> Project Inputs</div>
+    <div class="ig2"><label>Square Feet</label><input type="number" id="sqft" value="20000" min="0" step="100" oninput="recalc()"></div>
+    <div class="ig2"><label>Charge Per Sq Ft ($)</label><input type="number" id="chargePerSqft" value="2.50" min="0" step="0.01" oninput="recalc()"></div>
+  </div>
+  <div class="cd" style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+    <div style="font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px">Project Bid</div>
+    <div style="font-family:'Oswald',sans-serif;font-size:2.8rem;font-weight:700;color:var(--o)" id="projectBid">$50,000.00</div>
+    <div style="font-size:.82rem;color:var(--t2);margin-top:6px"><span id="bidSqft">20,000</span> sq ft &times; $<span id="bidRate">2.50</span> / sq ft</div>
+  </div>
+</div>
+
+<div class="g2">
+  <div class="cd">
+    <div class="ct"><span class="ic iy">&#x26A1;</span> Crew <span id="crewCount" style="color:var(--t);margin-left:auto;font-size:.75rem"></span></div>
+    <div id="crewInputs"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button onclick="addTech()" style="flex:1;max-width:180px;padding:8px;background:rgba(46,204,64,.15);border:1px solid var(--g);border-radius:6px;color:var(--g);font-family:'Oswald',sans-serif;font-weight:600;font-size:.75rem;cursor:pointer;letter-spacing:.5px">+ ADD TECH</button>
+      <button onclick="removeTech()" id="rmBtn" style="flex:1;max-width:180px;padding:8px;background:rgba(231,76,60,.1);border:1px solid var(--r);border-radius:6px;color:var(--r);font-family:'Oswald',sans-serif;font-weight:600;font-size:.75rem;cursor:pointer;letter-spacing:.5px">&minus; REMOVE</button>
+    </div>
+  </div>
+  <div class="cd">
+    <div class="ct"><span class="ic ib">&#x2699;</span> Machine &amp; Equipment</div>
+    <div class="ig2"><label>Machine Type</label></div>
+    <div class="ts-sel" id="machBtns" style="margin-bottom:14px"></div>
+    <div class="g3">
+      <div class="ig2"><label># of Machines</label><input type="number" id="machQty" value="1" min="1" max="10" step="1" oninput="setMachineQty(this.value)"></div>
+      <div class="ig2"><label>Hours / Day</label><input type="number" id="hrsPerDay" value="8" min="1" max="24" step="0.5" oninput="setHoursPerDay(this.value)"></div>
+      <div class="ig2"><label>Utilization %</label><input type="number" id="machUtil" value="80" min="10" max="100" step="5" oninput="setMachineUtil(this.value)"></div>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--c2);border-radius:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:.82rem;color:var(--t3)">Setup</span>
+        <span style="font-family:'Oswald',sans-serif;font-size:.95rem;color:var(--o)" id="machSummary">1&times; WE-2795 Leonidas</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:.78rem;color:var(--t3)">Recommended Crew</span>
+        <span style="font-family:'Oswald',sans-serif;font-size:.85rem;color:var(--b)" id="recCrewDisplay">3 men</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sg" style="grid-template-columns:repeat(4,1fr)">
+  <div class="sx hl"><div class="sl">Material Cost</div><div class="sv" id="orderTotal">&mdash;</div></div>
+  <div class="sx"><div class="sl">Man-Hours</div><div class="sv" style="color:var(--b)" id="statManHours">&mdash;</div></div>
+  <div class="sx"><div class="sl">Est. Job Days</div><div class="sv" style="color:var(--b)" id="statJobDays">&mdash;</div></div>
+  <div class="sx"><div class="sl">Net Profit</div><div class="sv" style="color:var(--g)" id="statNetProfit">&mdash;</div></div>
+</div>
+</div>
+
+<!-- ======================== TAB 2: CHEMICALS ======================== -->
+<div class="sec" id="s-chem">
+<div class="sh"><div class="step-label">Step 2 &mdash; Chemicals</div><h2>Chemicals &amp; Liquids</h2><p>Toggle items on/off. Adjust add-on quantities and unit costs as needed.</p></div>
+
+<div class="cd">
+  <div class="ct" style="justify-content:space-between;width:100%"><div style="display:flex;align-items:center;gap:8px"><span class="ic io">&#x1F9EA;</span> Chemical Products</div><div style="display:flex;gap:8px"><button class="hdr-btn" style="font-size:.65rem;padding:5px 12px" onclick="toggleAllChems(true)">All ON</button><button class="hdr-btn sec" style="font-size:.65rem;padding:5px 12px" onclick="toggleAllChems(false)">All OFF</button></div></div>
+  <div style="overflow-x:auto">
+    <table class="dt">
+      <thead><tr>
+        <th style="text-align:left">Item</th>
+        <th>Coverage</th>
+        <th>Qty Needed</th>
+        <th>Add On</th>
+        <th>Unit Cost</th>
+        <th>Material Cost</th>
+        <th>$/SqFt</th>
+      </tr></thead>
+      <tbody id="chemTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="cd">
+  <div class="ct"><span class="ic it">&#x1F4D0;</span> Linear Joint Fill Calculator</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px">
+    <div class="ig2"><label>Linear Feet of Joints</label><input type="number" id="jfLength" value="0" min="0" step="1" oninput="calcJointFill()"></div>
+    <div class="ig2"><label>Joint Width (inches)</label><input type="number" id="jfWidth" value="0.25" min="0" step="0.0625" oninput="calcJointFill()"></div>
+    <div class="ig2"><label>Joint Depth (inches)</label><input type="number" id="jfDepth" value="0.5" min="0" step="0.0625" oninput="calcJointFill()"></div>
+    <div class="ig2"><label>Waste / Extra %</label><input type="number" id="jfWaste" value="10" min="0" step="1" oninput="calcJointFill()"></div>
+  </div>
+  <div id="jfResults">
+    <div class="jf-result" id="jfGallons">0.00 gallons</div>
+    <div class="jf-sub" id="jfDetails">0.00 quarts &middot; 0 cu in &middot; 0.000 cu ft</div>
+    <div class="jf-sub" id="jfWithWaste" style="margin-top:6px;color:var(--o);font-weight:600">+ 10% waste = 0.00 gallons to order</div>
+  </div>
+</div>
+</div>
+
+<!-- ======================== TAB 3: TOOLS ======================== -->
+<div class="sec" id="s-tools">
+<div class="sh"><div class="step-label">Step 3 &mdash; Tooling</div><h2>Tools &amp; Abrasives</h2><p>Select the tool grits for your polishing process. Add custom items below.</p></div>
+
+<div class="cd">
+  <div class="ct"><span class="ic iy">&#x1F527;</span> Tool Selection</div>
+  <div style="overflow-x:auto">
+    <table class="dt">
+      <thead><tr>
+        <th style="text-align:left">Item</th>
+        <th>Coverage</th>
+        <th>Qty Needed</th>
+        <th>Add On</th>
+        <th>Unit Cost</th>
+        <th>Material Cost</th>
+        <th>$/SqFt</th>
+      </tr></thead>
+      <tbody id="toolsTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="cd">
+  <div class="ct"><span class="ic ib">&#x2795;</span> Other Items</div>
+  <table class="other-table"><tbody id="otherTable"></tbody></table>
+</div>
+</div>
+
+<!-- ======================== TAB 4: ORDER QUANTITIES ======================== -->
+<div class="sec" id="s-order">
+<div class="sh"><div class="step-label">Step 4 &mdash; Ordering</div><h2>Quantity to Order by Tool System</h2><p>Select your tool system below. Order quantities rounded up by tool system ceiling.</p></div>
+
+<div class="cd">
+  <div class="ct" style="justify-content:space-between;width:100%">
+    <div style="display:flex;align-items:center;gap:8px"><span class="ic it">&#x1F4E6;</span> Order Quantities</div>
+    <select id="toolSysSelect" onchange="selectSystem(parseInt(this.value))" style="background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--o);font-family:'Oswald',sans-serif;font-size:.9rem;font-weight:600;padding:8px 16px;cursor:pointer;letter-spacing:1px">
+      <option value="9">9 Tool System</option>
+      <option value="12">12 Tool System</option>
+      <option value="16">16 Tool System</option>
+      <option value="18">18 Tool System</option>
+      <option value="24">24 Tool System</option>
+      <option value="30">30 Tool System</option>
+    </select>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="order-table">
+      <thead><tr>
+        <th style="text-align:left">Item</th>
+        <th>Qty Needed</th>
+        <th style="color:var(--o)">Order Qty</th>
+      </tr></thead>
+      <tbody id="orderTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="cd">
+  <div class="ct"><span class="ic it">&#x1F4D0;</span> Joint Fill &mdash; Order Summary</div>
+  <div class="sg">
+    <div class="sx"><div class="sl">Linear Feet</div><div class="sv" id="jfOrderFeet">&mdash;</div></div>
+    <div class="sx"><div class="sl">Fill Needed</div><div class="sv" id="jfOrderBase">&mdash;</div></div>
+    <div class="sx"><div class="sl">Waste %</div><div class="sv" id="jfOrderWaste">&mdash;</div></div>
+    <div class="sx hl"><div class="sl">Total to Order</div><div class="sv" id="jfOrderTotal">&mdash;</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ======================== TAB 5: PROJECT ESTIMATE ======================== -->
+<div class="sec" id="s-labor">
+<div class="sh"><div class="step-label">Step 5 &mdash; Project Estimate</div><h2>Profit &amp; Loss Statement</h2><p>Full project estimate based on your selected machine, crew, and materials.</p></div>
+
+<div class="sg">
+  <div class="sx hl"><div class="sl">Revenue</div><div class="sv" id="pl_statRevenue">&mdash;</div></div>
+  <div class="sx"><div class="sl">Total COGS</div><div class="sv" style="color:var(--r)" id="pl_statCogs">&mdash;</div></div>
+  <div class="sx"><div class="sl">Labor Cost</div><div class="sv" style="color:var(--r)" id="pl_statLabor">&mdash;</div></div>
+  <div class="sx"><div class="sl">Net Profit</div><div class="sv" style="color:var(--g)" id="pl_statNet">&mdash;</div></div>
+  <div class="sx"><div class="sl">Net Margin</div><div class="sv" style="color:var(--g)" id="pl_statMargin">&mdash;</div></div>
+</div>
+
+<div class="cd">
+  <div class="ct"><span class="ic ig">&#x1F4B0;</span> Project Estimate &mdash; <span id="pl_machTitle" style="color:var(--b)">WE-2795 Leonidas</span></div>
+
+  <!-- Revenue -->
+  <div class="rr" style="border-bottom:2px solid var(--bd2)"><span class="lb" style="color:var(--t1);font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:.82rem">Revenue (Project Bid)</span><span class="vl" style="color:var(--o);font-size:1.3rem" id="pl_revenue">&mdash;</span></div>
+
+  <!-- COGS -->
+  <div style="padding:10px 0 4px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3)">Cost of Goods Sold</div>
+  <div class="rr"><span class="lb">&emsp;<span style="color:var(--g)">&#x25CF;</span> Chemical Materials</span><span class="vl" style="color:var(--r)" id="pl_chemCost">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;<span style="color:var(--o)">&#x25CF;</span> Tool &amp; Abrasive Materials</span><span class="vl" style="color:var(--r)" id="pl_toolCost">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;<span style="color:var(--t3)">&#x25CF;</span> Other Items</span><span class="vl" style="color:var(--r)" id="pl_otherCost">&mdash;</span></div>
+  <div class="rr tot"><span class="lb">Total COGS</span><span class="vl" style="color:var(--r)" id="pl_totalCogs">&mdash;</span></div>
+
+  <!-- Gross Profit -->
+  <div class="rr" style="border-bottom:2px solid var(--bd2);padding:14px 0"><span class="lb" style="color:var(--t1);font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:.82rem">Gross Profit on Materials</span><span class="vl" style="font-size:1.3rem"><span id="pl_grossProfit" style="color:var(--g)">&mdash;</span> <span style="font-size:.85rem;color:var(--t2)" id="pl_grossMargin"></span></span></div>
+
+  <!-- Machine Runtime -->
+  <div style="padding:10px 0 4px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3)">Machine Runtime</div>
+  <div class="rr"><span class="lb">&emsp;Machine</span><span class="vl" id="pl_machInfo">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Total Machine Hours (all tool steps)</span><span class="vl" id="pl_totalMachHours">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Runtime per Machine (<span id="pl_machQty">1</span> machine)</span><span class="vl" id="pl_runtimePerMach">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Machine Utilization</span><span class="vl" id="pl_utilPct">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Productive Hours / Day</span><span class="vl" id="pl_prodHrsDay">&mdash;</span></div>
+  <div class="rr" style="border-bottom:2px solid var(--bd2)"><span class="lb" style="font-weight:600;color:var(--t1)">&emsp;Est. Calendar Days</span><span class="vl" style="color:var(--b);font-size:1.1rem" id="pl_calDays">&mdash;</span></div>
+
+  <!-- Labor -->
+  <div style="padding:10px 0 4px;font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3)">Labor Expenses</div>
+  <div class="rr"><span class="lb">&emsp;Recommended Crew (<span id="pl_machQty2">1</span> machine)</span><span class="vl" style="color:var(--b)" id="pl_recCrew">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Actual Crew</span><span class="vl" id="pl_crewRate">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Calendar Hours on Site</span><span class="vl" id="pl_calHours">&mdash;</span></div>
+  <div class="rr"><span class="lb">&emsp;Man-Hours (<span id="pl_crewCount">3</span> techs &times; calendar hrs)</span><span class="vl" style="color:var(--b)" id="pl_manHours">&mdash;</span></div>
+  <div class="rr tot"><span class="lb">Total Labor Cost</span><span class="vl" style="color:var(--r)" id="pl_laborCost">&mdash;</span></div>
+
+  <!-- Net Profit -->
+  <div class="rr" style="border-top:3px solid var(--g);padding:16px 0;margin-top:6px"><span class="lb" style="color:var(--t1);font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:.9rem">Net Profit</span><span class="vl" style="color:var(--g);font-size:1.5rem" id="pl_netProfit">&mdash;</span></div>
+  <div class="rr"><span class="lb">Net Margin</span><span class="vl" style="color:var(--g)" id="pl_netMargin">&mdash;</span></div>
+  <div class="rr"><span class="lb">Profit / Sq Ft</span><span class="vl" style="color:var(--g)" id="pl_profitSqft">&mdash;</span></div>
+  <div class="rr"><span class="lb">Est. Job Duration</span><span class="vl" id="pl_jobDays">&mdash;</span></div>
+</div>
+</div>
+
+</div><!-- /mc -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ─── DATA MODEL ───
+const chemicals = [
+  { id:'cutter',    name:'SCP CUTTER (15 gal conc)',    coverage:"400'-600'/gal",   divisor:6000,  unitCost:727.95, alwaysOn:true,  ceilBase:1, color:'green', cat:'SCP CUTTER' },
+  { id:'cutter3',   name:'SCP CUTTER (3 gal conc)',     coverage:"400'-600'/gal",   divisor:1200,  unitCost:152.48, alwaysOn:false, ceilBase:1, color:'green' },
+  { id:'hardener',  name:'SCP HARDENER (5 gal)',        coverage:"400'-600'/gal",   divisor:2000,  unitCost:135.19, alwaysOn:true,  ceilBase:1, color:'yellow', cat:'SCP HARDENER' },
+  { id:'hardener1', name:'SCP HARDENER (1 gal)',        coverage:"400'-600'/gal",   divisor:400,   unitCost:30.78,  alwaysOn:false, ceilBase:1, color:'yellow' },
+  { id:'sealer',    name:'SCP SEALER (10 gal conc)',    coverage:"1600'-1800'/gal", divisor:18000, unitCost:855.68, alwaysOn:true,  ceilBase:1, color:'red', cat:'SCP SEALER' },
+  { id:'sealer2',   name:'SCP SEALER (2 gal conc)',     coverage:"1600'-1800'/gal", divisor:3600,  unitCost:183.14, alwaysOn:false, ceilBase:1, color:'red' },
+  { id:'hydro',     name:'SCP HYDRO POLISH (5 gal)',    coverage:"700'-900'/gal",   divisor:3500,  unitCost:133.22, alwaysOn:false, ceilBase:1, color:'blue', cat:'SCP HYDRO POLISH' },
+  { id:'hydro1',    name:'SCP HYDRO POLISH (1 gal)',    coverage:"700'-900'/gal",   divisor:700,   unitCost:26.64,  alwaysOn:false, ceilBase:1, color:'blue' },
+  { id:'slurry',    name:'SCP SLURRY GEL (50# bag)',    coverage:"~10,000'",        divisor:10000, unitCost:205.56, alwaysOn:false, ceilBase:1, cat:'SPECIALTY' },
+  { id:'fortifier', name:'SCP FORTIFIER (16 gal conc)', coverage:'128:1 conc',      divisor:20000, unitCost:4.99,   alwaysOn:false, ceilBase:1 },
+];
+
+const tools = [
+  { id:'o16',    name:"16# SCP ORANGE LOGO'S",     coverage:"15k'-30k'", divisor:1667,   unitCost:69.00,  color:'orange', cat:'ORANGE TOOLS' },
+  { id:'o30',    name:"30# SCP ORANGE LOGO'S",     coverage:"15k'-30k'", divisor:1667,   unitCost:77.43,  color:'orange' },
+  { id:'o60',    name:"60# SCP ORANGE LOGO'S",     coverage:"15k'-30k'", divisor:1667,   unitCost:77.43,  color:'orange' },
+  { id:'osm50',  name:'SEMI-METAL 50# ORANGE',     coverage:"5k'-7k'",   divisor:555.55, unitCost:18.99,  color:'orange' },
+  { id:'gsm100', name:'SEMI-METAL 100# GREEN',     coverage:"5k'-7k'",   divisor:555.55, unitCost:18.99,  color:'green', cat:'GREEN TOOLS' },
+  { id:'gsm200', name:'SEMI-METAL 200# GREEN',     coverage:"5k'-7k'",   divisor:555.55, unitCost:18.99,  color:'green' },
+  { id:'g120',   name:"120# SCP GREEN LOGO'S",     coverage:"15k'-30k'", divisor:1667,   unitCost:67.00,  color:'green' },
+  { id:'g299',   name:"299# SCP GREEN LOGO'S",     coverage:"15k'-30k'", divisor:1667,   unitCost:77.43,  color:'green' },
+  { id:'g399',   name:"399# SCP GREEN LOGO'S",     coverage:"15k'-30k'", divisor:1667,   unitCost:67.00,  color:'green' },
+  { id:'ysm400', name:'SEMI-METAL 400# YELLOW',    coverage:"4k'-7k'",   divisor:500,    unitCost:21.39,  color:'yellow', cat:'YELLOW TOOLS' },
+  { id:'r800',   name:'800# TRANSFORMERS RED',     coverage:"5k'-7k'",   divisor:555,    unitCost:21.36,  color:'red', cat:'RED TOOLS' },
+  { id:'burnish',name:'POLY BURNISH PAD 27" 1500#',coverage:"~20k'",     divisor:20000,  unitCost:83.83,  color:'orange', cat:'FINISHING' },
+];
+
+const laborDivisors = {
+  o16:[600,3000], o30:[600,3000], o60:[600,3000], osm50:[600,3000],
+  gsm100:[600,3600], gsm200:[600,3600], g120:[600,3600], g299:[600,3600], g399:[600,3600],
+  ysm400:[900,6000],
+  r800:[900,19700],
+};
+
+const toolSystems = [9, 12, 16, 18, 24, 30];
+let selectedSystem = 9;
+let selectedMachine = 'we'; // 'we' or 'pt'
+let machineQty = 1;
+let machineUtil = 80; // % of workday machine is running
+let hoursPerDay = 8; // work hours per day
+let crew = [30, 25, 18];
+let currentTab = 'setup';
+
+// ─── STATE ───
+const state = {
+  toggles: {},
+  addOns: {},
+  unitCosts: {},
+  otherItems: Array(5).fill(null).map(()=>({desc:'', qty:0, unitCost:0})),
+};
+
+[...chemicals, ...tools].forEach(item => {
+  state.toggles[item.id] = tools.includes(item) ? true : (item.alwaysOn || false);
+  state.addOns[item.id] = 0;
+  state.unitCosts[item.id] = item.unitCost;
+});
+
+// ─── CREW ───
+function renderCrew() {
+  let h = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px">';
+  crew.forEach((r, i) => {
+    h += '<div class="ig2" style="margin:0"><label style="font-size:.65rem">Tech ' + (i+1) + ' $/hr</label><input type="number" id="cr' + i + '" value="' + r + '" class="ed" style="width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-family:\'Source Sans Pro\',sans-serif;font-size:1.1rem;font-weight:600;padding:10px 14px" oninput="crewChange(' + i + ',this.value)"></div>';
+  });
+  h += '</div>';
+  document.getElementById('crewInputs').innerHTML = h;
+  document.getElementById('crewCount').textContent = crew.length + ' techs';
+  document.getElementById('rmBtn').style.display = crew.length > 1 ? '' : 'none';
+}
+function addTech() { crew.push(15); renderCrew(); recalc(); }
+function removeTech() { if (crew.length > 1) { crew.pop(); renderCrew(); recalc(); } }
+function crewChange(i, v) { crew[i] = parseFloat(v) || 0; recalc(); }
+
+// ─── MACHINE SELECTION ───
+const machineNames = { we:'WE-2795 Leonidas', pt:"8' Power Trowel" };
+function renderMachineBtns() {
+  document.getElementById('machBtns').innerHTML =
+    `<button class="ts-btn${selectedMachine==='we'?' ac':''}" onclick="selectMachine('we')">WE-2795 Leonidas</button>` +
+    `<button class="ts-btn${selectedMachine==='pt'?' ac':''}" onclick="selectMachine('pt')">8' Power Trowel</button>`;
+  document.getElementById('machSummary').innerHTML = machineQty + '&times; ' + machineNames[selectedMachine];
+}
+function selectMachine(type) { selectedMachine = type; renderMachineBtns(); recalc(); }
+function setMachineQty(val) { machineQty = Math.max(1, parseInt(val) || 1); renderMachineBtns(); recalc(); }
+function setMachineUtil(val) { machineUtil = Math.max(10, Math.min(100, parseInt(val) || 80)); recalc(); }
+function setHoursPerDay(val) { hoursPerDay = Math.max(1, Math.min(24, parseFloat(val) || 8)); recalc(); }
+
+// ─── TOOL SYSTEM SELECTOR ───
+function renderToolSystemBtns() {
+  const sel = document.getElementById('toolSysSelect');
+  if (sel) sel.value = selectedSystem;
+}
+function selectSystem(sys) {
+  selectedSystem = sys;
+  renderToolSystemBtns();
+  recalc();
+}
+
+// ─── NAV ───
+function go(id) {
+  currentTab = id;
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('ac'));
+  document.getElementById('s-' + id).classList.add('ac');
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('ac'));
+  document.querySelectorAll('.nb').forEach((b, i) => {
+    const tabs = ['setup','chem','tools','order','labor'];
+    if (tabs[i] === id) b.classList.add('ac');
+  });
+  recalc();
+}
+
+// ─── RENDERING ───
+function buildChemTable() {
+  const tbody = document.getElementById('chemTable');
+  tbody.innerHTML = '';
+  const chemColorMap = {green:'var(--g)', yellow:'var(--y)', red:'var(--r)', blue:'var(--b)'};
+  let lastCat = '';
+  chemicals.forEach(item => {
+    if (item.cat && item.cat !== lastCat) {
+      lastCat = item.cat;
+      const catRow = document.createElement('tr');
+      catRow.className = 'cat-row';
+      catRow.innerHTML = `<td colspan="7" style="color:${chemColorMap[item.color]||'var(--t3)'}">${item.cat}</td>`;
+      tbody.appendChild(catRow);
+    }
+    const row = document.createElement('tr');
+    row.id = 'row_' + item.id;
+    const isAlways = item.alwaysOn;
+    const dotColor = item.color ? chemColorMap[item.color] : 'var(--t3)';
+    row.innerHTML = `
+      <td><div class="item-name">
+        ${isAlways ? '<span style="width:40px;text-align:center;color:var(--o);font-size:.75rem;font-weight:700">ON</span>' :
+          `<label class="toggle"><input type="checkbox" ${state.toggles[item.id]?'checked':''} onchange="toggleItem('${item.id}',this.checked)"><span class="slider"></span></label>`}
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor};flex-shrink:0"></span>
+        <span>${item.name}</span>
+      </div></td>
+      <td style="font-size:.78rem;color:var(--t3)">${item.coverage}</td>
+      <td id="qty_${item.id}">&mdash;</td>
+      <td><input class="tbl-input narrow" type="number" value="${state.addOns[item.id]}" min="0" step="1" onchange="setAddOn('${item.id}',this.value)"></td>
+      <td><input class="tbl-input" type="number" value="${state.unitCosts[item.id]}" min="0" step="0.01" onchange="setUnitCost('${item.id}',this.value)"></td>
+      <td id="cost_${item.id}">&mdash;</td>
+      <td id="ppsf_${item.id}">&mdash;</td>`;
+    tbody.appendChild(row);
+  });
+}
+
+function buildToolsTable() {
+  const tbody = document.getElementById('toolsTable');
+  tbody.innerHTML = '';
+  let lastCat = '';
+  tools.forEach(item => {
+    if (item.cat && item.cat !== lastCat) {
+      lastCat = item.cat;
+      const catRow = document.createElement('tr');
+      catRow.className = 'cat-row';
+      const colorMap = {orange:'var(--o)', green:'var(--g)', yellow:'var(--y)', red:'var(--r)'};
+      catRow.innerHTML = `<td colspan="7" style="color:${colorMap[item.color]}">${item.cat}</td>`;
+      tbody.appendChild(catRow);
+    }
+    const row = document.createElement('tr');
+    row.id = 'row_' + item.id;
+    row.innerHTML = `
+      <td><div class="item-name">
+        <label class="toggle"><input type="checkbox" ${state.toggles[item.id]?'checked':''} onchange="toggleItem('${item.id}',this.checked)"><span class="slider"></span></label>
+        <span>${item.name}</span>
+      </div></td>
+      <td style="font-size:.78rem;color:var(--t3)">${item.coverage}</td>
+      <td id="qty_${item.id}">&mdash;</td>
+      <td><input class="tbl-input narrow" type="number" value="${state.addOns[item.id]}" min="0" step="1" onchange="setAddOn('${item.id}',this.value)"></td>
+      <td><input class="tbl-input" type="number" value="${state.unitCosts[item.id]}" min="0" step="0.01" onchange="setUnitCost('${item.id}',this.value)"></td>
+      <td id="cost_${item.id}">&mdash;</td>
+      <td id="ppsf_${item.id}">&mdash;</td>`;
+    tbody.appendChild(row);
+  });
+}
+
+function buildOrderTable() {
+  const tbody = document.getElementById('orderTable');
+  tbody.innerHTML = '';
+  const colorMap = {orange:'var(--o)', green:'var(--g)', yellow:'var(--y)', red:'var(--r)', blue:'var(--b)'};
+  let lastCat = '';
+  [...chemicals, ...tools].forEach(item => {
+    if (item.cat && item.cat !== lastCat) {
+      lastCat = item.cat;
+      const catRow = document.createElement('tr');
+      catRow.className = 'cat-row';
+      catRow.innerHTML = `<td colspan="3" style="color:${colorMap[item.color]||'var(--t3)'};font-family:'Oswald';font-size:.7rem;letter-spacing:1.5px">${item.cat}</td>`;
+      tbody.appendChild(catRow);
+    }
+    const row = document.createElement('tr');
+    row.id = 'order_' + item.id;
+    row.innerHTML = `<td>${item.name}</td><td id="oqty_${item.id}">&mdash;</td><td id="oord_${item.id}" style="font-weight:700;color:var(--o)">&mdash;</td>`;
+    tbody.appendChild(row);
+  });
+}
+
+function buildOtherTable() {
+  const tbody = document.getElementById('otherTable');
+  tbody.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td style="width:45%"><input class="tbl-input desc" type="text" placeholder="Item description..." value="${state.otherItems[i].desc}" onchange="setOther(${i},'desc',this.value)"></td>
+      <td style="width:20%"><input class="tbl-input" type="number" placeholder="Qty" value="${state.otherItems[i].qty||''}" min="0" onchange="setOther(${i},'qty',this.value)"></td>
+      <td style="width:20%"><input class="tbl-input" type="number" placeholder="Unit $" value="${state.otherItems[i].unitCost||''}" min="0" step="0.01" onchange="setOther(${i},'unitCost',this.value)"></td>
+      <td style="width:15%;font-weight:600;font-size:.95rem" id="otherCost_${i}">$0.00</td>`;
+    tbody.appendChild(row);
+  }
+}
+
+// ─── EVENT HANDLERS ───
+function toggleItem(id, checked) { state.toggles[id] = checked; recalc(); }
+function toggleAllChems(on) {
+  chemicals.forEach(item => { if (!item.alwaysOn) state.toggles[item.id] = on; });
+  buildChemTable(); recalc();
+}
+function setAddOn(id, val) { state.addOns[id] = parseFloat(val) || 0; recalc(); }
+function setUnitCost(id, val) { state.unitCosts[id] = parseFloat(val) || 0; recalc(); }
+function setOther(idx, field, val) {
+  if (field === 'desc') state.otherItems[idx].desc = val;
+  else state.otherItems[idx][field] = parseFloat(val) || 0;
+  recalc();
+}
+
+// ─── CALCULATION ENGINE ───
+function ceilTo(val, base) { return val <= 0 ? 0 : Math.ceil(val / base) * base; }
+function fmt(val) { return '$' + val.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+function recalc() {
+  const sqft = parseFloat(document.getElementById('sqft').value) || 0;
+  const charge = parseFloat(document.getElementById('chargePerSqft').value) || 0;
+  const rates = crew.map((_, i) => parseFloat((document.getElementById('cr' + i) || {}).value) || crew[i]);
+  const crewTotal = rates.reduce((a, b) => a + b, 0);
+  const bid = sqft * charge;
+
+  document.getElementById('projectBid').textContent = fmt(bid);
+  document.getElementById('bidSqft').textContent = sqft.toLocaleString();
+  document.getElementById('bidRate').textContent = charge.toFixed(2);
+
+  let totalMatCost = 0, chemSubtotal = 0, toolSubtotal = 0;
+
+  [...chemicals, ...tools].forEach(item => {
+    const on = item.alwaysOn || state.toggles[item.id];
+    const isTool = tools.includes(item);
+    const baseQty = on ? sqft / item.divisor : 0;
+    const qty = isTool ? baseQty * machineQty : baseQty;
+    const addOn = state.addOns[item.id] || 0;
+    const uc = state.unitCosts[item.id];
+    const cost = (qty + addOn) * uc;
+    const ppsf = sqft > 0 ? cost / sqft : 0;
+    if (on) {
+      totalMatCost += cost;
+      if (!isTool) chemSubtotal += cost;
+      else toolSubtotal += cost;
+    }
+
+    const qtyEl = document.getElementById('qty_' + item.id);
+    const costEl = document.getElementById('cost_' + item.id);
+    const ppsfEl = document.getElementById('ppsf_' + item.id);
+    if (qtyEl) qtyEl.textContent = on ? qty.toFixed(2) : '\u2014';
+    if (costEl) costEl.textContent = on ? fmt(cost) : '\u2014';
+    if (ppsfEl) ppsfEl.textContent = on ? '$' + ppsf.toFixed(4) : '\u2014';
+
+    const row = document.getElementById('row_' + item.id);
+    if (row) row.className = on ? '' : 'disabled';
+
+    const orderRow = document.getElementById('order_' + item.id);
+    if (orderRow) {
+      orderRow.className = on ? '' : 'disabled';
+      const oqtyEl = document.getElementById('oqty_' + item.id);
+      const oordEl = document.getElementById('oord_' + item.id);
+      if (oqtyEl) oqtyEl.textContent = on ? qty.toFixed(2) : '0';
+      if (oordEl) {
+        const orderQty = isTool
+          ? ceilTo(baseQty, selectedSystem) * machineQty
+          : ceilTo(baseQty, item.alwaysOn ? 1 : selectedSystem);
+        oordEl.textContent = on ? orderQty : '0';
+      }
+    }
+  });
+
+  let otherTotal = 0;
+  state.otherItems.forEach((oi, i) => {
+    const c = oi.qty * oi.unitCost;
+    otherTotal += c;
+    document.getElementById('otherCost_' + i).textContent = fmt(c);
+  });
+  totalMatCost += otherTotal;
+
+  document.getElementById('orderTotal').textContent = fmt(totalMatCost);
+
+  // Labor calculations - selected machine
+  const machIdx = selectedMachine === 'we' ? 0 : 1;
+  const machName = machineNames[selectedMachine];
+  let totalMachHours = 0;
+  tools.forEach(item => {
+    if (state.toggles[item.id] && laborDivisors[item.id]) {
+      totalMachHours += sqft / laborDivisors[item.id][machIdx];
+    }
+  });
+  // Machine Runtime: how long the machine must run (not labor)
+  const runtimePerMach = machineQty > 0 ? totalMachHours / machineQty : totalMachHours;
+  const prodHoursPerDay = hoursPerDay * (machineUtil / 100);
+  const calendarDays = prodHoursPerDay > 0 ? runtimePerMach / prodHoursPerDay : 0;
+  const calendarHours = calendarDays * hoursPerDay; // full workday hours on site
+
+  // Crew: 3 men for 1st machine + 2 per additional
+  const recCrew = 3 + Math.max(0, machineQty - 1) * 2;
+
+  // Labor: crew works the calendar hours on site
+  const manHours = calendarHours * crew.length;
+  const laborCost = calendarHours * crewTotal;
+  const grossOnMaterials = bid - totalMatCost;
+  const netProfit = bid - totalMatCost - laborCost;
+  const grossMarginPct = bid > 0 ? (grossOnMaterials / bid * 100) : 0;
+  const netMarginPct = bid > 0 ? (netProfit / bid * 100) : 0;
+
+  // P&L Statement
+  document.getElementById('pl_machTitle').textContent = machName;
+  document.getElementById('pl_revenue').textContent = fmt(bid);
+  document.getElementById('pl_chemCost').textContent = fmt(chemSubtotal);
+  document.getElementById('pl_toolCost').textContent = fmt(toolSubtotal);
+  document.getElementById('pl_otherCost').textContent = fmt(otherTotal);
+  document.getElementById('pl_totalCogs').textContent = fmt(totalMatCost);
+  document.getElementById('pl_grossProfit').textContent = fmt(grossOnMaterials);
+  document.getElementById('pl_grossMargin').textContent = '(' + grossMarginPct.toFixed(1) + '%)';
+  // Machine Runtime section
+  document.getElementById('pl_machInfo').textContent = machineQty + '\u00d7 ' + machName;
+  document.getElementById('pl_totalMachHours').textContent = totalMachHours.toFixed(1) + ' hrs';
+  document.getElementById('pl_machQty').textContent = machineQty;
+  document.getElementById('pl_runtimePerMach').textContent = runtimePerMach.toFixed(1) + ' hrs';
+  document.getElementById('pl_utilPct').textContent = machineUtil + '%';
+  document.getElementById('pl_prodHrsDay').textContent = prodHoursPerDay.toFixed(1) + ' hrs / day (' + hoursPerDay + 'hr day \u00d7 ' + machineUtil + '%)';
+  document.getElementById('pl_calDays').textContent = calendarDays > 0 ? calendarDays.toFixed(1) + ' days' : '\u2014';
+
+  // Labor section
+  document.getElementById('pl_machQty2').textContent = machineQty;
+  document.getElementById('pl_recCrew').textContent = recCrew + ' men (3 + ' + Math.max(0, machineQty - 1) * 2 + ')';
+  document.getElementById('pl_crewCount').textContent = crew.length;
+  document.getElementById('pl_crewRate').textContent = crew.length + ' techs \u00d7 ' + fmt(crewTotal) + '/hr combined';
+  document.getElementById('pl_calHours').textContent = calendarHours.toFixed(1) + ' hrs (' + calendarDays.toFixed(1) + ' days \u00d7 ' + hoursPerDay + ' hr)';
+  document.getElementById('pl_manHours').textContent = manHours.toFixed(1) + ' hrs';
+  document.getElementById('pl_laborCost').textContent = fmt(laborCost);
+
+  // Net profit
+  document.getElementById('pl_netProfit').textContent = fmt(netProfit);
+  document.getElementById('pl_netMargin').textContent = netMarginPct.toFixed(1) + '%';
+  document.getElementById('pl_profitSqft').textContent = sqft > 0 ? '$' + (netProfit / sqft).toFixed(4) : '\u2014';
+  document.getElementById('pl_jobDays').textContent = calendarDays > 0 ? calendarDays.toFixed(1) + ' days (' + hoursPerDay + 'hr days, ' + machineUtil + '% util)' : '\u2014';
+
+  // P&L stat cards
+  document.getElementById('pl_statRevenue').textContent = fmt(bid);
+  document.getElementById('pl_statCogs').textContent = fmt(totalMatCost);
+  document.getElementById('pl_statLabor').textContent = fmt(laborCost);
+  document.getElementById('pl_statNet').textContent = fmt(netProfit);
+  document.getElementById('pl_statMargin').textContent = netMarginPct.toFixed(1) + '%';
+
+  // Tab 1 summary stat cards
+  document.getElementById('statManHours').textContent = manHours > 0 ? manHours.toFixed(1) + ' hrs' : '\u2014';
+  document.getElementById('statJobDays').textContent = calendarDays > 0 ? calendarDays.toFixed(1) : '\u2014';
+  document.getElementById('statNetProfit').textContent = fmt(netProfit);
+  document.getElementById('recCrewDisplay').textContent = recCrew + ' men';
+}
+
+// ─── JOINT FILL CALCULATOR ───
+function calcJointFill() {
+  const length = parseFloat(document.getElementById('jfLength').value) || 0;
+  const width = parseFloat(document.getElementById('jfWidth').value) || 0;
+  const depth = parseFloat(document.getElementById('jfDepth').value) || 0;
+  const wastePct = parseFloat(document.getElementById('jfWaste').value) || 0;
+  const cuIn = length * 12 * width * depth;
+  const gallons = cuIn / 231;
+  const quarts = gallons * 4;
+  const cuFt = cuIn / 1728;
+  const orderGallons = gallons * (1 + wastePct / 100);
+  document.getElementById('jfGallons').textContent = gallons.toFixed(2) + ' gallons';
+  document.getElementById('jfDetails').innerHTML = quarts.toFixed(2) + ' quarts &middot; ' + Math.round(cuIn).toLocaleString() + ' cu in &middot; ' + cuFt.toFixed(3) + ' cu ft';
+  document.getElementById('jfWithWaste').innerHTML = '+ ' + wastePct + '% waste = <strong>' + orderGallons.toFixed(2) + ' gallons</strong> to order';
+  // Update order page summary
+  document.getElementById('jfOrderFeet').textContent = length > 0 ? length.toLocaleString() + ' ft' : '\u2014';
+  document.getElementById('jfOrderBase').textContent = gallons > 0 ? gallons.toFixed(2) + ' gal' : '\u2014';
+  document.getElementById('jfOrderWaste').textContent = length > 0 ? wastePct + '%' : '\u2014';
+  document.getElementById('jfOrderTotal').textContent = orderGallons > 0 ? orderGallons.toFixed(2) + ' gal' : '\u2014';
+}
+
+// ─── SAVE / LOAD ───
+function getProjectState() {
+  return {
+    version: 1, tab: currentTab,
+    sqft: document.getElementById('sqft').value,
+    chargePerSqft: document.getElementById('chargePerSqft').value,
+    crew: [...crew], selectedSystem, selectedMachine, machineQty, machineUtil, hoursPerDay,
+    toggles: {...state.toggles}, addOns: {...state.addOns},
+    unitCosts: {...state.unitCosts},
+    otherItems: state.otherItems.map(o => ({...o})),
+    savedAt: new Date().toISOString(),
+  };
+}
+function loadProjectState(data) {
+  if (data.sqft) document.getElementById('sqft').value = data.sqft;
+  if (data.chargePerSqft) document.getElementById('chargePerSqft').value = data.chargePerSqft;
+  if (data.crew) { crew = [...data.crew]; renderCrew(); }
+  else if (data.laborRate) { crew = [parseFloat(data.laborRate) || 25]; renderCrew(); }
+  if (data.selectedSystem) { selectedSystem = data.selectedSystem; renderToolSystemBtns(); }
+  if (data.selectedMachine) { selectedMachine = data.selectedMachine; }
+  if (data.machineQty) { machineQty = data.machineQty; document.getElementById('machQty').value = machineQty; }
+  if (data.machineUtil) { machineUtil = data.machineUtil; document.getElementById('machUtil').value = machineUtil; }
+  if (data.hoursPerDay) { hoursPerDay = data.hoursPerDay; document.getElementById('hrsPerDay').value = hoursPerDay; }
+  renderMachineBtns();
+  if (data.toggles) Object.assign(state.toggles, data.toggles);
+  if (data.addOns) Object.assign(state.addOns, data.addOns);
+  if (data.unitCosts) Object.assign(state.unitCosts, data.unitCosts);
+  if (data.otherItems) state.otherItems = data.otherItems.map(o => ({...o}));
+  buildChemTable(); buildToolsTable(); buildOrderTable(); buildOtherTable();
+  if (data.tab) go(data.tab === 'basic' ? 'setup' : data.tab);
+  recalc();
+}
+function openSaveModal() {
+  document.getElementById('saveModal').classList.add('active');
+  const ni = document.getElementById('saveProjectName');
+  if (!ni.value) ni.value = 'SCP Project - ' + Number(document.getElementById('sqft').value).toLocaleString() + ' sqft';
+}
+function closeSaveModal() { document.getElementById('saveModal').classList.remove('active'); }
+function openLoadModal() { document.getElementById('loadModal').classList.add('active'); renderSavedProjects(); }
+function closeLoadModal() { document.getElementById('loadModal').classList.remove('active'); }
+function getSavedProjects() { try { return JSON.parse(localStorage.getItem('scp_projects') || '[]'); } catch { return []; } }
+function renderSavedProjects() {
+  const list = document.getElementById('savedProjectsList');
+  const projects = getSavedProjects();
+  if (!projects.length) { list.innerHTML = '<div style="color:var(--t3);font-size:.85rem;padding:12px 0">No saved projects yet.</div>'; return; }
+  list.innerHTML = projects.map((p, i) => {
+    const date = new Date(p.savedAt).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+    const sqft = Number(p.data.sqft).toLocaleString();
+    return `<div class="saved-project-item" onclick="loadSavedProject(${i})"><div><div class="sp-name">${p.name}</div><div class="sp-meta">${sqft} sqft &middot; ${date}${p.notes ? ' &middot; ' + p.notes : ''}</div></div><button class="sp-delete" onclick="event.stopPropagation();deleteSavedProject(${i})" title="Delete">&times;</button></div>`;
+  }).join('');
+}
+function saveProject() {
+  const name = document.getElementById('saveProjectName').value.trim() || 'Untitled';
+  const notes = document.getElementById('saveProjectNotes').value.trim();
+  const projects = getSavedProjects();
+  projects.unshift({ name, notes, data: getProjectState(), savedAt: new Date().toISOString() });
+  localStorage.setItem('scp_projects', JSON.stringify(projects));
+  closeSaveModal();
+  document.getElementById('saveProjectName').value = '';
+  document.getElementById('saveProjectNotes').value = '';
+}
+function loadSavedProject(idx) { const p = getSavedProjects(); if (p[idx]) { loadProjectState(p[idx].data); closeLoadModal(); } }
+function deleteSavedProject(idx) { const p = getSavedProjects(); p.splice(idx, 1); localStorage.setItem('scp_projects', JSON.stringify(p)); renderSavedProjects(); }
+function exportProjectFile() {
+  const name = document.getElementById('saveProjectName').value.trim() || 'SCP-Project';
+  const notes = document.getElementById('saveProjectNotes').value.trim();
+  const blob = new Blob([JSON.stringify({ name, notes, data: getProjectState() }, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = name.replace(/[^a-zA-Z0-9-_ ]/g, '') + '.json'; a.click(); closeSaveModal();
+}
+function importProjectFile(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try { const p = JSON.parse(e.target.result); loadProjectState(p.data || p); closeLoadModal(); }
+    catch { alert('Invalid project file.'); }
+  };
+  reader.readAsText(file); input.value = '';
+}
+
+// ─── PDF EXPORT ───
+function generatePDF() {
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({unit:'pt', format:'letter'});
+  const W=612,H=792,mx=40,cw=W-mx*2;
+  let y=0, pg=1;
+  const bg=[17,17,19],c1=[26,27,31],bd=[46,48,56];
+  const orange=[201,168,76],wh=[240,236,230],dim=[160,152,136],dim2=[112,104,96];
+  const grn=[46,204,64],red=[231,76,60],yel=[240,192,64];
+  const sqft=parseFloat(document.getElementById('sqft').value)||0;
+  const charge=parseFloat(document.getElementById('chargePerSqft').value)||0;
+  const bid=sqft*charge;
+  const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+  function newPage(){doc.addPage();pg++;y=40;drawBg()}
+  function check(need){if(y+need>H-50)newPage()}
+  function drawBg(){doc.setFillColor(...bg);doc.rect(0,0,W,H,'F')}
+  function section(title){check(50);doc.setFillColor(...c1);doc.roundedRect(mx-4,y-2,cw+8,26,4,4,'F');doc.setFontSize(12);doc.setTextColor(...orange);doc.text(title.toUpperCase(),mx+8,y+16);doc.setDrawColor(...orange);doc.setLineWidth(1.5);doc.line(mx,y+28,mx+cw,y+28);y+=38}
+  function row(label,value,opts={}){check(20);doc.setFontSize(9);doc.setTextColor(...(opts.labelColor||dim));doc.text(label,mx+8,y+12);doc.setFontSize(10);doc.setTextColor(...(opts.valueColor||wh));doc.text(String(value),mx+cw-8,y+12,{align:'right'});if(!opts.noline){doc.setDrawColor(...bd);doc.setLineWidth(0.3);doc.line(mx+4,y+18,mx+cw-4,y+18)}y+=22}
+  function totRow(label,value,vc=orange){check(28);doc.setDrawColor(...vc);doc.setLineWidth(1);doc.line(mx+4,y,mx+cw-4,y);doc.setFontSize(10);doc.setTextColor(...wh);doc.text(label,mx+8,y+16);doc.setFontSize(13);doc.setTextColor(...vc);doc.text(String(value),mx+cw-8,y+16,{align:'right'});doc.line(mx+4,y+22,mx+cw-4,y+22);y+=30}
+  function tableHeader(cols,widths){check(24);doc.setFillColor(...c1);doc.rect(mx,y,cw,18,'F');doc.setFontSize(7);doc.setTextColor(...dim2);let cx=mx+6;cols.forEach((c,i)=>{const tx=i===0?cx:cx+widths[i]-8;doc.text(c.toUpperCase(),tx,y+12,{align:i===0?'left':'right'});cx+=widths[i]});y+=22}
+  function tableRow(cols,widths,opts={}){check(18);if(opts.bg){doc.setFillColor(...opts.bg);doc.rect(mx,y-2,cw,16,'F')}let cx=mx+6;cols.forEach((c,i)=>{doc.setFontSize(8.5);doc.setTextColor(...(i===0?(opts.bold?wh:dim):(opts.valueColor||wh)));const tx=i===0?cx:cx+widths[i]-8;doc.text(String(c),tx,y+10,{align:i===0?'left':'right'});cx+=widths[i]});if(!opts.noline){doc.setDrawColor(46,48,56);doc.setLineWidth(0.3);doc.line(mx+4,y+14,mx+cw-4,y+14)}y+=18}
+
+  drawBg();
+  doc.setFillColor(15,15,17);doc.rect(0,0,W,80,'F');
+  doc.setDrawColor(...orange);doc.setLineWidth(3);doc.line(0,80,W,80);
+  doc.setFontSize(24);doc.setTextColor(...orange);doc.text('SCIENTIFIC CONCRETE POLISHING',mx,38);
+  doc.setFontSize(10);doc.setTextColor(...dim);doc.text('Material & Cost Calculator \u2014 No Gimmicks. Just Science.',mx,54);
+  doc.setFontSize(8);doc.setTextColor(...dim2);
+  doc.text(today,W-mx,26,{align:'right'});doc.text('The Concrete Protector',W-mx,38,{align:'right'});
+  doc.text('A Division of Incredible Products, LLC',W-mx,50,{align:'right'});
+  doc.text('scientificpolishing.com',W-mx,62,{align:'right'});y=100;
+
+  const blu=[96,165,250];
+  const pdfMachName=machineNames[selectedMachine];
+  doc.setFillColor(...c1);doc.roundedRect(mx,y,cw,50,6,6,'F');doc.setDrawColor(...bd);doc.roundedRect(mx,y,cw,50,6,6,'S');
+  [['SQUARE FEET',sqft.toLocaleString()],['CHARGE/SQFT','$'+charge.toFixed(2)],['PROJECT BID',fmt(bid)],['MACHINE',machineQty+'\u00d7 '+pdfMachName],['CREW',crew.length+' techs']].forEach(([l,v],i)=>{
+    const cx2=mx+12+i*(cw/5);doc.setFontSize(6.5);doc.setTextColor(...dim2);doc.text(l,cx2,y+16);doc.setFontSize(10);doc.setTextColor(...wh);doc.text(v,cx2,y+32)});y+=68;
+
+  // ─── PRODUCT ORDER ───
+  const chemColorMap={green:grn,yellow:yel,red:red,blue:blu};
+  section('Product Order \u2014 Chemicals & Liquids');
+  const chemW=[cw*.32,cw*.14,cw*.10,cw*.10,cw*.12,cw*.12,cw*.10];
+  tableHeader(['Item','Coverage','Qty','Add On','Unit Cost','Mat. Cost','$/SqFt'],chemW);
+  let lastChemCat='';
+  chemicals.forEach(item=>{const on=item.alwaysOn||state.toggles[item.id];if(!on)return;
+    if(item.cat&&item.cat!==lastChemCat){lastChemCat=item.cat;check(20);doc.setFontSize(8);doc.setTextColor(...(chemColorMap[item.color]||dim));doc.text(item.cat,mx+8,y+10);y+=16}
+    const qty=sqft/item.divisor,addOn=state.addOns[item.id]||0,uc=state.unitCosts[item.id],cost=(qty+addOn)*uc,ppsf=sqft>0?cost/sqft:0;tableRow([item.name,item.coverage,qty.toFixed(2),addOn>0?'+'+addOn:'0','$'+uc.toFixed(2),fmt(cost),'$'+ppsf.toFixed(4)],chemW)});y+=10;
+
+  section('Product Order \u2014 Tools & Abrasives');
+  tableHeader(['Item','Coverage','Qty','Add On','Unit Cost','Mat. Cost','$/SqFt'],chemW);
+  let lc='';tools.forEach(item=>{const on=state.toggles[item.id];if(!on)return;if(item.cat&&item.cat!==lc){lc=item.cat;check(20);doc.setFontSize(8);doc.setTextColor(...(item.color==='orange'?orange:item.color==='green'?grn:item.color==='yellow'?yel:red));doc.text(item.cat,mx+8,y+10);y+=16}const bq=sqft/item.divisor,qty=bq*machineQty,addOn=state.addOns[item.id]||0,uc=state.unitCosts[item.id],cost=(qty+addOn)*uc,ppsf=sqft>0?cost/sqft:0;tableRow([item.name,item.coverage,qty.toFixed(2)+(machineQty>1?' ('+machineQty+'m)':''),addOn>0?'+'+addOn:'0','$'+uc.toFixed(2),fmt(cost),'$'+ppsf.toFixed(4)],chemW)});y+=10;
+
+  const activeOthers=state.otherItems.filter(o=>o.desc&&(o.qty>0||o.unitCost>0));
+  if(activeOthers.length>0){section('Product Order \u2014 Other Items');const otherW=[cw*.45,cw*.15,cw*.20,cw*.20];tableHeader(['Description','Qty','Unit Cost','Total'],otherW);activeOthers.forEach(o=>tableRow([o.desc,String(o.qty),'$'+o.unitCost.toFixed(2),fmt(o.qty*o.unitCost)],otherW));y+=10}
+
+  check(80);section('Order Quantities \u2014 '+selectedSystem+' Tool System'+(machineQty>1?' \u2014 '+machineQty+' Machines':''));
+  const ordW=[cw*.50,cw*.25,cw*.25];
+  tableHeader(['Item','Qty Needed','Order Qty'],ordW);
+  let olc='';[...chemicals,...tools].forEach(item=>{const on=item.alwaysOn||state.toggles[item.id];if(!on)return;const isTl=tools.includes(item);const bq=sqft/item.divisor;const tq=isTl?bq*machineQty:bq;const oq=isTl?ceilTo(bq,selectedSystem)*machineQty:ceilTo(bq,item.alwaysOn?1:selectedSystem);
+    if(item.cat&&item.cat!==olc){olc=item.cat;check(20);doc.setFontSize(8);const cm={green:grn,yellow:yel,red:red,blue:blu,orange:orange};doc.setTextColor(...(cm[item.color]||dim));doc.text(item.cat,mx+8,y+10);y+=16}
+    tableRow([item.name,tq.toFixed(2),String(oq)],ordW,{valueColor:orange})});y+=10;
+
+  // ─── PROJECT ESTIMATE (NEW PAGE) ───
+  newPage();
+  const pdfRates=crew.map((_,i)=>parseFloat((document.getElementById('cr'+i)||{}).value)||crew[i]);
+  const pdfCrewTotal=pdfRates.reduce((a,b)=>a+b,0);
+  let tmc=0,pdfChemCost=0,pdfToolCost=0;
+  chemicals.forEach(item=>{const on=item.alwaysOn||state.toggles[item.id];if(!on)return;pdfChemCost+=(sqft/item.divisor+(state.addOns[item.id]||0))*state.unitCosts[item.id]});
+  tools.forEach(item=>{if(!state.toggles[item.id])return;pdfToolCost+=((sqft/item.divisor)*machineQty+(state.addOns[item.id]||0))*state.unitCosts[item.id]});
+  let ot=0;state.otherItems.forEach(o=>{ot+=o.qty*o.unitCost});tmc=pdfChemCost+pdfToolCost+ot;
+  const pdfMachIdx=selectedMachine==='we'?0:1;
+  let pdfMachHrs=0;tools.forEach(item=>{if(state.toggles[item.id]&&laborDivisors[item.id])pdfMachHrs+=sqft/laborDivisors[item.id][pdfMachIdx]});
+  const pdfJobHrs=machineQty>0?pdfMachHrs/machineQty:pdfMachHrs;
+  const pdfProdHrsDay=hoursPerDay*(machineUtil/100);
+  const pdfCalDays=pdfProdHrsDay>0?pdfJobHrs/pdfProdHrsDay:0;
+  const pdfCalHrs=pdfCalDays*hoursPerDay;
+  const pdfLaborCost=pdfCalHrs*pdfCrewTotal;
+  const pdfNet=bid-tmc-pdfLaborCost;
+  const gmPct=bid>0?((bid-tmc)/bid*100):0;
+  const nmPct=bid>0?(pdfNet/bid*100):0;
+
+  // Repeat header on P&L page
+  doc.setFillColor(15,15,17);doc.rect(0,0,W,60,'F');
+  doc.setDrawColor(...orange);doc.setLineWidth(2);doc.line(0,60,W,60);
+  doc.setFontSize(18);doc.setTextColor(...orange);doc.text('PROJECT ESTIMATE',mx,30);
+  doc.setFontSize(9);doc.setTextColor(...dim);doc.text(pdfMachName+' \u2014 '+sqft.toLocaleString()+' sq ft',mx,46);
+  doc.setFontSize(8);doc.setTextColor(...dim2);doc.text(today,W-mx,30,{align:'right'});doc.text('scientificpolishing.com',W-mx,42,{align:'right'});
+  y=78;
+
+  // Summary strip
+  doc.setFillColor(...c1);doc.roundedRect(mx,y,cw,36,4,4,'F');doc.setDrawColor(...bd);doc.roundedRect(mx,y,cw,36,4,4,'S');
+  [['SQ FT',sqft.toLocaleString()],['$/SQFT','$'+charge.toFixed(2)],['BID',fmt(bid)],['MACHINE',machineQty+'\u00d7 '+pdfMachName],['CREW',crew.length+' techs @ $'+pdfCrewTotal.toFixed(0)+'/hr']].forEach(([l,v],i)=>{
+    const cx2=mx+10+i*(cw/5);doc.setFontSize(6);doc.setTextColor(...dim2);doc.text(l,cx2,y+12);doc.setFontSize(9);doc.setTextColor(...wh);doc.text(v,cx2,y+26)});y+=52;
+
+  section('Profit & Loss Statement');
+  totRow('Revenue (Project Bid)',fmt(bid),orange);y+=4;
+  doc.setFontSize(8);doc.setTextColor(...dim2);check(14);doc.text('COST OF GOODS SOLD',mx+8,y+10);y+=16;
+  row('   Chemical Materials',fmt(pdfChemCost),{valueColor:red});
+  row('   Tool & Abrasive Materials',fmt(pdfToolCost),{valueColor:red});
+  row('   Other Items',fmt(ot),{valueColor:red});
+  totRow('Total COGS',fmt(tmc),red);y+=4;
+  row('Gross Profit on Materials',fmt(bid-tmc),{valueColor:grn});
+  row('Gross Margin',gmPct.toFixed(1)+'%',{valueColor:grn});y+=6;
+
+  // Machine Runtime
+  doc.setFontSize(8);doc.setTextColor(...dim2);check(14);doc.text('MACHINE RUNTIME',mx+8,y+10);y+=16;
+  row('Machine',machineQty+'\u00d7 '+pdfMachName);
+  row('Total Machine Hours (all tool steps)',pdfMachHrs.toFixed(1)+' hrs');
+  row('Runtime per Machine',pdfJobHrs.toFixed(1)+' hrs');
+  row('Work Day',hoursPerDay+' hrs/day \u00d7 '+machineUtil+'% util = '+pdfProdHrsDay.toFixed(1)+' productive hrs/day');
+  row('Est. Calendar Days',pdfCalDays.toFixed(1)+' days',{valueColor:blu});y+=6;
+
+  // Labor
+  doc.setFontSize(8);doc.setTextColor(...dim2);check(14);doc.text('LABOR EXPENSES',mx+8,y+10);y+=16;
+  const pdfRecCrew=3+Math.max(0,machineQty-1)*2;
+  const pdfManHours=pdfCalHrs*crew.length;
+  row('Recommended Crew ('+machineQty+' machine'+(machineQty>1?'s':'')+')',pdfRecCrew+' men (3 + '+(Math.max(0,machineQty-1)*2)+')',{valueColor:blu});
+  row('Actual Crew',crew.length+' techs \u00d7 $'+pdfCrewTotal.toFixed(2)+'/hr combined',{valueColor:orange});
+  row('Calendar Hours on Site',pdfCalHrs.toFixed(1)+' hrs');
+  row('Man-Hours ('+crew.length+' techs \u00d7 '+pdfCalHrs.toFixed(1)+' hrs)',pdfManHours.toFixed(1)+' hrs',{valueColor:blu});
+  totRow('Total Labor Cost',fmt(pdfLaborCost),red);y+=6;
+
+  totRow('Net Profit',fmt(pdfNet),pdfNet>=0?grn:red);
+  row('Net Margin',nmPct.toFixed(1)+'%',{valueColor:pdfNet>=0?grn:red});
+  row('Profit / Sq Ft',sqft>0?'$'+(pdfNet/sqft).toFixed(4):'$0.00',{valueColor:pdfNet>=0?grn:red});
+  row('Est. Job Duration',pdfCalDays.toFixed(1)+' days ('+hoursPerDay+'hr days, '+machineUtil+'% util)');
+
+  for(let p=1;p<=pg;p++){doc.setPage(p);doc.setFontSize(7);doc.setTextColor(...dim2);doc.text('Scientific Concrete Polishing \u2014 No Gimmicks. Just Science.',mx,H-20);doc.text('Page '+p+' of '+pg,W-mx,H-20,{align:'right'});doc.text('scientificpolishing.com \u2014 '+today,W/2,H-20,{align:'center'})}
+  doc.save('SCP-Estimate-'+sqft+'sqft-'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+
+// ─── INIT ───
+renderCrew();
+renderMachineBtns();
+renderToolSystemBtns();
+buildChemTable();
+buildToolsTable();
+buildOrderTable();
+buildOtherTable();
+recalc();
+</script>
+</body>
+</html>

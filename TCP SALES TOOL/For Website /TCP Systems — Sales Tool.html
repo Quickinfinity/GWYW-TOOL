@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP Systems — Sales Tool</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #E8E4DE;
+    background: #141422;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ===== PAGES — fluid on web, fixed for print ===== */
+  .page {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #141422;
+    position: relative;
+    overflow: hidden;
+  }
+  .page + .page { border-top: 6px solid #C8A951; }
+
+  @media print {
+    @page { size: 11in 8.5in; margin: 0; }
+    .page { width: 11in; height: 8.5in; max-width: none; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+  }
+
+  /* ===== HEADER ===== */
+  .hdr {
+    background: #0D0D18; padding: 14px 24px 12px;
+    border-bottom: 4px solid #C8A951;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .hdr-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .hdr-left img { height: 48px; }
+  .tagline { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 2.5px; margin-top: 4px; }
+  .hdr-right { text-align: right; }
+  .hdr-right .t1 { font-size: 18px; font-weight: bold; color: #141422; letter-spacing: 1px; display: inline-block; background: #C8A951; padding: 6px 16px 4px; }
+  .hdr-right .t2 { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 5px; letter-spacing: 1px; }
+
+  /* ===== FOOTER ===== */
+  .ftr {
+    background: #0D0D18; padding: 10px 24px;
+    border-top: 3px solid #C8A951;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 6px;
+  }
+  .ftr .fl { font-size: 9px; font-weight: bold; color: #C8A951; letter-spacing: 1px; }
+  .ftr .fr { font-size: 8px; color: #666; text-align: right; }
+
+  /* ===== SALES COMPONENTS ===== */
+  .sc-bar { padding: 12px 24px 10px; background: #1A1A2E; border-bottom: 1px solid #2A2A42; }
+  .sc-label { font-size: 11px; font-weight: bold; color: #C8A951; letter-spacing: 3px; margin-bottom: 10px; }
+  .sc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .sc-card { text-align: center; padding: 16px 12px 14px; }
+  .sc-num { font-size: 36px; font-weight: bold; line-height: 1; }
+  .sc-name { font-size: 18px; font-weight: bold; letter-spacing: 2px; margin: 4px 0; }
+  .sc-desc { font-size: 13px; line-height: 1.4; }
+
+  .sc-orange { background: #2A1A10; border: 2px solid #E67E22; border-top: 6px solid #E67E22; }
+  .sc-orange .sc-num, .sc-orange .sc-name { color: #E67E22; }
+  .sc-orange .sc-desc { color: #E8A860; }
+  .sc-green { background: #102A18; border: 2px solid #27AE60; border-top: 6px solid #27AE60; }
+  .sc-green .sc-num, .sc-green .sc-name { color: #27AE60; }
+  .sc-green .sc-desc { color: #60D890; }
+  .sc-yellow { background: #2A2610; border: 2px solid #F1C40F; border-top: 6px solid #F1C40F; }
+  .sc-yellow .sc-num, .sc-yellow .sc-name { color: #F1C40F; }
+  .sc-yellow .sc-desc { color: #F5D860; }
+  .sc-red { background: #2A1010; border: 2px solid #E74C3C; border-top: 6px solid #E74C3C; }
+  .sc-red .sc-num, .sc-red .sc-name { color: #E74C3C; }
+  .sc-red .sc-desc { color: #F08070; }
+
+  /* ===== BODY COLUMNS ===== */
+  .body2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .col-l { padding: 18px 24px 30px; }
+  .col-r { padding: 18px 24px 30px; border-left: 2px solid #2A2A42; }
+
+  .sec-h {
+    font-size: 16px; font-weight: bold; letter-spacing: 2px;
+    color: #C8A951; padding-bottom: 8px; margin-bottom: 12px;
+    border-bottom: 3px solid #C8A951;
+  }
+
+  /* Products */
+  .prod { padding: 8px 10px; border-bottom: 1px solid #1E1E32; display: flex; align-items: flex-start; gap: 10px; }
+  .prod:nth-child(even) { background: #1A1A2E; }
+  .pd span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; }
+  .pn { font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #fff; }
+  .pp { font-size: 12px; color: #999; margin-top: 2px; line-height: 1.35; }
+
+  /* Steps */
+  .step { margin-bottom: 2px; display: flex; align-items: center; }
+  .sn {
+    width: 36px; min-width: 36px; text-align: center;
+    font-size: 18px; font-weight: bold; color: #141422;
+    background: #C8A951; padding: 8px 0;
+  }
+  .si { padding: 6px 0 6px 14px; }
+  .si b { font-size: 14px; letter-spacing: 0.8px; color: #fff; }
+  .si .sd { font-size: 11px; color: #888; margin-top: 2px; }
+
+  /* ===== PAGE 2 HEADER ===== */
+  .p2h {
+    background: #0D0D18; padding: 14px 24px 12px;
+    border-bottom: 4px solid #C8A951;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .p2t { font-size: 26px; font-weight: bold; }
+  .p2t .w { color: #fff; }
+  .p2t .g { color: #C8A951; }
+  .p2s { font-size: 12px; color: #888; margin-top: 4px; }
+  .p2b {
+    display: inline-block; background: #C8A951; color: #141422;
+    font-size: 12px; font-weight: bold; padding: 7px 18px; letter-spacing: 2px;
+    white-space: nowrap;
+  }
+
+  .intro {
+    background: #1A1A2E; padding: 10px 24px;
+    border-bottom: 1px solid #2A2A42;
+    font-size: 13px; color: #aaa; line-height: 1.5;
+  }
+  .intro b { color: #fff; }
+
+  /* Panels */
+  .pan {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .pan-l { background: #1A1A2E; padding: 18px 24px; }
+  .pan-r { background: #141422; padding: 18px 24px; border-left: 3px solid #C8A951; }
+
+  .ph {
+    font-size: 18px; font-weight: bold; color: #C8A951;
+    letter-spacing: 1.5px; padding-bottom: 6px; margin-bottom: 10px;
+    border-bottom: 3px solid #C8A951;
+  }
+  .ph small { display: block; font-size: 10px; color: #777; font-weight: normal; letter-spacing: 0; margin-top: 3px; }
+
+  /* Texture cards */
+  .tg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px; margin-bottom: 8px;
+  }
+  .tc { text-align: center; color: #fff; padding: 14px 8px; border: 1px solid rgba(255,255,255,0.1); }
+  .t1 { background: #5C4A37; }
+  .t2 { background: #4A6B4A; }
+  .t3 { background: #4A5B6B; }
+  .tcode { font-size: 32px; font-weight: bold; line-height: 1; }
+  .tname { font-size: 10px; font-weight: bold; letter-spacing: 2px; opacity: 0.85; margin-top: 4px; }
+  .tdesc { font-size: 10px; opacity: 0.6; margin-top: 8px; line-height: 1.5; }
+
+  /* Spectrum */
+  .spl { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .spl span { font-size: 9px; color: #777; font-weight: bold; letter-spacing: 0.5px; }
+  .sp { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 10px; }
+  .sp div { text-align: center; font-size: 11px; font-weight: bold; color: #fff; padding: 8px 0; }
+  .sp1 { background: #D35400; }
+  .sp2 { background: #B8960A; }
+  .sp3 { background: #27AE60; }
+
+  /* Tip */
+  .tip {
+    border-left: 4px solid #C8A951; padding: 12px 16px;
+    margin-top: 10px; background: rgba(200,169,81,0.06);
+  }
+  .tip-h { font-size: 11px; font-weight: bold; color: #C8A951; letter-spacing: 1px; margin-bottom: 5px; }
+  .tip-p { font-size: 12px; color: #bbb; line-height: 1.55; }
+  .tip-p b { color: #fff; }
+
+  /* Color */
+  .ci { font-size: 12px; color: #aaa; line-height: 1.5; margin-bottom: 10px; }
+  .ci b { color: #fff; }
+  .cg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .cc { padding: 14px 16px; background: #1A1A2E; border: 1px solid #2A2A42; }
+  .ct { font-size: 13px; font-weight: bold; }
+  .cd { font-size: 11px; color: #888; margin-top: 3px; }
+
+  /* Callout */
+  .co {
+    background: #0D0D18; margin: 12px 24px 0; padding: 14px 24px;
+    border: 3px solid #C8A951;
+  }
+  .co-t { font-size: 14px; font-weight: bold; color: #C8A951; letter-spacing: 2px; margin-bottom: 8px; text-align: center; }
+  .co-p { font-size: 12px; color: #bbb; line-height: 1.6; text-align: center; }
+  .co-p b { color: #fff; }
+
+  /* Reminders */
+  .rg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 24px 0; }
+  .rc {
+    padding: 12px 14px;
+    background: #1A1A2E; border-top: 4px solid #C8A951;
+  }
+  .rh { font-size: 11px; font-weight: bold; color: #C8A951; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .rp { font-size: 11px; color: #aaa; line-height: 1.5; }
+
+  /* ===== RESPONSIVE — TABLET ===== */
+  @media (max-width: 768px) {
+    .hdr { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+    .hdr-right { text-align: left; }
+    .hdr-right .t1 { font-size: 15px; }
+
+    .sc-bar { padding: 12px 16px; }
+    .sc-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .sc-num { font-size: 30px; }
+    .sc-name { font-size: 16px; }
+
+    .body2 { grid-template-columns: 1fr; }
+    .col-l { padding: 16px; }
+    .col-r { padding: 16px; border-left: none; border-top: 2px solid #2A2A42; }
+
+    .p2h { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+    .p2t { font-size: 22px; }
+    .intro { padding: 10px 16px; }
+
+    .pan { grid-template-columns: 1fr; }
+    .pan-l { padding: 16px; }
+    .pan-r { padding: 16px; border-left: none; border-top: 3px solid #C8A951; }
+
+    .rg { grid-template-columns: 1fr; margin: 12px 16px 0; }
+
+    .co { margin: 12px 16px 0; padding: 14px 16px; }
+    .ftr { padding: 10px 16px; }
+  }
+
+  /* ===== RESPONSIVE — MOBILE ===== */
+  @media (max-width: 480px) {
+    .hdr-left img { height: 36px; }
+    .tagline { font-size: 9px; letter-spacing: 1.5px; }
+    .hdr-right .t1 { font-size: 13px; padding: 5px 12px 3px; }
+
+    .sc-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .sc-num { font-size: 26px; }
+    .sc-name { font-size: 14px; letter-spacing: 1px; }
+    .sc-desc { font-size: 11px; }
+    .sc-label { font-size: 9px; letter-spacing: 2px; }
+
+    .sec-h { font-size: 14px; }
+    .pn { font-size: 13px; }
+    .pp { font-size: 11px; }
+
+    .p2t { font-size: 18px; }
+    .p2b { font-size: 10px; padding: 5px 12px; }
+
+    .tg { grid-template-columns: 1fr; gap: 8px; }
+    .tcode { font-size: 28px; }
+
+    .cg { grid-template-columns: 1fr; }
+
+    .co { margin: 10px 12px 0; }
+    .co-t { font-size: 12px; letter-spacing: 1px; }
+    .co-p { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-left">
+      <img src="https://theconcreteprotector.store/wp-content/uploads/2023/09/logo-1.png" alt="The Concrete Protector">
+      <div class="tagline">TRAINING &bull; EQUIPMENT &bull; MARKETING &bull; PRODUCTS</div>
+    </div>
+    <div class="hdr-right">
+      <div class="t1">Selling TCP Systems</div>
+      <div class="t2">Complete Product &amp; Installation Guide</div>
+    </div>
+  </div>
+
+  <div class="sc-bar">
+    <div class="sc-label">&#9670; FOUR SALES COMPONENTS &mdash; EVERY PROJECT STARTS HERE</div>
+    <div class="sc-grid">
+      <div class="sc-card sc-orange"><div class="sc-num">01</div><div class="sc-name">SYSTEM</div><div class="sc-desc">Location &amp; Performance</div></div>
+      <div class="sc-card sc-green"><div class="sc-num">02</div><div class="sc-name">DESIGN</div><div class="sc-desc">Patterns &bull; Borders &bull; Logos</div></div>
+      <div class="sc-card sc-yellow"><div class="sc-num">03</div><div class="sc-name">COLORS</div><div class="sc-desc">Full Selection Per System</div></div>
+      <div class="sc-card sc-red"><div class="sc-num">04</div><div class="sc-name">TOP COAT</div><div class="sc-desc">Performance Enhancements</div></div>
+    </div>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="sec-h">PRODUCTS &amp; COATINGS</div>
+      <div class="prod"><div class="pd"><span style="background:#E67E22"></span></div><div class="pi"><div class="pn">CEMENT OVERLAYS</div><div class="pp">Rustic Concrete Wood &bull; Tuscan Slate &bull; Grand Flagstone &bull; Venetian Tile</div></div></div>
+      <div class="prod"><div class="pd"><span style="background:#3A7BD5"></span></div><div class="pi"><div class="pn">EPOXY &amp; URETHANES</div><div class="pp">Metallic Marble Stain &bull; Italian Marble Epoxy &bull; Resinous 123 Floor &bull; Protector Flake &bull; Quartz</div></div></div>
+      <div class="prod"><div class="pd"><span style="background:#27AE60"></span></div><div class="pi"><div class="pn">GRANIFLEX</div><div class="pp">Graniflex Flake &bull; Graniflex Quartz &bull; Marble Flex</div></div></div>
+      <div class="prod"><div class="pd"><span style="background:#E74C3C"></span></div><div class="pi"><div class="pn">POLYHARD</div><div class="pp">Colored &bull; Quartz</div></div></div>
+      <div class="prod"><div class="pd"><span style="background:#C8A951"></span></div><div class="pi"><div class="pn">SCIENTIFIC CONCRETE POLISHING</div><div class="pp">SCP Wet &bull; SCP Dry</div></div></div>
+      <div class="prod"><div class="pd"><span style="background:#8E7CC3"></span></div><div class="pi"><div class="pn">CP SEALER</div><div class="pp">Concrete protection &amp; preservation</div></div></div>
+      <div class="prod"><div class="pd"><span style="background:#888"></span></div><div class="pi"><div class="pn">REPAIRS &amp; JOINTS FILL</div><div class="pp">Crack repair &bull; Joint fill &bull; Leveling</div></div></div>
+    </div>
+    <div class="col-r">
+      <div class="sec-h">7-STEP INSTALLATION</div>
+      <div class="step"><div class="sn">1</div><div class="si"><b>SURFACE PREPARATION</b><div class="sd">Grind &bull; Shot Blast &bull; Acid Wash &bull; Other</div></div></div>
+      <div class="step"><div class="sn">2</div><div class="si"><b>REPAIR &amp; JOINTS</b><div class="sd">Crack repair &bull; Joint filling &bull; Leveling</div></div></div>
+      <div class="step"><div class="sn">3</div><div class="si"><b>PRIME COAT APPLICATION</b><div class="sd">System-specific primer selection</div></div></div>
+      <div class="step"><div class="sn">4</div><div class="si"><b>DESIGN LAYOUT</b><div class="sd">Pattern layout &bull; Borders &bull; Taping &bull; Logos</div></div></div>
+      <div class="step"><div class="sn">5</div><div class="si"><b>INTERMEDIATE COAT</b><div class="sd">Base color &bull; Flake broadcast &bull; Quartz</div></div></div>
+      <div class="step"><div class="sn">6</div><div class="si"><b>SEAL COAT APPLICATION</b><div class="sd">Protective seal layer for durability</div></div></div>
+      <div class="step"><div class="sn">7</div><div class="si"><b>TOP COAT APPLICATION</b><div class="sd">Final performance &bull; UV &amp; wear protection</div></div></div>
+    </div>
+  </div>
+  <div class="ftr"><span class="fl">THE CONCRETE PROTECTOR &mdash; Incredible Products, LLC</span><span class="fr">theconcreteprotector.com &bull; Client Reference Tool &bull; 2026</span></div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <div class="p2h">
+    <div>
+      <div class="p2t"><span class="w">Surface Texture &amp; </span><span class="g">Color Selection</span></div>
+      <div class="p2s">The #1 factor in customer satisfaction &mdash; and the #1 source of disputes when skipped</div>
+    </div>
+    <div class="p2b">&#9888; CRITICAL SALES STEP</div>
+  </div>
+
+  <div class="intro">Every design consultation must cover <b>texture</b> and <b>color</b> selection with physical samples. When documented on the contract, this single step eliminates free rework and protects your margin.</div>
+
+  <div class="pan">
+    <div class="pan-l">
+      <div class="ph">TEXTURE SELECTION<small>Choose grip vs. cleanability</small></div>
+      <div class="tg">
+        <div class="tc t1"><div class="tcode">T-1</div><div class="tname">MOUNTAINS &amp; VALLEYS</div><div class="tdesc">Most aggressive<br/>Best grip<br/>Harder to clean</div></div>
+        <div class="tc t2"><div class="tcode">T-2</div><div class="tname">MOUNTAINS</div><div class="tdesc">Moderate texture<br/>Balanced grip<br/>&amp; cleanability</div></div>
+        <div class="tc t3"><div class="tcode">T-3</div><div class="tname">SMOOTH</div><div class="tdesc">Few islands<br/>Easiest to clean<br/>More slippery wet</div></div>
+      </div>
+      <div class="spl"><span>&#9668; EASIER TO CLEAN</span><span>BETTER GRIP &#9658;</span></div>
+      <div class="sp"><div class="sp1">SMOOTH</div><div class="sp2">BALANCED</div><div class="sp3">AGGRESSIVE</div></div>
+      <div class="tip">
+        <div class="tip-h">&#9733; SALES BEST PRACTICE</div>
+        <div class="tip-p"><b>Always use physical texture samples</b> the customer can touch. Label each with a clear code. When they choose, <b>record the code on their contract.</b> This puts responsibility for the choice in writing.</div>
+      </div>
+    </div>
+    <div class="pan-r">
+      <div class="ph">COLOR SELECTION<small>Set expectations before install</small></div>
+      <div class="ci">Some customers struggle to visualize finished colors. <b>Physical samples are essential.</b> Printed charts are a guide only &mdash; colors shift between printers and inks.</div>
+      <div class="cg">
+        <div class="cc"><div class="ct" style="color:#E67E22">&#9673; Show physical samples</div><div class="cd">Exact color approval whenever possible</div></div>
+        <div class="cc"><div class="ct" style="color:#3A7BD5">&#9673; Explain print variance</div><div class="cd">Charts are guides, not exact match</div></div>
+        <div class="cc"><div class="ct" style="color:#27AE60">&#9673; Multi-color mixes vary</div><div class="cd">2+ stains = dozens of unique shades</div></div>
+        <div class="cc"><div class="ct" style="color:#C8A951">&#9673; Document the selection</div><div class="cd">Sample code + sign-off on contract</div></div>
+      </div>
+      <div class="tip">
+        <div class="tip-h">&#9733; SALES BEST PRACTICE</div>
+        <div class="tip-p">Explain that <b>printed charts are a guide, not a guarantee.</b> Show mixed samples when available. Document the approved code to <b>protect both parties.</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="co">
+    <div class="co-t">&#9888; PROTECT THE SALE &mdash; DOCUMENT THE CHOICE</div>
+    <div class="co-p">When texture and color selections are <b>clearly recorded on the contract with sample codes and customer sign-off,</b> any post-install change requests become paid work &mdash; not free rework. <b>This is not your liability when you&rsquo;ve done the sales process right.</b></div>
+  </div>
+
+  <div class="rg">
+    <div class="rc"><div class="rh">&#9733; BEFORE EVERY ESTIMATE</div><div class="rp">Bring labeled texture samples (T-1, T-2, T-3) and physical color charts. Let the customer touch and compare.</div></div>
+    <div class="rc"><div class="rh">&#9733; DURING THE CONSULTATION</div><div class="rp">Explain the tradeoff: smooth = easy clean but slippery; aggressive = great grip but harder to clean.</div></div>
+    <div class="rc"><div class="rh">&#9733; ON THE CONTRACT</div><div class="rp">Record texture code + color code with customer signature. This eliminates free rework disputes.</div></div>
+  </div>
+
+  <div class="ftr"><span class="fl">THE CONCRETE PROTECTOR &mdash; Incredible Products, LLC</span><span class="fr">theconcreteprotector.com &bull; Client Reference Tool &bull; 2026</span></div>
+</div>
+
+</body>
+</html>

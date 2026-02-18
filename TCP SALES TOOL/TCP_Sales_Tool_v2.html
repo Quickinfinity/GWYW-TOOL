@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCP Systems — Sales Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C8A951;
+    --gold-light: #E8D8A0;
+    --gold-pale: #F5EDD3;
+    --dark: #141422;
+    --charcoal: #1E1E32;
+    --slate: #2A2A42;
+    --concrete: #E8E4DE;
+    --concrete-light: #F2EFEA;
+    --white: #FFFFFF;
+    --text-dark: #1A1A2E;
+    --text-mid: #555566;
+    --text-light: #888899;
+    --accent-orange: #E67E22;
+    --accent-green: #27AE60;
+    --accent-blue: #3A7BD5;
+    --accent-red: #E74C3C;
+    --warm-bg: #FBF8F2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page { size: 11in 17in; margin: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--concrete-light);
+    color: var(--text-dark);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 11in;
+    max-width: 100vw;
+    margin: 0 auto;
+    background: var(--white);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--dark);
+    padding: 32px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(200,169,81,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(200,169,81,0.05) 0%, transparent 50%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .hero-brand h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700; font-size: 30px;
+    color: var(--gold); letter-spacing: 3px; text-transform: uppercase;
+  }
+  .hero-brand .tagline {
+    font-size: 12px; color: rgba(255,255,255,0.45);
+    letter-spacing: 2px; text-transform: uppercase; margin-top: 4px;
+  }
+  .hero-right { text-align: right; }
+  .hero-right .title {
+    font-family: 'Oswald', sans-serif; font-weight: 500;
+    font-size: 17px; color: var(--white); letter-spacing: 1px;
+  }
+  .hero-right .subtitle {
+    font-size: 10px; color: var(--gold-light); margin-top: 2px; letter-spacing: 1px;
+  }
+
+  /* ===== TOP GRID: Products + Specs + Install ===== */
+  .top-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+
+  .col { padding: 22px 26px 18px; position: relative; }
+  .col-1 { background: var(--white); border-right: 1px solid rgba(200,169,81,0.15); }
+  .col-2 { background: var(--concrete-light); border-right: 1px solid rgba(200,169,81,0.15); }
+  .col-3 { background: var(--white); }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .section-icon {
+    width: 32px; height: 32px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: 'Oswald', sans-serif; font-weight: 600;
+    font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--dark); line-height: 1.1;
+  }
+  .section-header .section-sub {
+    font-family: 'Source Sans 3', sans-serif; font-size: 9px;
+    color: var(--text-light); font-weight: 400; letter-spacing: 0.5px;
+    text-transform: none; display: block; margin-top: 1px;
+  }
+
+  /* ===== PRODUCT CARDS ===== */
+  .product-card {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 8px 10px; border-radius: 6px; margin-bottom: 4px;
+  }
+  .product-card:nth-child(odd) { background: var(--concrete-light); }
+  .product-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    margin-top: 4px; flex-shrink: 0;
+  }
+  .product-card h3 {
+    font-family: 'Oswald', sans-serif; font-weight: 500;
+    font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--dark);
+  }
+  .product-card p {
+    font-size: 9.5px; color: var(--text-mid); line-height: 1.3; margin-top: 1px;
+  }
+
+  .divider-label {
+    font-family: 'Oswald', sans-serif; font-weight: 500;
+    font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-light); margin: 10px 0 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .divider-label::after {
+    content: ''; flex: 1; height: 1px; background: rgba(200,169,81,0.25);
+  }
+
+  /* ===== SPEC BLOCKS (compact) ===== */
+  .spec-mini-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px;
+  }
+  .spec-mini {
+    background: var(--white); border-radius: 8px; padding: 10px 12px;
+    border: 1px solid rgba(200,169,81,0.18); position: relative; overflow: hidden;
+  }
+  .spec-mini::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  .spec-mini.orange::before { background: var(--accent-orange); }
+  .spec-mini.green::before { background: var(--accent-green); }
+  .spec-mini.blue::before { background: var(--accent-blue); }
+  .spec-mini.gold::before { background: var(--gold); }
+  .spec-mini .spec-label {
+    font-family: 'Oswald', sans-serif; font-weight: 600;
+    font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px;
+  }
+  .spec-mini.orange .spec-label { color: var(--accent-orange); }
+  .spec-mini.green .spec-label { color: var(--accent-green); }
+  .spec-mini.blue .spec-label { color: var(--accent-blue); }
+  .spec-mini.gold .spec-label { color: var(--gold); }
+  .spec-mini .spec-items { font-size: 9px; color: var(--text-mid); line-height: 1.4; }
+
+  /* ===== UPSELL Q (compact) ===== */
+  .upsell-q {
+    padding: 9px 12px; border-radius: 8px; margin-bottom: 6px;
+    background: var(--white); border: 1px solid rgba(200,169,81,0.15);
+  }
+  .upsell-q .q-text {
+    font-weight: 600; font-size: 10px; color: var(--dark); font-style: italic; line-height: 1.3;
+  }
+  .upsell-q .q-outcome {
+    display: flex; align-items: center; gap: 5px; margin-top: 3px;
+  }
+  .q-arrow { color: var(--gold); font-size: 11px; font-weight: 700; }
+  .q-outcome span { font-size: 9px; color: var(--accent-green); font-weight: 600; }
+
+  /* ===== INSTALL STEPS (compact) ===== */
+  .install-step {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 2px; padding: 7px 0; position: relative;
+  }
+  .install-step:not(:last-child)::after {
+    content: ''; position: absolute;
+    left: 14px; top: 34px; bottom: -2px; width: 2px;
+    background: linear-gradient(to bottom, var(--gold), rgba(200,169,81,0.15));
+  }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--dark); color: var(--gold);
+    font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+    border: 2px solid var(--gold);
+  }
+  .step-content h3 {
+    font-family: 'Oswald', sans-serif; font-weight: 600;
+    font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--dark);
+  }
+  .step-content p { font-size: 9px; color: var(--text-mid); margin-top: 1px; }
+
+  /* ===== CTA BOX (compact) ===== */
+  .cta-box {
+    background: var(--dark); border-radius: 10px;
+    padding: 14px 16px; margin-top: 12px; position: relative; overflow: hidden;
+  }
+  .cta-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--accent-orange), var(--gold));
+  }
+  .cta-box h3 {
+    font-family: 'Oswald', sans-serif; font-weight: 600;
+    font-size: 11px; color: var(--gold); letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .cta-item { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+  .cta-check {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: rgba(200,169,81,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--gold); font-size: 8px; font-weight: 700;
+  }
+  .cta-item span { font-size: 9.5px; color: rgba(255,255,255,0.8); line-height: 1.2; }
+
+  /* ================================================================
+     ===== TEXTURE & COLOR FEATURE SECTION (FULL WIDTH, PROMINENT) =====
+     ================================================================ */
+  .texture-feature {
+    background: var(--dark);
+    padding: 30px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .texture-feature::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #8B7355, var(--gold), #6B8E6B, var(--accent-blue), #8B7355);
+  }
+
+  /* subtle concrete grain overlay */
+  .texture-feature::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 15% 40%, rgba(139,115,85,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 60%, rgba(107,142,107,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .texture-feature-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .tf-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .tf-badge {
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 4px;
+  }
+
+  .tf-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .tf-header h2 em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .tf-subtitle {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: -16px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .tf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* ----- TEXTURE PANEL ----- */
+  .tf-panel {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,169,81,0.2);
+    border-radius: 14px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tf-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+  }
+
+  .tf-panel.texture-panel::before {
+    background: linear-gradient(90deg, #8B7355, #A0845C, #6B8E6B, #7F8FA0);
+  }
+
+  .tf-panel.color-panel::before {
+    background: linear-gradient(90deg, var(--accent-orange), var(--gold), var(--accent-blue), var(--accent-green));
+  }
+
+  .tf-panel-label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tf-panel-label .icon {
+    font-size: 18px;
+  }
+
+  /* Texture cards */
+  .texture-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .tex-card {
+    border-radius: 10px;
+    padding: 16px 14px 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .tex-card.t1 {
+    background: linear-gradient(160deg, #5C4A37 0%, #8B7355 50%, #6B5B45 100%);
+  }
+  .tex-card.t2 {
+    background: linear-gradient(160deg, #4A6B4A 0%, #6B8E6B 50%, #5A7B5A 100%);
+  }
+  .tex-card.t3 {
+    background: linear-gradient(160deg, #4A5B6B 0%, #6B7B8E 50%, #5A6B7B 100%);
+  }
+
+  .tex-card .tex-code {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 1px;
+  }
+
+  .tex-card .tex-name {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .tex-card .tex-desc {
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    line-height: 1.3;
+  }
+
+  /* Trade-off bar */
+  .tradeoff-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 28px;
+    position: relative;
+  }
+
+  .tradeoff-bar .bar-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .bar-slip {
+    background: linear-gradient(90deg, #E74C3C, #E67E22);
+    color: white;
+    flex: 1;
+  }
+
+  .bar-mid {
+    background: linear-gradient(90deg, #E67E22, #27AE60);
+    color: white;
+    flex: 1;
+  }
+
+  .bar-grip {
+    background: linear-gradient(90deg, #27AE60, #2ECC71);
+    color: white;
+    flex: 1;
+  }
+
+  .tradeoff-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .tradeoff-labels span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Pro tips inside panels */
+  .pro-tip {
+    background: rgba(200,169,81,0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-top: 4px;
+  }
+
+  .pro-tip .tip-label {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .pro-tip p {
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.45;
+  }
+
+  .pro-tip strong {
+    color: var(--gold-light);
+  }
+
+  /* Color swatches */
+  .color-note {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .color-note strong {
+    color: var(--gold-light);
+  }
+
+  .color-rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .color-rule {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,169,81,0.12);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cr-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .color-rule .cr-text {
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.35;
+  }
+
+  .color-rule .cr-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ===== CONTRACT CALLOUT (full width inside texture section) ===== */
+  .contract-callout {
+    background: linear-gradient(135deg, rgba(200,169,81,0.12), rgba(200,169,81,0.05));
+    border: 1px solid rgba(200,169,81,0.3);
+    border-radius: 12px;
+    padding: 16px 22px;
+    margin-top: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .cc-shield {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    color: var(--dark);
+  }
+
+  .cc-content h4 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .cc-content p {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+
+  .cc-content strong {
+    color: var(--white);
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: var(--dark);
+    padding: 12px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 3px solid var(--gold);
+  }
+  .footer-left {
+    font-family: 'Oswald', sans-serif; font-weight: 500;
+    font-size: 11px; color: var(--gold); letter-spacing: 2px;
+  }
+  .footer-right {
+    font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.5px;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; width: 100%; }
+  }
+
+  @media (max-width: 900px) {
+    .top-grid { grid-template-columns: 1fr; }
+    .tf-grid { grid-template-columns: 1fr; }
+    .page { width: 100%; }
+    .hero, .texture-feature { padding-left: 24px; padding-right: 24px; }
+    .col { padding: 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-brand">
+        <h1>The Concrete Protector</h1>
+        <div class="tagline">Products &nbsp;&bull;&nbsp; Equipment &nbsp;&bull;&nbsp; Training &nbsp;&bull;&nbsp; Support</div>
+      </div>
+      <div class="hero-right">
+        <div class="title">Selling TCP Systems</div>
+        <div class="subtitle">Complete Product &amp; Installation Guide</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOP 3-COL GRID ===== -->
+  <div class="top-grid">
+
+    <!-- COL 1: PRODUCTS -->
+    <div class="col col-1">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(200,169,81,0.12);color:var(--gold);">&#9670;</div>
+        <h2>Products &amp; Coatings<span class="section-sub">Full system portfolio</span></h2>
+      </div>
+
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--accent-orange);"></div>
+        <div><h3>Cement Overlays</h3><p>Rustic Concrete Wood &bull; Tuscan Slate &bull; Grand Flagstone &bull; Venetian Tile</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--accent-blue);"></div>
+        <div><h3>Epoxy &amp; Urethanes</h3><p>Metallic Marble Stain &bull; Italian Marble Epoxy &bull; Resinous 123 Floor &bull; Protector Flake &bull; Protector Quartz</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--accent-green);"></div>
+        <div><h3>Graniflex</h3><p>Graniflex Flake &bull; Graniflex Quartz &bull; Marble Flex</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--accent-red);"></div>
+        <div><h3>Polyhard</h3><p>Colored &bull; Quartz</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--gold);"></div>
+        <div><h3>Scientific Concrete Polishing</h3><p>SCP Wet &bull; SCP Dry</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:#8E7CC3;"></div>
+        <div><h3>CP Sealer</h3><p>Concrete protection &amp; preservation</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:#888;"></div>
+        <div><h3>Repairs &amp; Joints Fill</h3><p>Crack repair &bull; Joint fill &bull; Leveling</p></div>
+      </div>
+
+      <div class="divider-label">Equipment &amp; Training</div>
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--dark);"></div>
+        <div><h3>Training Programs</h3><p>Product Application &bull; Equipment &amp; Surface Prep &bull; Business Operating System &bull; Sales &amp; Marketing</p></div>
+      </div>
+      <div class="product-card">
+        <div class="product-dot" style="background:var(--dark);"></div>
+        <div><h3>Sales Support</h3><p>Service &bull; Support &bull; Development</p></div>
+      </div>
+    </div>
+
+    <!-- COL 2: SPECS + UPSELL -->
+    <div class="col col-2">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(58,123,213,0.12);color:var(--accent-blue);">&#9881;</div>
+        <h2>System Specs<span class="section-sub">Configure every project</span></h2>
+      </div>
+
+      <div class="spec-mini-grid">
+        <div class="spec-mini orange">
+          <div class="spec-label">System</div>
+          <div class="spec-items">Location &amp; Performance requirements</div>
+        </div>
+        <div class="spec-mini blue">
+          <div class="spec-label">Design</div>
+          <div class="spec-items">Patterns &bull; Borders &bull; Logos &bull; SCP Aggregate</div>
+        </div>
+        <div class="spec-mini gold">
+          <div class="spec-label">Colors</div>
+          <div class="spec-items">Full selection per system type</div>
+        </div>
+        <div class="spec-mini green">
+          <div class="spec-label">Top Coat</div>
+          <div class="spec-items">Additional performance enhancements</div>
+        </div>
+      </div>
+
+      <div class="divider-label">Upsell Conversation Starters</div>
+
+      <div class="upsell-q">
+        <div class="q-text">&ldquo;What other areas could benefit from protection?&rdquo;</div>
+        <div class="q-outcome"><span class="q-arrow">&rarr;</span><span>Additional square footage &amp; new spaces</span></div>
+      </div>
+      <div class="upsell-q">
+        <div class="q-text">&ldquo;Have you considered a different texture or finish?&rdquo;</div>
+        <div class="q-outcome"><span class="q-arrow">&rarr;</span><span>Design upgrade conversation</span></div>
+      </div>
+      <div class="upsell-q">
+        <div class="q-text">&ldquo;How is the surface holding up in high-traffic zones?&rdquo;</div>
+        <div class="q-outcome"><span class="q-arrow">&rarr;</span><span>Top coat / sealer upsell</span></div>
+      </div>
+      <div class="upsell-q">
+        <div class="q-text">&ldquo;Any cracks or joint issues since install?&rdquo;</div>
+        <div class="q-outcome"><span class="q-arrow">&rarr;</span><span>Repair &amp; maintenance revenue</span></div>
+      </div>
+      <div class="upsell-q">
+        <div class="q-text">&ldquo;Ready to add another system to your service menu?&rdquo;</div>
+        <div class="q-outcome"><span class="q-arrow">&rarr;</span><span>Training class re-enrollment</span></div>
+      </div>
+    </div>
+
+    <!-- COL 3: INSTALLATION -->
+    <div class="col col-3">
+      <div class="section-header">
+        <div class="section-icon" style="background:rgba(39,174,96,0.12);color:var(--accent-green);">&#9733;</div>
+        <h2>Installation Process<span class="section-sub">7-step project workflow</span></h2>
+      </div>
+
+      <div class="install-step">
+        <div class="step-num">1</div>
+        <div class="step-content"><h3>Surface Preparation</h3><p>Grind &bull; Shot Blast &bull; Acid Wash &bull; Other</p></div>
+      </div>
+      <div class="install-step">
+        <div class="step-num">2</div>
+        <div class="step-content"><h3>Repair &amp; Joints</h3><p>Crack repair &bull; Joint filling &bull; Leveling</p></div>
+      </div>
+      <div class="install-step">
+        <div class="step-num">3</div>
+        <div class="step-content"><h3>Prime Coat Application</h3><p>System-specific primer selection</p></div>
+      </div>
+      <div class="install-step">
+        <div class="step-num">4</div>
+        <div class="step-content"><h3>Design Layout</h3><p>Pattern layout &bull; Borders &bull; Taping &bull; Logos</p></div>
+      </div>
+      <div class="install-step">
+        <div class="step-num">5</div>
+        <div class="step-content"><h3>Intermediate Coat</h3><p>Base color &bull; Flake broadcast &bull; Quartz</p></div>
+      </div>
+      <div class="install-step">
+        <div class="step-num">6</div>
+        <div class="step-content"><h3>Seal Coat Application</h3><p>Protective seal layer for durability</p></div>
+      </div>
+      <div class="install-step">
+        <div class="step-num">7</div>
+        <div class="step-content"><h3>Top Coat Application</h3><p>Final performance &bull; UV &amp; wear protection</p></div>
+      </div>
+
+      <div class="cta-box">
+        <h3>&#9733; Why Clients Add Systems</h3>
+        <div class="cta-item"><div class="cta-check">&#10003;</div><span>Increase avg. ticket size with additional coatings</span></div>
+        <div class="cta-item"><div class="cta-check">&#10003;</div><span>Expand service menu without new equipment</span></div>
+        <div class="cta-item"><div class="cta-check">&#10003;</div><span>Repeat revenue from maintenance &amp; top coats</span></div>
+        <div class="cta-item"><div class="cta-check">&#10003;</div><span>Differentiate from local competition</span></div>
+        <div class="cta-item"><div class="cta-check">&#10003;</div><span>Backed by TCP training &amp; technical support</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       ===== TEXTURE & COLOR FEATURE SECTION — FULL-WIDTH PROMINENT =====
+       ================================================================== -->
+  <div class="texture-feature">
+    <div class="texture-feature-inner">
+
+      <div class="tf-header">
+        <div class="tf-badge">Critical</div>
+        <h2>Surface Texture &amp; <em>Color Selection</em></h2>
+      </div>
+      <div class="tf-subtitle">The #1 factor in customer satisfaction — and the #1 source of disputes when skipped. Cover this in every design consultation.</div>
+
+      <div class="tf-grid">
+
+        <!-- LEFT: TEXTURE -->
+        <div class="tf-panel texture-panel">
+          <div class="tf-panel-label"><span class="icon">&#9638;</span> Texture Selection</div>
+
+          <div class="texture-cards">
+            <div class="tex-card t1">
+              <div class="tex-code">T-1</div>
+              <div class="tex-name">Mountains &amp; Valleys</div>
+              <div class="tex-desc">Most aggressive &bull; Best grip &bull; Harder to clean</div>
+            </div>
+            <div class="tex-card t2">
+              <div class="tex-code">T-2</div>
+              <div class="tex-name">Mountains</div>
+              <div class="tex-desc">Moderate texture &bull; Balanced performance</div>
+            </div>
+            <div class="tex-card t3">
+              <div class="tex-code">T-3</div>
+              <div class="tex-name">Smooth</div>
+              <div class="tex-desc">Few islands &bull; Easiest to clean &bull; More slippery</div>
+            </div>
+          </div>
+
+          <div class="tradeoff-labels">
+            <span>&#9668; Easier to Clean / More Slippery</span>
+            <span>Harder to Clean / Better Grip &#9658;</span>
+          </div>
+          <div class="tradeoff-bar">
+            <div class="bar-fill bar-slip">Smooth</div>
+            <div class="bar-fill bar-mid">Balanced</div>
+            <div class="bar-fill bar-grip">Aggressive</div>
+          </div>
+
+          <div class="pro-tip">
+            <div class="tip-label">&#9733; Sales Best Practice</div>
+            <p><strong>Always use physical texture samples</strong> the customer can touch. Label each sample with a code. When they choose, <strong>note the code on their contract/estimate.</strong> This lets them make an educated decision — and puts the responsibility for their choice in writing.</p>
+          </div>
+        </div>
+
+        <!-- RIGHT: COLOR -->
+        <div class="tf-panel color-panel">
+          <div class="tf-panel-label"><span class="icon">&#9673;</span> Color Selection</div>
+
+          <div class="color-note">
+            Some customers struggle to visualize finished colors. <strong>Physical samples are essential</strong> during design consultation to avoid misunderstandings. Printed charts should only be used as a guide — colors shift between printers and inks.
+          </div>
+
+          <div class="color-rules">
+            <div class="color-rule">
+              <div class="cr-icon" style="background:rgba(230,126,34,0.15);color:var(--accent-orange);">&#9673;</div>
+              <div class="cr-text"><strong>Show physical samples</strong> whenever possible to get customer approval on exact color</div>
+            </div>
+            <div class="color-rule">
+              <div class="cr-icon" style="background:rgba(58,123,213,0.15);color:var(--accent-blue);">&#9673;</div>
+              <div class="cr-text"><strong>Explain print variance</strong> — printed charts are a guide only, not exact color match</div>
+            </div>
+            <div class="color-rule">
+              <div class="cr-icon" style="background:rgba(39,174,96,0.15);color:var(--accent-green);">&#9673;</div>
+              <div class="cr-text"><strong>Multi-color mixes vary</strong> — staining combinations of 2+ colors produce dozens of unique shades</div>
+            </div>
+            <div class="color-rule">
+              <div class="cr-icon" style="background:rgba(200,169,81,0.15);color:var(--gold);">&#9673;</div>
+              <div class="cr-text"><strong>Document the selection</strong> on the contract with sample code or physical sign-off</div>
+            </div>
+          </div>
+
+          <div class="pro-tip">
+            <div class="tip-label">&#9733; Sales Best Practice</div>
+            <p>Explain in depth that <strong>printed charts are a guide, not a guarantee.</strong> When mixing stain colors, show a physical mixed sample if available. Document the customer's approved color code on the contract to <strong>protect both parties.</strong></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CONTRACT PROTECTION CALLOUT -->
+      <div class="contract-callout">
+        <div class="cc-shield">&#9888;</div>
+        <div class="cc-content">
+          <h4>Protect the Sale &mdash; Document the Choice</h4>
+          <p>When texture and color selections are <strong>clearly recorded on the contract/estimate with sample codes and customer sign-off,</strong> any post-install change requests become paid work — not free rework. A thorough design consultation protects your margin and builds trust. <strong>This is not your liability when you've done the sales process right.</strong></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    <div class="footer-left">THE CONCRETE PROTECTOR &mdash; Incredible Products, LLC</div>
+    <div class="footer-right">theconcreteprotector.com &nbsp;&bull;&nbsp; Client Reference Tool &nbsp;&bull;&nbsp; 2025</div>
+  </div>
+
+</div>
+
+</body>
+</html>
