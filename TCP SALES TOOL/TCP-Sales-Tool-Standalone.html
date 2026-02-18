@@ -4,74 +4,74 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TCP Sales Tool — The Concrete Protector</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#111113;--c1:#1a1b1f;--c2:#222328;--inp:#191a1e;--bd:#2e3038;--bd2:#3d4050;--o:#c9a84c;--od:#a8893d;--og:rgba(201,168,76,.15);--g:#2ecc40;--r:#e74c3c;--y:#f0c040;--b:#60a5fa;--t:#2dd4bf;--or:#e67e22;--t1:#f0ece6;--t2:#a09888;--t3:#706860;--tl:#9ca3b8}
+:root{--bg:#0f1117;--c1:#181b24;--c2:#1e222e;--inp:#252a38;--bd:#2a2f3e;--bd2:#3d4458;--o:#f5c518;--od:#c49e0f;--og:rgba(245,197,24,.15);--g:#34d399;--r:#f87171;--y:#f0c040;--b:#60a5fa;--t:#2dd4bf;--or:#fb923c;--p:#a78bfa;--t1:#e8eaf0;--t2:#8b92a5;--t3:#5a6178;--tl:#9ca3b8}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;min-height:100vh}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;min-height:100vh}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
-.hdr{background:linear-gradient(135deg,#0f0f11,#1a1a1e,#0f0f11);border-bottom:3px solid var(--o);padding:14px 28px;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
-.hi{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.hdr h1{font-family:'Oswald',sans-serif;font-size:1.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--o);line-height:1}
-.hdr .sub{font-size:.78rem;color:var(--t2);letter-spacing:1px;font-weight:300}
+.hdr{background:linear-gradient(135deg,#0f1117,#1a1d2b,#0f1117);border-bottom:2px solid var(--o);padding:24px 32px;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.hi{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.hdr h1{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:3px;color:var(--o);line-height:1}
+.hdr .sub{font-size:.82rem;color:var(--t2);letter-spacing:1px;font-weight:300}
 .hdr-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.hdr-btn{padding:7px 14px;background:var(--og);border:1.5px solid var(--o);border-radius:6px;color:var(--o);font-family:'Oswald',sans-serif;font-weight:500;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:.2s}
-.hdr-btn:hover{background:rgba(201,168,76,.3)}
+.hdr-btn{padding:7px 14px;background:var(--og);border:1.5px solid var(--o);border-radius:6px;color:var(--o);font-family:'Bebas Neue',sans-serif;font-weight:500;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:.2s}
+.hdr-btn:hover{background:rgba(245,197,24,.3)}
 .hdr-btn.secondary{background:rgba(255,255,255,.04);border-color:var(--bd2);color:var(--t2)}
 .hdr-btn.secondary:hover{background:rgba(255,255,255,.08);color:var(--t1)}
 .hdr .br{text-align:right;font-size:.7rem;color:var(--t3)}.hdr .br strong{color:var(--t2)}
-.nav{background:var(--c1);border-bottom:1px solid var(--bd);position:sticky;top:68px;z-index:99;overflow-x:auto}
-.ni{max-width:1500px;margin:0 auto;display:flex}
-.nb{font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:12px 18px;border:none;background:0 0;color:var(--t3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}
-.nb:hover{color:var(--t1);background:rgba(201,168,76,.04)}
-.nb.ac{color:var(--o);border-bottom-color:var(--o);background:rgba(201,168,76,.06)}
+.nav{background:var(--c1);border-bottom:1px solid var(--bd);position:sticky;top:100px;z-index:99;overflow-x:auto}
+.ni{max-width:1400px;margin:0 auto;display:flex}
+.nb{font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:12px 18px;border:none;background:0 0;color:var(--t2);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}
+.nb:hover{color:var(--t1);background:rgba(245,197,24,.04)}
+.nb.ac{color:var(--o);border-bottom-color:var(--o);background:rgba(245,197,24,.06)}
 .nb .step{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--bd);color:var(--t3);font-size:.62rem;font-weight:700;margin-right:6px}
 .nb.ac .step{background:var(--o);color:#111}
-.mc{max-width:1500px;margin:0 auto;padding:24px 20px 80px}
+.mc{max-width:1400px;margin:0 auto;padding:28px 24px 80px}
 .tpane{display:none;animation:fi .3s ease}.tpane.ac{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.sh{margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
-.sh h2{font-family:'Oswald',sans-serif;font-size:1.5rem;letter-spacing:2px;margin-bottom:4px}
+.sh{margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.sh h2{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;margin-bottom:2px}
 .sh p{font-size:.85rem;color:var(--t2);max-width:700px}
 .sh .sl{font-size:.68rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--o);font-weight:600;margin-bottom:4px}
-.cd{background:var(--c1);border:1px solid var(--bd);border-radius:10px;padding:20px;margin-bottom:16px}
-.ct{font-family:'Oswald',sans-serif;font-size:.95rem;letter-spacing:1.5px;color:var(--o);margin-bottom:14px;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.cd{background:var(--c1);border:1px solid var(--bd);border-radius:10px;padding:22px;margin-bottom:18px}
+.ct{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:1.5px;color:var(--o);margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .ct .ic{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.io{background:rgba(201,168,76,.15);color:var(--o)}
+.io{background:rgba(245,197,24,.15);color:var(--o)}
 .ig{background:rgba(46,204,64,.15);color:var(--g)}
 .ib{background:rgba(96,165,250,.15);color:var(--b)}
 .ir{background:rgba(231,76,60,.15);color:var(--r)}
 .iy{background:rgba(240,192,64,.15);color:var(--y)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
 .sx{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:16px;text-align:center}
-.sx.hl{border-color:var(--o);background:rgba(201,168,76,.06)}
-.sx .sl{font-family:'Oswald',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
-.sx .sv{font-family:'Oswald',sans-serif;font-size:1.6rem;font-weight:600}
+.sx.hl{border-color:var(--o);background:rgba(245,197,24,.06)}
+.sx .sl{font-family:'Bebas Neue',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.sx .sv{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700}
 .sx.hl .sv{color:var(--o)}
 .ig2{margin-bottom:12px}
-.ig2 label{display:block;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tl);margin-bottom:4px}
-.ig2 input,.ig2 select,.ig2 textarea{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-family:'Source Sans 3',sans-serif;font-size:1rem;font-weight:600;padding:9px 12px;transition:.2s;resize:vertical}
+.ig2 label{display:block;font-family:'Bebas Neue',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tl);margin-bottom:4px}
+.ig2 input,.ig2 select,.ig2 textarea{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;padding:9px 12px;transition:.2s;resize:vertical}
 .ig2 input:focus,.ig2 select:focus,.ig2 textarea:focus{outline:none;border-color:var(--o);box-shadow:0 0 0 3px var(--og)}
 .rr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(46,48,56,.5);font-size:.88rem}
 .rr:last-child{border-bottom:none}
 .rr .lb{color:var(--t2)}
-.rr .vl{font-family:'Oswald',sans-serif;font-weight:600;font-size:.95rem}
-.rr.tot{border-top:2px solid var(--bd2);padding:12px 0;margin-top:4px}
+.rr .vl{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.88rem}
+.rr.tot{border-top:2px solid var(--bd2);border-bottom:2px solid var(--bd2);padding:12px 0;margin-top:4px}
 .rr.tot .lb{color:var(--t1);font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:.8rem}
 .rr.tot .vl{font-size:1.2rem}
 /* OPTION CARDS */
 .oc{background:var(--c2);border:2px solid var(--bd);border-radius:10px;padding:14px;cursor:pointer;transition:.2s;position:relative}
-.oc:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
-.oc.sel{border-color:var(--o);background:rgba(201,168,76,.08)}
-.oc .badge{position:absolute;top:8px;right:8px;font-family:'Oswald',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--og);color:var(--o)}
-.oc h4{font-family:'Oswald',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;color:var(--t1)}
+.oc:hover{border-color:rgba(245,197,24,.4);background:rgba(245,197,24,.04)}
+.oc.sel{border-color:var(--o);background:rgba(245,197,24,.08)}
+.oc .badge{position:absolute;top:8px;right:8px;font-family:'Bebas Neue',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--og);color:var(--o)}
+.oc h4{font-family:'Bebas Neue',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;color:var(--t1)}
 .oc p{font-size:.78rem;color:var(--t2);line-height:1.35;margin-bottom:4px}
 .oc .tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
-.tag{font-family:'Oswald',sans-serif;font-size:.58rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--t3);border:1px solid var(--bd)}
-.tag.hl{background:var(--og);color:var(--o);border-color:rgba(201,168,76,.3)}
+.tag{font-family:'Bebas Neue',sans-serif;font-size:.58rem;font-weight:500;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--t3);border:1px solid var(--bd)}
+.tag.hl{background:var(--og);color:var(--o);border-color:rgba(245,197,24,.3)}
 /* TOGGLE */
 .toggle{position:relative;width:38px;height:20px;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0}
@@ -81,41 +81,41 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 .toggle input:checked+.slider::before{transform:translateX(18px);background:#fff}
 /* TABLE */
 .dt{width:100%;border-collapse:collapse;font-size:.85rem}
-.dt th{font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);padding:10px 12px;text-align:right;border-bottom:1px solid var(--bd);background:var(--c2)}
+.dt th{font-family:'Bebas Neue',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t3);padding:10px 12px;text-align:right;border-bottom:1px solid var(--bd);background:var(--c2)}
 .dt th:first-child{text-align:left;padding-left:16px}
 .dt td{padding:8px 12px;text-align:right;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
 .dt td:first-child{text-align:left;padding-left:16px}
-.dt tr:hover{background:rgba(201,168,76,.04)}
+.dt tr:hover{background:rgba(245,197,24,.04)}
 .dt tr.disabled td{opacity:.3}
 .dt .item-name{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.82rem}
-.tbl-input{width:75px;background:var(--inp);border:1px solid var(--bd);border-radius:5px;padding:5px 8px;font-size:.82rem;color:var(--t1);text-align:right;font-family:'Source Sans 3',sans-serif}
+.tbl-input{width:75px;background:var(--inp);border:1px solid var(--bd);border-radius:5px;padding:5px 8px;font-size:.82rem;color:var(--t1);text-align:right;font-family:'JetBrains Mono',monospace}
 .tbl-input:focus{outline:none;border-color:var(--o)}
 .tbl-input.narrow{width:55px}
 .tbl-input.wide{width:100%;text-align:left}
-.cat-row td{font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:10px 12px 4px 16px!important;border-bottom:none!important}
+.cat-row td{font-family:'Bebas Neue',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:10px 12px 4px 16px!important;border-bottom:none!important}
 .cat-row:hover{background:transparent!important}
 /* CREW */
 .crew-row{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--c2);border-radius:6px;margin-bottom:6px}
-.crew-row label{font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tl);width:60px;flex-shrink:0}
-.crew-row input{flex:1;background:var(--inp);border:1px solid var(--bd);border-radius:5px;padding:7px 10px;font-size:.95rem;font-weight:600;color:var(--t1);font-family:'Source Sans 3',sans-serif;max-width:120px}
+.crew-row label{font-family:'Bebas Neue',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--tl);width:60px;flex-shrink:0}
+.crew-row input{flex:1;background:var(--inp);border:1px solid var(--bd);border-radius:5px;padding:7px 10px;font-size:.9rem;font-weight:600;color:var(--t1);font-family:'JetBrains Mono',monospace;max-width:120px}
 .crew-row input:focus{outline:none;border-color:var(--o)}
 /* FILTER BTNS */
-.fb{font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;padding:5px 12px;border:1.5px solid var(--bd2);border-radius:6px;background:var(--c2);color:var(--t3);cursor:pointer;transition:.2s;text-transform:uppercase}
+.fb{font-family:'Bebas Neue',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;padding:5px 12px;border:1.5px solid var(--bd2);border-radius:6px;background:var(--c2);color:var(--t3);cursor:pointer;transition:.2s;text-transform:uppercase}
 .fb:hover{border-color:var(--o);color:var(--t1)}
 .fb.ac{border-color:var(--o);background:var(--og);color:var(--o)}
 /* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
 .modal{background:var(--c1);border:1px solid var(--bd);border-radius:12px;padding:24px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.modal h3{font-family:'Oswald',sans-serif;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;color:var(--o);margin-bottom:16px}
+.modal h3{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;color:var(--o);margin-bottom:16px}
 .modal-field{margin-bottom:12px}
-.modal-field label{display:block;font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:5px}
-.modal-field input{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;padding:9px 12px;font-family:'Source Sans 3',sans-serif;font-size:.95rem;color:var(--t1)}
+.modal-field label{display:block;font-family:'Bebas Neue',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:5px}
+.modal-field input{width:100%;background:var(--inp);border:1px solid var(--bd);border-radius:6px;padding:9px 12px;font-family:'Outfit',sans-serif;font-size:.95rem;color:var(--t1)}
 .modal-field input:focus{outline:none;border-color:var(--o)}
 .modal-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
 .saved-projects{max-height:200px;overflow-y:auto;margin-bottom:12px}
 .sp-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border:1px solid var(--bd);border-radius:6px;margin-bottom:5px;cursor:pointer;transition:.2s}
-.sp-item:hover{background:rgba(201,168,76,.06);border-color:var(--o)}
+.sp-item:hover{background:rgba(245,197,24,.06);border-color:var(--o)}
 .sp-item .sp-name{font-weight:600;font-size:.88rem}
 .sp-item .sp-meta{font-size:.72rem;color:var(--t3)}
 .sp-item .sp-del{color:var(--r);background:none;border:none;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:4px}
@@ -123,7 +123,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 /* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--c1);border:1px solid var(--o);border-radius:10px;padding:12px 18px;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:1000;transform:translateY(120%);opacity:0;transition:.3s ease}
 .toast.show{transform:translateY(0);opacity:1}
-.toast .tt{font-family:'Oswald',sans-serif;font-size:.78rem;font-weight:600;color:var(--o);letter-spacing:1px;text-transform:uppercase}
+.toast .tt{font-family:'Bebas Neue',sans-serif;font-size:.78rem;font-weight:600;color:var(--o);letter-spacing:1px;text-transform:uppercase}
 .toast .tm{font-size:.78rem;color:var(--t2);margin-top:2px}
 /* PRINT */
 @media print{
@@ -131,16 +131,21 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
   body{background:#fff;color:#111}.cd,.sx{background:#fff;border-color:#ddd;color:#111}
   .dt th{background:#f5f5f5;color:#333}.dt td{color:#111}
 }
-@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}.hi{flex-direction:column;align-items:flex-start}.hdr{padding:12px 16px}.ni{gap:0}.mc{padding:16px 10px 60px}}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(min-width:901px) and (max-width:1100px){.g3,.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.hdr h1{font-size:1.6rem}.hdr{padding:16px;position:relative}.nav{position:relative;top:auto}.mc{padding:18px 12px 60px}.cd{padding:16px}.sx .sv{font-size:1.2rem}.nb{padding:10px 12px;font-size:.66rem}.hi{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div class="hdr"><div class="hi">
-  <div>
-    <h1>TCP Sales Tool</h1>
-    <div class="sub">The Concrete Protector &mdash; Product Pricing Guide (Aug 2025)</div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <img src="data:image/png;base64,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" alt="TCP Logo" style="height:48px;flex-shrink:0">
+    <div>
+      <h1>TCP Sales Tool</h1>
+      <div class="sub">The Concrete Protector &mdash; Product Pricing Guide (Aug 2025)</div>
+    </div>
   </div>
   <div class="hdr-right">
     <button class="hdr-btn" onclick="exportPDF()">Export PDF</button>
@@ -200,8 +205,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <div class="ig2"><label>Project Notes</label><textarea id="projNotes" rows="2" placeholder="Special requirements, conditions, etc."></textarea></div>
   </div>
   <div class="cd" style="display:flex;flex-direction:column;justify-content:center;align-items:center">
-    <div style="font-family:'Oswald',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:6px">Project Bid</div>
-    <div style="font-family:'Oswald',sans-serif;font-size:2.6rem;font-weight:700;color:var(--o)" id="bidDisplay">$4,000.00</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:6px">Project Bid</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:2.6rem;font-weight:700;color:var(--o)" id="bidDisplay">$4,000.00</div>
     <div style="font-size:.82rem;color:var(--t2);margin-top:4px"><span id="bidSqft">500</span> sq ft &times; $<span id="bidRate">8.00</span> / sq ft</div>
     <div id="sellRangeHint" style="font-size:.72rem;color:var(--t3);margin-top:8px"></div>
   </div>
@@ -211,8 +216,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <div class="ct"><span class="ic iy">&#9881;</span> Crew <span id="crewCount" style="color:var(--t);margin-left:auto;font-size:.72rem"></span></div>
     <div id="crewInputs"></div>
     <div style="display:flex;gap:6px;margin-top:8px">
-      <button onclick="addTech()" style="flex:1;max-width:150px;padding:7px;background:rgba(46,204,64,.15);border:1px solid var(--g);border-radius:6px;color:var(--g);font-family:'Oswald',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">+ ADD TECH</button>
-      <button onclick="removeTech()" id="rmBtn" style="flex:1;max-width:150px;padding:7px;background:rgba(231,76,60,.1);border:1px solid var(--r);border-radius:6px;color:var(--r);font-family:'Oswald',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">&minus; REMOVE</button>
+      <button onclick="addTech()" style="flex:1;max-width:150px;padding:7px;background:rgba(46,204,64,.15);border:1px solid var(--g);border-radius:6px;color:var(--g);font-family:'Bebas Neue',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">+ ADD TECH</button>
+      <button onclick="removeTech()" id="rmBtn" style="flex:1;max-width:150px;padding:7px;background:rgba(231,76,60,.1);border:1px solid var(--r);border-radius:6px;color:var(--r);font-family:'Bebas Neue',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">&minus; REMOVE</button>
     </div>
   </div>
   <div class="cd">
@@ -222,9 +227,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
       <div class="ig2"><label>Est. Days on Site</label><input type="number" id="estDays" value="2" min="0.5" max="60" step="0.5" oninput="recalc()"></div>
     </div>
     <div style="margin-top:10px;padding:10px 14px;background:var(--c2);border-radius:6px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Calendar Hours</span><span style="font-family:'Oswald',sans-serif;font-size:.9rem;color:var(--o)" id="calHrs">16</span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Man-Hours</span><span style="font-family:'Oswald',sans-serif;font-size:.9rem;color:var(--b)" id="manHrs">48</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:.78rem;color:var(--t3)">Total Labor Cost</span><span style="font-family:'Oswald',sans-serif;font-size:.9rem;color:var(--r)" id="labCost">$0</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Calendar Hours</span><span style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--o)" id="calHrs">16</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Man-Hours</span><span style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--b)" id="manHrs">48</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:.78rem;color:var(--t3)">Total Labor Cost</span><span style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--r)" id="labCost">$0</span></div>
     </div>
   </div>
 </div>
@@ -243,15 +248,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
   <div class="ct"><span class="ic ig">&#10003;</span> Selected System</div>
   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
     <div>
-      <div style="font-size:.68rem;color:var(--t3);font-family:'Oswald',sans-serif;letter-spacing:1px" id="selProdSKU"></div>
+      <div style="font-size:.68rem;color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px" id="selProdSKU"></div>
       <div id="selProdName" style="font-weight:700;font-size:1.1rem"></div>
       <div id="selProdCat" style="font-size:.8rem;color:var(--t2)"></div>
     </div>
     <div style="text-align:right">
       <div style="display:flex;gap:20px;align-items:baseline">
-        <div><div style="font-size:.6rem;color:var(--t3);font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase">Material Cost</div><div id="selProdCost" style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:var(--r)"></div></div>
-        <div><div style="font-size:.6rem;color:var(--t3);font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase">Sell Range</div><div id="selProdSell" style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:var(--g)"></div></div>
-        <div><div style="font-size:.6rem;color:var(--t3);font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase">Margin @ Low</div><div id="selProdMargin" style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:var(--o)"></div></div>
+        <div><div style="font-size:.6rem;color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;text-transform:uppercase">Material Cost</div><div id="selProdCost" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;font-weight:600;color:var(--r)"></div></div>
+        <div><div style="font-size:.6rem;color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;text-transform:uppercase">Sell Range</div><div id="selProdSell" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;font-weight:600;color:var(--g)"></div></div>
+        <div><div style="font-size:.6rem;color:var(--t3);font-family:'Bebas Neue',sans-serif;letter-spacing:1px;text-transform:uppercase">Margin @ Low</div><div id="selProdMargin" style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;font-weight:600;color:var(--o)"></div></div>
       </div>
     </div>
   </div>
@@ -297,8 +302,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <div class="ct"><span class="ic ib">&#9881;</span> Crew Setup <span id="crewCount2" style="color:var(--t);margin-left:auto;font-size:.72rem"></span></div>
     <div id="crewInputs2"></div>
     <div style="display:flex;gap:6px;margin-top:8px">
-      <button onclick="addTech()" style="flex:1;max-width:150px;padding:7px;background:rgba(46,204,64,.15);border:1px solid var(--g);border-radius:6px;color:var(--g);font-family:'Oswald',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">+ ADD TECH</button>
-      <button onclick="removeTech()" id="rmBtn2" style="flex:1;max-width:150px;padding:7px;background:rgba(231,76,60,.1);border:1px solid var(--r);border-radius:6px;color:var(--r);font-family:'Oswald',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">&minus; REMOVE</button>
+      <button onclick="addTech()" style="flex:1;max-width:150px;padding:7px;background:rgba(46,204,64,.15);border:1px solid var(--g);border-radius:6px;color:var(--g);font-family:'Bebas Neue',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">+ ADD TECH</button>
+      <button onclick="removeTech()" id="rmBtn2" style="flex:1;max-width:150px;padding:7px;background:rgba(231,76,60,.1);border:1px solid var(--r);border-radius:6px;color:var(--r);font-family:'Bebas Neue',sans-serif;font-weight:600;font-size:.72rem;cursor:pointer;letter-spacing:.5px">&minus; REMOVE</button>
     </div>
   </div>
   <div class="cd">
@@ -308,9 +313,9 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
       <div class="ig2"><label>Est. Days on Site</label><input type="number" id="estDays2" value="2" min="0.5" max="60" step="0.5" oninput="syncTime(this)"></div>
     </div>
     <div style="margin-top:10px;padding:10px 14px;background:var(--c2);border-radius:6px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Calendar Hours</span><span style="font-family:'Oswald',sans-serif;font-size:.9rem;color:var(--o)" id="calHrs2">16</span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Man-Hours</span><span style="font-family:'Oswald',sans-serif;font-size:.9rem;color:var(--b)" id="manHrs2">48</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="font-size:.78rem;color:var(--t3)">Total Labor Cost</span><span style="font-family:'Oswald',sans-serif;font-size:.9rem;color:var(--r)" id="labCost2">$0</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Calendar Hours</span><span style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--o)" id="calHrs2">16</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:.78rem;color:var(--t3)">Man-Hours</span><span style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--b)" id="manHrs2">48</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:.78rem;color:var(--t3)">Total Labor Cost</span><span style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--r)" id="labCost2">$0</span></div>
     </div>
   </div>
 </div>
@@ -344,8 +349,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 
 <div class="toast" id="toast"><div class="tt" id="toastT"></div><div class="tm" id="toastM"></div></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
+<script data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script data-cfasync="false">
 // ═══════════════════════════════════════════════════════════
 // DATA — TCP Product Pricing Guide (August 28, 2025)
 // ═══════════════════════════════════════════════════════════
@@ -565,7 +570,7 @@ function setOther(i,f,v){if(f==='desc')S.otherItems[i].desc=v;else S.otherItems[
 // INSTALL STEPS
 // ═══════════════════════════════════════════════════════════
 function buildInstallSteps(){
-  document.getElementById('installSteps').innerHTML=INSTALL_STEPS.map((s,i)=>`<div style="background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="width:24px;height:24px;border-radius:50%;background:var(--bg);border:2px solid var(--o);display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:700;color:var(--o);flex-shrink:0">${i+1}</div><div style="font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase">${s.name}</div></div><div style="font-size:.72rem;color:var(--t3)">${s.opts}</div></div>`).join('');
+  document.getElementById('installSteps').innerHTML=INSTALL_STEPS.map((s,i)=>`<div style="background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="width:24px;height:24px;border-radius:50%;background:var(--bg);border:2px solid var(--o);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:.7rem;font-weight:700;color:var(--o);flex-shrink:0">${i+1}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase">${s.name}</div></div><div style="font-size:.72rem;color:var(--t3)">${s.opts}</div></div>`).join('');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -728,7 +733,7 @@ function buildPL(){
 
   document.getElementById('plBody').innerHTML=h;
 }
-function catLabel(t){return `<div style="padding:10px 0 4px;font-family:'Oswald',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3)">${t}</div>`}
+function catLabel(t){return `<div style="padding:10px 0 4px;font-family:'Bebas Neue',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3)">${t}</div>`}
 function rr(l,v,vc){return `<div class="rr"><span class="lb">${l}</span><span class="vl"${vc?' style="color:'+vc+'"':''}>${v}</span></div>`}
 
 // ═══════════════════════════════════════════════════════════

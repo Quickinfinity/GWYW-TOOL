@@ -517,7 +517,8 @@ const state = {
 };
 
 [...chemicals, ...tools].forEach(item => {
-  state.toggles[item.id] = tools.includes(item) ? true : (item.alwaysOn || false);
+  const defaultTools = ['o30','g299','ysm400','r800'];
+  state.toggles[item.id] = tools.includes(item) ? defaultTools.includes(item.id) : (item.alwaysOn || false);
   state.addOns[item.id] = 0;
   state.unitCosts[item.id] = item.unitCost;
 });
