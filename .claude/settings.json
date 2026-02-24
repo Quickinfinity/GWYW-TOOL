@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/ljoequick/Desktop/2026/VS STUDIO /GWYW/**)",
+      "Read(//Users/ljoequick/Desktop/2026/VS STUDIO /**)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Read(//Users/ljoequick/Desktop/2026/VS STUDIO /SCP CALCULATOR /**)"
+    ],
+    "additionalDirectories": [
+      "/Users/ljoequick/Desktop/2026/VS STUDIO ",
+      "/Users/ljoequick/Desktop/2026/VS STUDIO /TCP SALES TOOL"
+    ]
+  }
+}
